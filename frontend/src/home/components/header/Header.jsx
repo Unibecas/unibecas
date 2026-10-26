@@ -1,8 +1,8 @@
 import "./header.css";
-import flechaAbajo from "../../../assets/icons/home/flechaAbajo.svg";
+import { ArrowDawn } from "../../../components/icons/home/ArrowDown";
 import registrarmeIcon from "../../../assets/icons/home/registrarmeIcon.svg";
 import Input from "../../../components/input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import seePassword from "../../../assets/icons/home/see-password.svg";
 import hidePassword from "../../../assets/icons/home/hide-password.svg";
@@ -10,6 +10,11 @@ import hidePassword from "../../../assets/icons/home/hide-password.svg";
 import logo from "../../../assets/images/home/logo-unibecas.png";
 
 import { Link } from "react-router-dom";
+
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+import useFetch from "../../../hooks/useFetch";
 
 const Header = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
@@ -42,6 +47,10 @@ const Header = () => {
   const [inputRegistrarmeType, setInputRegistrarmeType] = useState("password");
   const [registrarPasswordIcon, setRegistrarmePasswordIcon] =
     useState(seePassword);
+
+  const [mostrarBecas, setMostrarBecas] = useState(false);
+
+  const [data, loading, error, fetchData] = useFetch();
 
   const cerrarModal = () => {
     setEstaAbierto(false);
@@ -150,6 +159,10 @@ const Header = () => {
     );
   };
 
+  useEffect(() => {
+    fetchData("https://unibecas.onrender.com/main");
+  }, []);
+
   return (
     <header>
       <Link to="/" className="link-home">
@@ -189,11 +202,9 @@ const Header = () => {
             <ul>
               <li onClick={() => setMenuAbierto(false)}>
                 <span>Programas</span>
-                <img src={flechaAbajo} alt="" />
               </li>
               <li onClick={() => setMenuAbierto(false)}>
                 <span>Becas</span>
-                <img src={flechaAbajo} alt="" />
               </li>
             </ul>
           </nav>
@@ -204,12 +215,42 @@ const Header = () => {
         <ul>
           <li>
             <span>Programas</span>
-            <img src={flechaAbajo} alt="Flecha abajo" />
+            <ArrowDawn />
           </li>
-          <li>
-            <span>Becas</span>
-            <img src={flechaAbajo} alt="Flecha abajo" />
-          </li>
+          <div className="contenedor-becas">
+            {loading ? (
+              <Skeleton
+                width={93}
+                height={38}
+                borderRadius={4}
+                baseColor="var(--skeleton-background)"
+              />
+            ) : (
+              <>
+                <li
+                  onClick={() =>
+                    setMostrarBecas(mostrarBecas === true ? false : true)
+                  }
+                >
+                  <span>Becas</span>
+                  <ArrowDawn />
+                </li>
+                {mostrarBecas && (
+                  <div className="becas">
+                    {data.slice(0, 10).map((info) => (
+                      <Link
+                        key={info.id}
+                        to={`/beca/${info.id}`}
+                        className="beca"
+                      >
+                        {info.nombre}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </ul>
       </nav>
 
