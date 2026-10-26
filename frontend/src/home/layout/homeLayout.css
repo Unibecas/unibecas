@@ -57,11 +57,6 @@ h2 {
   padding: 10px 0;
 }
 
-.contenedor-universidades {
-  background-color: var(--color-superficie-blanca);
-  padding: 10px 0;
-}
-
 .contenedor-universidades section {
   overflow: hidden;
   padding: 0 100px 20px 100px;
@@ -156,7 +151,7 @@ h2 {
 
 .contenedor-sobre-becas-ofertas {
   padding: 70px 8%;
-  background-color: #f1f4fc;
+  background-color: var(--color-superficie-blanca);
 }
 
 .contenedor-sobre-becas-ofertas h2 {
@@ -179,7 +174,7 @@ h2 {
 .contenedor-sobre-becas-ofertas-categorias {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 50px;
 }
 
 .tarjeta-categoria {
@@ -272,14 +267,13 @@ h2 {
   }
 }
 .icono-categoria img {
-  width: 44px;
-  height: 44px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 }
 
 .seccion-becas {
   margin-bottom: 35px;
-
 }
 
 .seccion-becas .contenedor-botones {
@@ -350,14 +344,6 @@ h2 {
   box-sizing: border-box;
 }
 
-.carrusel-becas-imagen {
-  display: block;
-  width: 100%;
-  max-height: 600px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
 .carrusel-becas-flecha {
   position: absolute;
   top: 50%;
@@ -366,6 +352,7 @@ h2 {
   height: 44px;
   border: none;
   border-radius: 50%;
+  background-color: var(--background);
 
   color: #fff;
   font-size: 28px;
@@ -440,3 +427,48 @@ h2 {
     padding: 5px 20px;
   }
 }
+.carrusel-becas-imagenes {
+  position: relative;
+  width: 100%;
+}
+
+.carrusel-becas-imagen {
+  display: none;
+  width: 100%;
+  max-height: 600px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.carrusel-becas-imagen.activa {
+  display: block;
+}
+
+.tarjeta-categoria {
+  position: relative;
+  padding: 40px;
+  /* Conserva aquí tus demás estilos */
+}
+
+.icono-categoria {
+  position: absolute;
+  top: -22px;
+  left: 24px;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 44px;
+  background-color: #f1f4fc;
+}
+
+.icono-categoria img {
+  width: 60px;
+  height: 54px;
+  object-fit: contain;
+}
+
