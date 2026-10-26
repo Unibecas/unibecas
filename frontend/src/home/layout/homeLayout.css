@@ -3,7 +3,7 @@
 }
 
 .contenedor-info-becas {
-  margin: 55px auto 20px auto;
+  margin: 460px auto 20px auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,6 +12,8 @@
   border-radius: 16px;
   padding: 28px 100px;
   max-width: 1000px;
+  position: relative;
+  z-index: 50;
 }
 
 .info-becas {
@@ -279,7 +281,6 @@ h2 {
 
 .seccion-becas {
   margin-bottom: 35px;
-
 }
 
 .seccion-becas .contenedor-botones {
@@ -345,9 +346,10 @@ h2 {
   position: relative;
   width: 100%;
   max-width: 1100px;
-  margin: 40px auto;
+  margin: 90px auto 40px auto;
   padding: 0 56px;
   box-sizing: border-box;
+  z-index: 50;
 }
 
 .carrusel-becas-imagen {
@@ -381,25 +383,9 @@ h2 {
   right: 4px;
 }
 
-.contenedor-becas {
-  animation: aparecerBecas 0.4s ease;
-}
-
 .link-beca-card {
   flex-shrink: 0;
   text-decoration: none;
-}
-
-@keyframes aparecerBecas {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @media (max-width: 600px) {

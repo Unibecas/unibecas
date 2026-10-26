@@ -54,7 +54,6 @@ const Hero = () => {
         <div className="contenido-izquierda">
           <h1>
             Encuentra tu <span className="typing-text">{texto}</span>
-            <span className="typing-cursor" />
           </h1>
           <p>
             Explora becas de distintas universidades y encuentra oportunidades
