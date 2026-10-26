@@ -2,10 +2,6 @@
 import { MainInfo } from "../modelos/postgreSQL/main.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { ErrorValidacion } from "../utils/errores/errorcharcount.js"
-// ---------- Controladdor para la peticion /main
-// Cada estatica es una forma de controlar la peticion del enrutador
-// La cual, la estatica usa los modelos para el procesamiento de la informacion
-// Que le llega a la ruta.
 
 export class MainControl {
 
