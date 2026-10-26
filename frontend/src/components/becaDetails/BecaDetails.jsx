@@ -12,6 +12,8 @@ import { useEffect } from "react";
 
 import BecaDetailsSkeleton from "../../skeletons/BecaDetailsSkeleton";
 
+import { ArrowUpRight } from "../icons/home/ArrowUpRight";
+
 const BecaDetails = () => {
   const [data, loading, error, fetchData] = useFetch();
 
@@ -34,7 +36,8 @@ const BecaDetails = () => {
             <Link to="/" className="volver">
               Volver al inicio
             </Link>
-            <button className="como-acceder">¿Como acceder a esta beca?</button>
+
+            <h2>Becas</h2>
           </div>
 
           <section>
@@ -59,6 +62,17 @@ const BecaDetails = () => {
 
                 <h2 className="como-aplicar">¿Como aplicar?</h2>
                 <p>{data?.INFO?.aplicar}</p>
+
+                <div className="contenedor-link">
+                  <a
+                    href={data?.INFO?.url}
+                    target="_blanck"
+                    rel="noopener noreferrer"
+                  >
+                    Aplica aquí
+                  </a>
+                  <ArrowUpRight width="23px" heigth="23" />
+                </div>
               </>
             )}
           </section>
