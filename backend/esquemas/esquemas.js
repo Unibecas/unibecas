@@ -26,7 +26,9 @@ const esquemaBeca = z.object({
         'Pregrado',
         'Posgrado',
         'Tecnologica',
-        'Tecnica'
+        'Tecnica',
+        'Especialidad',
+        'Doctorado'
     ], {
         error: 'El tipo de dato es invalido',
     }),
