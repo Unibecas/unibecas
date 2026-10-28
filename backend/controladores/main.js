@@ -2,40 +2,34 @@
 import { MainInfo } from "../modelos/postgreSQL/main.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { ErrorValidacion } from "../utils/errores/errorcharcount.js"
-// ---------- Controladdor para la peticion /main
-// Cada estatica es una forma de controlar la peticion del enrutador
-// La cual, la estatica usa los modelos para el procesamiento de la informacion
-// Que le llega a la ruta.
+import { actualizarBeca, validacionPaginacion, validarBeca } from "../esquemas/esquemas.js"
 
 export class MainControl {
 
     static async allRecoveryCont(req, res) {
         try {
-            const datos = await MainInfo.allRecovery({ schsp: req.query.schsp })
+            const validaciones = validacionPaginacion(req.query)
+
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+            const { schsp, fmod, limit, offset } = validaciones.data
+
+            const datos = await MainInfo.allRecovery({ schsp, fmod, limit, offset })
             if (datos === false) {
                 return res.status(404).json({
-                    error: `Beca "${req.query.schsp}" no encontrada`
+                    error: `Beca ${schsp} ${fmod ? `con modalidad ${fmod}` : ''} no encontrada`
                 })
             } else if (datos.length === 0) {
                 return res.status(404).json({
                     info: `No hay becas disponibles`
                 })
             }
-
-            if (req.query.schsp) {
-                console.log(`[server - ${horaActual()}] Datos filtrados exitosamente`)
-            }
-            console.log(`[server - ${horaActual()}] Datos enviados exitosamente`)
             return res.status(200).json(datos)
 
         } catch (error) {
-            if (error instanceof ErrorValidacion) {
-                console.log(`[server - ${horaActual()}] - Validacion de busqueda:`, error.message, `- Info: ${req.params.id}`)
-                return res.status(400).json({
-                    error: error.message
-                })
-            }
-
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
                 error: 'Error interno de servidor'
@@ -47,7 +41,6 @@ export class MainControl {
         try {
             const findData = await MainInfo.idRecovery({ id: req.params.id })
             if (findData) {
-                console.log(`[server - ${horaActual()}] - Beca devuelta - ${req.params.id}`)
                 return res.status(200).json({
                     message: `Beca con la ID: ${req.params.id} encontrado`,
                     INFO: findData
@@ -74,21 +67,21 @@ export class MainControl {
 
     static async newDataCont(req, res) {
         try {
-            const newScsh = await MainInfo.newData({ dataVal: req.body })
+            const validaciones = validarBeca(req.body)
 
-            console.log(`[server - ${horaActual()}] Beca insertada con exito - ${newScsh}`)
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+
+            const newScsh = await MainInfo.newData({ dataVal: validaciones.data })
+
             return res.status(201).json({
                 message: 'Beca insertada con exito',
                 INFO: newScsh
             })
         } catch (error) {
-            if (error instanceof ErrorValidacion) {
-                console.log(`[server - ${horaActual()}] - Validación:`, error.message, `- Info: ${JSON.stringify(req.body)}`)
-                return res.status(400).json({
-                    error: error.message
-                })
-            }
-
             if (error.code === '23503') {
                 console.log(`[server - ${horaActual()}] - Error de servidor:`, error.code, '-', error.detail)
                 return res.status(400).json({
@@ -108,7 +101,6 @@ export class MainControl {
             const filData = await MainInfo.deleteData({ id: req.params.id })
 
             if (filData) {
-                console.log(`[server - ${horaActual()}] Dato ${req.params.id} borrado con éxito`)
                 return res.status(200).json({
                     message: `ID: ${req.params.id} eliminada con éxito`
                 })
@@ -135,16 +127,22 @@ export class MainControl {
 
     static async patchDataCont(req, res) {
         try {
-            const data = await MainInfo.patchData({ id: req.params.id, input: req.body })
+            const validaciones = actualizarBeca(req.body)
+
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+
+            const data = await MainInfo.patchData({ id: req.params.id, input: validaciones.data })
 
             if (!data) {
-                console.log(`[server - ${horaActual()}] El indice ${req.params.id} no existe en la BD`)
                 return res.status(404).json({
                     error: `No existe dato con la ID: ${req.params.id}`
                 })
             }
 
-            console.log(`[server - ${horaActual()}] ID ${req.params.id} actualizado con exito`)
             return res.status(200).json({
                 message: `Dato ${req.params.id} actualizado con éxito`,
                 INFO: data

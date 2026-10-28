@@ -6,20 +6,21 @@ import { corsMiddleware } from './middlewares/cors.js'
 import { cabecerasJSON } from './middlewares/cabeceras.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
+import { expressJsonify } from './middlewares/expressJsonify.js'
 
 const app = express()
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 app.use(cabecerasJSON)
+
 app.use(express.json())
-// ------- RESPONSES -------
+app.use(expressJsonify)
+
+
 
 app.get('/', (req, res) => {
     res.status(200).send('<p>UniBecas API</p>')
 })
-
-// Si la peticion es a /main, que redirija los metodos al enrutador -> mainRouter de
-// de la carpeta rutas para que resuelva las request dependiendo de su metodo
 
 app.use('/main', mainRouter)
 app.use('/entidades', entidadesRouter)
