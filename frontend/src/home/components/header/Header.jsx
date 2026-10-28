@@ -160,7 +160,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    fetchData("https://unibecas.onrender.com/main");
+    fetchData("https://unibecas.onrender.com/main/becas");
   }, []);
 
   return (

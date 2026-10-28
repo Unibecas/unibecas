@@ -20,10 +20,8 @@ const BecaDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchData(`https://unibecas.onrender.com/main/${id}`);
+    fetchData(`https://unibecas.onrender.com/main/becas/${id}`);
   }, [id]);
-
-  console.log(data);
 
   const clase = data?.INFO?.estado === "Activa" ? "activa" : "vencida";
 
