@@ -18,40 +18,42 @@ const MAPA_COLUMNAS_BECAS = {
 const columnas = `b.id_beca AS id, b.nombre_beca AS nombre, b.vigencia_programa AS vigencia, b.descripcion_informacion AS descripcion, b.informacion_aplicar AS aplicar, b.modalidad AS modalidad, u.nom_institucion AS universidad, b.cobertura AS cobertura, b.estado as estado, e.nom_ent AS proveedor, b.url_informacion AS url`
 
 export class MainInfo {
-    static async allRecovery({ schsp }) {
-        if (schsp && schsp.trim().length < 4) {
+    static async allRecovery({ schsp, fmod, }) {
+        if ((schsp && schsp.trim().length < 4) || (fmod && fmod.trim().length < 4)) {
             throw new ErrorValidacion('La busqueda debe ser de al menos 4 caracteres')
         }
-
-        if (schsp) {
-            const busquedaFormateada = `%${schsp}%`
-
-            const info = await pool.query(`SELECT 
-                        ${columnas} 
-                        FROM becas AS b 
-                        LEFT JOIN universidades AS u
-                            ON b.id_universidad_acceso = u.id_universidad
-                        LEFT JOIN entidades AS e
-                            ON b.proveedor_beca = e.id_entidad
-                        WHERE f_unaccent(lower(b.nombre_beca)) ILIKE f_unaccent(lower($1))
-                        `, [busquedaFormateada])
-
-            if (info.rowCount === 0) {
-                return false
-            }
-            return info.rows
+        if ((schsp && schsp.includes(['?', '%', '/'])) || (fmod && fmod.includes(['?', '%', '/']))) {
+            throw new ErrorValidacion('La busqueda no puede tener caracteres especiales')
         }
 
-        const info = await pool.query(`SELECT 
-                        ${columnas} 
-                        FROM becas AS b
-                        LEFT JOIN universidades AS u
-                            ON b.id_universidad_acceso = u.id_universidad
-                        LEFT JOIN entidades AS e
-                            ON b.proveedor_beca = e.id_entidad
-                        `)
+        const busquedaFormateada = schsp ? `%${schsp}%` : false
 
-        return info.rows
+        const filtroFormat = fmod ? `%${fmod}%` : false
+
+        const params = []
+        let querystmt = `
+        SELECT 
+        ${columnas} 
+        FROM becas AS b 
+        LEFT JOIN universidades AS u 
+            ON b.id_universidad_acceso = u.id_universidad 
+        LEFT JOIN entidades AS e 
+            ON b.proveedor_beca = e.id_entidad WHERE 1=1
+        `
+
+        querystmt += busquedaFormateada
+            ? ` AND f_unaccent(lower(b.nombre_beca)) ILIKE f_unaccent(lower($${params.push(busquedaFormateada)}))`
+            : ''
+
+        querystmt += filtroFormat
+            ? ` AND f_unaccent(lower(b.modalidad)) ILIKE f_unaccent(lower($${params.push(filtroFormat)}))`
+            : ''
+
+        const datos = await pool.query(querystmt, params)
+
+        if (datos.rowCount === 0) return false
+
+        return datos.rows
     }
 
     static async idRecovery({ id }) {
