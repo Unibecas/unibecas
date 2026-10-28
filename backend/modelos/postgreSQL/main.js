@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { pool } from './conexion.js'
-import { actualizarBeca, validarBeca } from '../../esquemas/esquemas.js'
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
 import { validarIdEntero } from '../../utils/funciones/funciones.js'
 
@@ -18,16 +17,9 @@ const MAPA_COLUMNAS_BECAS = {
 const columnas = `b.id_beca AS id, b.nombre_beca AS nombre, b.vigencia_programa AS vigencia, b.descripcion_informacion AS descripcion, b.informacion_aplicar AS aplicar, b.modalidad AS modalidad, u.nom_institucion AS universidad, b.cobertura AS cobertura, b.estado as estado, e.nom_ent AS proveedor, b.url_informacion AS url`
 
 export class MainInfo {
-    static async allRecovery({ schsp, fmod, }) {
-        if ((schsp && schsp.trim().length < 4) || (fmod && fmod.trim().length < 4)) {
-            throw new ErrorValidacion('La busqueda debe ser de al menos 4 caracteres')
-        }
-        if ((schsp && schsp.includes(['?', '%', '/'])) || (fmod && fmod.includes(['?', '%', '/']))) {
-            throw new ErrorValidacion('La busqueda no puede tener caracteres especiales')
-        }
+    static async allRecovery({ schsp, fmod, limit, offset }) {
 
         const busquedaFormateada = schsp ? `%${schsp}%` : false
-
         const filtroFormat = fmod ? `%${fmod}%` : false
 
         const params = []
@@ -49,11 +41,21 @@ export class MainInfo {
             ? ` AND f_unaccent(lower(b.modalidad)) ILIKE f_unaccent(lower($${params.push(filtroFormat)}))`
             : ''
 
+        querystmt += ` LIMIT $${params.push(limit)}`
+        querystmt += ` OFFSET $${params.push(offset)}`
+
         const datos = await pool.query(querystmt, params)
 
         if (datos.rowCount === 0) return false
 
-        return datos.rows
+        return {
+            datos: datos.rows,
+            meta: {
+                limit: limit,
+                offset: offset,
+                hasMore: datos.rows.length === limit
+            }
+        }
     }
 
     static async idRecovery({ id }) {
@@ -78,13 +80,8 @@ export class MainInfo {
     }
 
     static async newData({ dataVal }) {
-        const checkVal = validarBeca(dataVal)
 
-        if (!checkVal.success) {
-            throw new ErrorValidacion(`Error validación de campos: ${JSON.parse(checkVal.error.message)[0].message} - ${JSON.parse(checkVal.error.message)[0].path[0]}`)
-        }
-
-        const d = checkVal.data
+        const d = dataVal
 
         const newScsh = await pool.query(`
                 WITH beca_insertada AS (
@@ -158,18 +155,7 @@ export class MainInfo {
             )
         }
 
-        const actData = actualizarBeca(input)
-
-        if (!actData.success) {
-            throw new ErrorValidacion(`Error validación de campos: ${JSON.parse(actData.error.message)[0].message} - ${JSON.parse(actData.error.message)[0].path[0]}`, {
-                cause: {
-                    message: `Error validación de campos: ${JSON.parse(actData.error.message)[0].message} - ${JSON.parse(actData.error.message)[0].path[0]}`
-                }
-            })
-        }
-
-        const claves = Object.keys(actData.data)
-            .filter(clave => Object.hasOwn(MAPA_COLUMNAS_BECAS, clave))
+        const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_BECAS, clave))
 
         if (claves.length === 0) {
             throw new ErrorValidacion('No hay campos para actualizar', {
@@ -179,13 +165,20 @@ export class MainInfo {
             }
             )
         }
-
+        // toma las claves filtradas y mapea un array donde aca elemento de el nombre traducido del mapa de columnas de pg, y como segundo parametro es el indice de claves + 1 concatenando anteriormente el simbolo de parametrización, el +1 es debido a que la posicion del array empieza en 0
         const asignaciones = claves.map((clave, i) => `${MAPA_COLUMNAS_BECAS[clave]} = $${i + 1}`)
-        const valores = claves.map(clave => actData.data[clave])
 
+        // y los valores contienen el mapeo de las claves pero con el contenido que se desea parchar de la base de datos
+        const valores = claves.map(clave => input[clave])
+
+        // al final del array de valores mapeados se pushea el ID validado, la posicion de la ID en el query es determinado por el largo de el array de valores despues de meter el ID
         valores.push(idValido)
         const posicionId = valores.length
 
+        // El query se construye de la siguiente manera:
+        // el SET se insertan las asignaciones separadas por una , y un espacio para respetar la sintaxis de pg
+        // y en el WHERE se inserta la posicion de el ID con respecto al largo del array de valores ya que el array es el ultimo que se inserta, esta insercion no es nada si en simbolo de parametrización $
+        // Está de más decir que el uso de CTE es para que se pueda reutilizar el returning y poder mostrar los datos a tarves del select + joins, cosa que con un returning con JOINS no se puede.
         const resultado = await pool.query(`
             WITH beca_actualizada AS (
                 UPDATE becas 

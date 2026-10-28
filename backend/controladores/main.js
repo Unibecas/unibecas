@@ -2,36 +2,34 @@
 import { MainInfo } from "../modelos/postgreSQL/main.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { ErrorValidacion } from "../utils/errores/errorcharcount.js"
+import { actualizarBeca, validacionPaginacion, validarBeca } from "../esquemas/esquemas.js"
 
 export class MainControl {
 
     static async allRecoveryCont(req, res) {
         try {
-            const datos = await MainInfo.allRecovery({ schsp: req.query.schsp, fmod: req.query.fmod })
+            const validaciones = validacionPaginacion(req.query)
+
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+            const { schsp, fmod, limit, offset } = validaciones.data
+
+            const datos = await MainInfo.allRecovery({ schsp, fmod, limit, offset })
             if (datos === false) {
                 return res.status(404).json({
-                    error: `Beca ${req.query.schsp} ${req.query.fmod ? `con modalidad ${req.query.fmod}` : ''} no encontrada`
+                    error: `Beca ${schsp} ${fmod ? `con modalidad ${fmod}` : ''} no encontrada`
                 })
             } else if (datos.length === 0) {
                 return res.status(404).json({
                     info: `No hay becas disponibles`
                 })
             }
-
-            if (req.query.schsp) {
-                console.log(`[server - ${horaActual()}] Datos filtrados exitosamente`)
-            }
-            console.log(`[server - ${horaActual()}] Datos enviados exitosamente`)
             return res.status(200).json(datos)
 
         } catch (error) {
-            if (error instanceof ErrorValidacion) {
-                console.log(`[server - ${horaActual()}] - Validacion de busqueda:`, error.message)
-                return res.status(400).json({
-                    error: error.message
-                })
-            }
-
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
                 error: 'Error interno de servidor'
@@ -70,21 +68,22 @@ export class MainControl {
 
     static async newDataCont(req, res) {
         try {
-            const newScsh = await MainInfo.newData({ dataVal: req.body })
+            const validaciones = validarBeca(req.body)
 
-            console.log(`[server - ${horaActual()}] Beca insertada con exito - ${newScsh}`)
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+
+            const newScsh = await MainInfo.newData({ dataVal: validaciones.data })
+
+            console.log(`[server - ${horaActual()}] Beca insertada con exito - ${newScsh.nombre} - ID: ${newScsh.id}`)
             return res.status(201).json({
                 message: 'Beca insertada con exito',
                 INFO: newScsh
             })
         } catch (error) {
-            if (error instanceof ErrorValidacion) {
-                console.log(`[server - ${horaActual()}] - Validación:`, error.message, `- Info: ${JSON.stringify(req.body)}`)
-                return res.status(400).json({
-                    error: error.message
-                })
-            }
-
             if (error.code === '23503') {
                 console.log(`[server - ${horaActual()}] - Error de servidor:`, error.code, '-', error.detail)
                 return res.status(400).json({
@@ -131,10 +130,17 @@ export class MainControl {
 
     static async patchDataCont(req, res) {
         try {
-            const data = await MainInfo.patchData({ id: req.params.id, input: req.body })
+            const validaciones = actualizarBeca(req.body)
+
+            if (!validaciones.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
+                })
+            }
+
+            const data = await MainInfo.patchData({ id: req.params.id, input: validaciones.data })
 
             if (!data) {
-                console.log(`[server - ${horaActual()}] El indice ${req.params.id} no existe en la BD`)
                 return res.status(404).json({
                     error: `No existe dato con la ID: ${req.params.id}`
                 })
