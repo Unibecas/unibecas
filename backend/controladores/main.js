@@ -41,7 +41,6 @@ export class MainControl {
         try {
             const findData = await MainInfo.idRecovery({ id: req.params.id })
             if (findData) {
-                console.log(`[server - ${horaActual()}] - Beca devuelta - ${req.params.id}`)
                 return res.status(200).json({
                     message: `Beca con la ID: ${req.params.id} encontrado`,
                     INFO: findData
@@ -78,7 +77,6 @@ export class MainControl {
 
             const newScsh = await MainInfo.newData({ dataVal: validaciones.data })
 
-            console.log(`[server - ${horaActual()}] Beca insertada con exito - ${newScsh.nombre} - ID: ${newScsh.id}`)
             return res.status(201).json({
                 message: 'Beca insertada con exito',
                 INFO: newScsh
@@ -103,7 +101,6 @@ export class MainControl {
             const filData = await MainInfo.deleteData({ id: req.params.id })
 
             if (filData) {
-                console.log(`[server - ${horaActual()}] Dato ${req.params.id} borrado con éxito`)
                 return res.status(200).json({
                     message: `ID: ${req.params.id} eliminada con éxito`
                 })
@@ -146,7 +143,6 @@ export class MainControl {
                 })
             }
 
-            console.log(`[server - ${horaActual()}] ID ${req.params.id} actualizado con exito`)
             return res.status(200).json({
                 message: `Dato ${req.params.id} actualizado con éxito`,
                 INFO: data
