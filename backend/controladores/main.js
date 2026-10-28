@@ -7,10 +7,10 @@ export class MainControl {
 
     static async allRecoveryCont(req, res) {
         try {
-            const datos = await MainInfo.allRecovery({ schsp: req.query.schsp })
+            const datos = await MainInfo.allRecovery({ schsp: req.query.schsp, fmod: req.query.fmod })
             if (datos === false) {
                 return res.status(404).json({
-                    error: `Beca "${req.query.schsp}" no encontrada`
+                    error: `Beca ${req.query.schsp} ${req.query.fmod ? `con modalidad ${req.query.fmod}` : ''} no encontrada`
                 })
             } else if (datos.length === 0) {
                 return res.status(404).json({
@@ -26,7 +26,7 @@ export class MainControl {
 
         } catch (error) {
             if (error instanceof ErrorValidacion) {
-                console.log(`[server - ${horaActual()}] - Validacion de busqueda:`, error.message, `- Info: ${req.params.id}`)
+                console.log(`[server - ${horaActual()}] - Validacion de busqueda:`, error.message)
                 return res.status(400).json({
                     error: error.message
                 })
