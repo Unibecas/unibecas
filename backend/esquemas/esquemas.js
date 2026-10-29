@@ -30,7 +30,7 @@ const esquemaBeca = z.object({
         'Especialidad',
         'Doctorado'
     ], {
-        error: 'El tipo de dato es invalido',
+        error: 'El tipo de dato no es admitido'
     }),
     cobertura: z.string({
         error: 'El campo debe ser un string'

@@ -1,3 +1,4 @@
+//@ts-nocheck
 const metodos = [
     'POST',
     'PUT',
