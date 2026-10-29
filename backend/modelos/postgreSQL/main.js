@@ -46,7 +46,16 @@ export class MainInfo {
 
         const datos = await pool.query(querystmt, params)
 
-        if (datos.rowCount === 0) return false
+        if (datos.rowCount === 0) {
+            return {
+                datos: datos.rows,
+                meta: {
+                    limit: limit,
+                    offset: offset,
+                    hasMore: datos.rows.length === limit
+                }
+            }
+        }
 
         return {
             datos: datos.rows,

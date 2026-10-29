@@ -23,7 +23,7 @@ export class MainControl {
                     error: `Beca ${schsp} ${fmod ? `con modalidad ${fmod}` : ''} no encontrada`
                 })
             } else if (datos.length === 0) {
-                return res.status(404).json([])
+                return res.status(404).json(datos)
             }
             return res.status(200).json(datos)
 
