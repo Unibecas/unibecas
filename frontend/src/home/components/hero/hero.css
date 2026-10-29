@@ -39,8 +39,13 @@
 
 .hero-contenido .contenido-izquierda h1,
 .hero-contenido .contenido-izquierda p,
-.hero-buscador h2 {
+.hero-buscador h2,
+.hero-buscador span {
   color: #fff;
+}
+
+.hero-buscador span {
+  font-size: 1.1rem;
 }
 
 .contenido-derecha img {

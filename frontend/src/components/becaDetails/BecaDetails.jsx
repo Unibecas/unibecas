@@ -14,16 +14,24 @@ import BecaDetailsSkeleton from "../../skeletons/BecaDetailsSkeleton";
 
 import { ArrowUpRight } from "../icons/home/ArrowUpRight";
 
+import Error from "../error/Error";
+
 const BecaDetails = () => {
-  const [data, loading, error, fetchData] = useFetch();
+  const { data, loading, error, fetchData } = useFetch();
 
   const { id } = useParams();
 
-  useEffect(() => {
+  const reintentar = () => {
     fetchData(`https://unibecas.onrender.com/main/becas/${id}`);
+  };
+
+  useEffect(() => {
+    reintentar();
   }, [id]);
 
   const clase = data?.INFO?.estado === "Activa" ? "activa" : "vencida";
+
+  if (error) return <Error reintentar={reintentar} />;
 
   return (
     <div className="beca-details">

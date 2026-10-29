@@ -323,6 +323,16 @@ header a {
   background-color: var(--hover-azul);
 }
 
+.ver-becas {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ver-becas span {
+  color: var(--color-terciario);
+}
+
 @media (max-width: 768px) {
   header nav {
     display: none;

@@ -2,7 +2,7 @@ import "./header.css";
 import { ArrowDawn } from "../../../components/icons/home/ArrowDown";
 import registrarmeIcon from "../../../assets/icons/home/registrarmeIcon.svg";
 import Input from "../../../components/input/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import seePassword from "../../../assets/icons/home/see-password.svg";
 import hidePassword from "../../../assets/icons/home/hide-password.svg";
@@ -14,9 +14,9 @@ import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import useFetch from "../../../hooks/useFetch";
+import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
 
-const Header = () => {
+const Header = ({ data, loading }) => {
   const [estaAbierto, setEstaAbierto] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -50,7 +50,7 @@ const Header = () => {
 
   const [mostrarBecas, setMostrarBecas] = useState(false);
 
-  const [data, loading, error, fetchData] = useFetch();
+  const becas = data?.datos ?? [];
 
   const cerrarModal = () => {
     setEstaAbierto(false);
@@ -159,10 +159,6 @@ const Header = () => {
     );
   };
 
-  useEffect(() => {
-    fetchData("https://unibecas.onrender.com/main/becas");
-  }, []);
-
   return (
     <header>
       <Link to="/" className="link-home">
@@ -237,7 +233,7 @@ const Header = () => {
                 </li>
                 {mostrarBecas && (
                   <div className="becas">
-                    {data.datos.slice(0, 10).map((info) => (
+                    {becas.slice(0, 10).map((info) => (
                       <Link
                         key={info.id}
                         to={`/beca/${info.id}`}
@@ -246,6 +242,10 @@ const Header = () => {
                         {info.nombre}
                       </Link>
                     ))}
+                    <Link to="/becas" className="ver-becas">
+                      <span>Ver todas ({becas.length})</span>
+                      <ArrowUpRight />
+                    </Link>
                   </div>
                 )}
               </>

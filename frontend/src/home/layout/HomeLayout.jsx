@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
 
+import Error from "../../components/error/Error";
+
 import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.webp";
 import encuentraBeca2 from "../../assets/images/home/encuentra-beca2.webp";
 import encuentraBeca3 from "../../assets/images/home/encuentra-beca3.webp";
@@ -51,7 +53,7 @@ const HomeLayout = () => {
   const [contenedorBecas, setContenedorBecas] = useState("mas-recientes");
   const [actual, setActual] = useState(0);
 
-  const [data, loading, error, fetchData] = useFetch();
+  const { data, loading, error, fetchData } = useFetch();
 
   const contenedorRef = useRef(null);
 
@@ -91,13 +93,19 @@ const HomeLayout = () => {
     });
   };
 
-  useEffect(() => {
+  const reintentar = () => {
     fetchData("https://unibecas.onrender.com/main/becas");
+  };
+
+  useEffect(() => {
+    reintentar();
   }, []);
+
+  if (error) return <Error reintentar={reintentar} />;
 
   return (
     <div className="home-layout">
-      <Header />
+      <Header data={data} loading={loading} />
 
       <Hero />
 
