@@ -30,12 +30,12 @@ import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.webp";
 import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.webp";
 import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.webp";
 
-import iconIngenieria from "../../assets/icons/home/ingenieria-icons.webp";
-import iconEconomia from "../../assets/icons/home/economia-icons.webp";
-import iconSalud from "../../assets/icons/home/salud-icons.webp";
-import iconComunicacion from "../../assets/icons/home/comunicacion-icons.webp";
-import iconEducacion from "../../assets/icons/home/educacion-icons.webp";
-import iconDerecho from "../../assets/icons/home/derecho-icons.webp";
+import { Ingenieria } from "../../components/icons/home/Ingenieria.jsx";
+import { Economia } from "../../components/icons/home/Economia.jsx";
+import { Salud } from "../../components/icons/home/Salud.jsx";
+import { Comunicacion } from "../../components/icons/home/Comunicacion.jsx";
+import { Educacion } from "../../components/icons/home/Educacion.jsx";
+import { Derechos } from "../../components/icons/home/Derechos.jsx";
 
 import useFetch from "../../hooks/useFetch";
 
@@ -167,9 +167,7 @@ const HomeLayout = () => {
 
         <div className="contenedor-sobre-becas-ofertas-categorias">
           <div className="ingenieria-tecnologia tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconIngenieria} alt="Icono de ingeniería" />
-            </span>
+            <Ingenieria className="icono-categoria" />
             <h3>Ingeniería y tecnología</h3>
             <p>Software, sistemas, datos e innovación digital.</p>
             <span className="flecha-categoria">
@@ -178,9 +176,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="economia-negocios tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconEconomia} alt="Icono de economía" />
-            </span>
+            <Economia className="icono-categoria" />
             <h3>Economía y negocios</h3>
             <p>Administración, finanzas y emprendimiento.</p>
             <span className="flecha-categoria">
@@ -189,9 +185,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="salud-bienestar tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconSalud} alt="Icono de salud y bienestar" />
-            </span>
+            <Salud className="icono-categoria" />
             <h3>Salud y bienestar</h3>
             <p>Programas relacionados con la salud y el bienestar.</p>
             <span className="flecha-categoria">
@@ -200,12 +194,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="comunicacion-diseño tarjeta-categoria">
-            <span className="icono-categoria">
-              <img
-                src={iconComunicacion}
-                alt="Icono de comunicación y diseño"
-              />
-            </span>
+            <Comunicacion className="icono-categoria" />
             <h3>Comunicación y diseño</h3>
             <p>Marketing, comunicación, artes y creatividad.</p>
             <span className="flecha-categoria">
@@ -214,9 +203,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="educacion-ciencias tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconEducacion} alt="Icono de educación y ciencias" />
-            </span>
+            <Educacion className="icono-categoria" />
             <h3>Educación y ciencias</h3>
             <p>Enseñanza, investigación, idiomas y conocimiento.</p>
             <span className="flecha-categoria">
@@ -225,9 +212,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="derecho-idiomas tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconDerecho} alt="Icono de derecho e idiomas" />
-            </span>
+            <Derechos className="icono-categoria" />
             <h3>Derecho e idiomas</h3>
             <p>Legislación, lenguas y relaciones internacionales.</p>
             <span className="flecha-categoria">
