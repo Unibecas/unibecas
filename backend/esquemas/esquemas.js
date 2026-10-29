@@ -84,27 +84,27 @@ export function actualizarBeca(objeto) {
 // Esquema para GetAll - GET
 
 const esquemaPaginacion = z.object({
-    schsp: z.string({ invalid_type_error: 'Debe ser un string' })
+    schsp: z.string({ error: 'Debe ser un string' })
         .min(4, 'Minimo 4 caracteres')
         .max(60, 'Maximo 60 caracteres')
         .regex(/^[^?&<>]+$/, "Caracteres no permitidos"),
-    fmod: z.string({ invalid_type_error: 'Debe de ser un string' })
+    fmod: z.string({ error: 'Debe de ser un string' })
         .min(4, 'Minimo 4 caracteres')
         .max(25, 'Maximo 25 caracteres')
         .regex(/^[^?&<>]+$/, "Caracteres no permitidos"),
     limit: z.coerce
-        .number({ invalid_type_error: 'El limite debe ser un numero' })
+        .number({ error: 'El limite debe ser un numero' })
         .int('El numero para limite debe de ser un entero')
         .min(1, 'El numero debe de ser minimo 1')
         .max(100, 'El limite maximo es de 100')
         .default(10),
     offset: z.coerce
-        .number({ invalid_type_error: 'El offset debe de ser un numero' })
+        .number({ error: 'El offset debe de ser un numero' })
         .int('Offset debe de ser un entero')
         .nonnegative('Offset no puede ser negativo')
         .default(0),
     id: z.coerce
-        .number({ invalid_type_error: 'El ID debe de ser un numero' })
+        .number({ error: 'El ID debe de ser un numero' })
         .min(1, 'el ID como minimo tiene que ser 1')
         .int('ID debe de ser un entero')
         .nonnegative('Offset no puede ser negativo'),
