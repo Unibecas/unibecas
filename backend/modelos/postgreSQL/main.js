@@ -46,7 +46,16 @@ export class MainInfo {
 
         const datos = await pool.query(querystmt, params)
 
-        if (datos.rowCount === 0) return false
+        if (datos.rowCount === 0) {
+            return {
+                datos: datos.rows,
+                meta: {
+                    limit: limit,
+                    offset: offset,
+                    hasMore: datos.rows.length === limit
+                }
+            }
+        }
 
         return {
             datos: datos.rows,
@@ -165,20 +174,13 @@ export class MainInfo {
             }
             )
         }
-        // toma las claves filtradas y mapea un array donde aca elemento de el nombre traducido del mapa de columnas de pg, y como segundo parametro es el indice de claves + 1 concatenando anteriormente el simbolo de parametrización, el +1 es debido a que la posicion del array empieza en 0
         const asignaciones = claves.map((clave, i) => `${MAPA_COLUMNAS_BECAS[clave]} = $${i + 1}`)
 
-        // y los valores contienen el mapeo de las claves pero con el contenido que se desea parchar de la base de datos
         const valores = claves.map(clave => input[clave])
 
-        // al final del array de valores mapeados se pushea el ID validado, la posicion de la ID en el query es determinado por el largo de el array de valores despues de meter el ID
         valores.push(idValido)
         const posicionId = valores.length
 
-        // El query se construye de la siguiente manera:
-        // el SET se insertan las asignaciones separadas por una , y un espacio para respetar la sintaxis de pg
-        // y en el WHERE se inserta la posicion de el ID con respecto al largo del array de valores ya que el array es el ultimo que se inserta, esta insercion no es nada si en simbolo de parametrización $
-        // Está de más decir que el uso de CTE es para que se pueda reutilizar el returning y poder mostrar los datos a tarves del select + joins, cosa que con un returning con JOINS no se puede.
         const resultado = await pool.query(`
             WITH beca_actualizada AS (
                 UPDATE becas 
