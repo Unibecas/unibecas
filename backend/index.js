@@ -7,8 +7,11 @@ import { cabecerasJSON } from './middlewares/cabeceras.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
+import { originErr } from './middlewares/originErr.js'
+import { errGlobal } from './middlewares/errGlobal.js'
 
 const app = express()
+const PORT = process.env.PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 app.use(cabecerasJSON)
@@ -16,11 +19,11 @@ app.use(cabecerasJSON)
 app.use(express.json())
 app.use(expressJsonify)
 
-
-
 app.get('/', (req, res) => {
     res.status(200).send('<p>UniBecas API</p>')
 })
+
+// Recursos
 
 app.use('/main', mainRouter)
 app.use('/entidades', entidadesRouter)
@@ -30,8 +33,10 @@ app.use((req, res) => {
     res.status(404).json({ error: 'Not found' })
 })
 
-
-const PORT = process.env.PORT ?? 3001
+// Middleware para origenes de CORS
+app.use(originErr)
+// Middleware para errores globales
+app.use(errGlobal)
 
 app.listen(PORT, () => {
     console.log(`[Server] Running port: http://localhost:${PORT}`)
