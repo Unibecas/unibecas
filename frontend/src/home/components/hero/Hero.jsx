@@ -4,12 +4,19 @@ import heroImg from "../../../assets/images/home/hero-img.jpg";
 
 import { useState, useEffect } from "react";
 
+import useFetch from "../../../hooks/useFetch";
+
 const Hero = () => {
   const frases = ["beca ideal", "futuro", "próxima meta"];
 
   const [texto, setTexto] = useState("");
   const [indiceFrase, setIndiceFrase] = useState(0);
   const [borrando, setBorrando] = useState(false);
+
+  const [nombreBeca, setNombreBeca] = useState("");
+  const [modalidad, setModalidad] = useState("");
+
+  const [data, loading, error, fetchData] = useFetch();
 
   useEffect(() => {
     const fraseActual = frases[indiceFrase];
@@ -48,13 +55,20 @@ const Hero = () => {
     return () => clearTimeout(temporizador);
   }, [texto, indiceFrase, borrando]);
 
+  const filtrarBecas = () => {
+    if (!nombreBeca.trim()) return;
+
+    fetchData(
+      `https://unibecas.onrender.com/main/becas?schsp=${nombreBeca}&fmod=${modalidad}`,
+    );
+  };
+
   return (
     <div className="hero" id="inicio">
       <div className="hero-contenido">
         <div className="contenido-izquierda">
           <h1>
             Encuentra tu <span className="typing-text">{texto}</span>
-            <span className="typing-cursor" />
           </h1>
           <p>
             Explora becas de distintas universidades y encuentra oportunidades
@@ -64,29 +78,38 @@ const Hero = () => {
           <div className="hero-buscador">
             <h2>Buscar becas</h2>
             <div>
-              <select>
+              <select onChange={(e) => setModalidad(e.target.value)}>
                 <option value="" defaultValue>
-                  Facultad
+                  Modalidad
                 </option>
+                <option value="">Todas</option>
+                <option value="Pregrado">Pregrado</option>
+                <option value="Postgrado">Postgrado</option>
+                <option value="Tecnologica">Tecnologica</option>
+                <option value="Tecnica">Tecnica</option>
+                <option value="Especialidad">Especialidad</option>
+                <option value="Doctorado">Doctorado</option>
               </select>
-              <select>
+              <select disabled>
                 <option value="" defaultValue>
-                  Tipo de formacion
+                  Estado
                 </option>
-              </select>
-              <select>
-                <option value="" defaultValue>
-                  Sede
-                </option>
+                <option value="Activa">Activa</option>
+                <option value="Vencida">Vencida</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Suspendida">Suspendida</option>
               </select>
             </div>
             <Input
               id="buscador"
               type="text"
-              placeholder="Ingeniería, Medicina, Programación..."
+              placeholder="Palabra clave..."
               className="buscador-input"
+              onChange={(e) => setNombreBeca(e.target.value)}
             />
-            <button className="buscador-boton">Buscar</button>
+            <button className="buscador-boton" onClick={filtrarBecas}>
+              Buscar
+            </button>
           </div>
         </div>
         <div className="contenido-derecha">

@@ -20,21 +20,21 @@ import { Link } from "react-router-dom";
 
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
 
-import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.png";
-import encuentraBeca2 from "../../assets/images/home/encuentra-beca2.png";
-import encuentraBeca3 from "../../assets/images/home/encuentra-beca3.png";
-import encuentraBeca4 from "../../assets/images/home/encuentra-beca4.png";
-import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.png";
-import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.png";
-import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.png";
-import logoCompleto from "../../assets/images/home/unibecas-logo-completo.png";
+import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.webp";
+import encuentraBeca2 from "../../assets/images/home/encuentra-beca2.webp";
+import encuentraBeca3 from "../../assets/images/home/encuentra-beca3.webp";
+import encuentraBeca4 from "../../assets/images/home/encuentra-beca4.webp";
+import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.webp";
+import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.webp";
+import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.webp";
 
-import iconIngenieria from "../../assets/icons/home/ingenieria-icons.png";
-import iconEconomia from "../../assets/icons/home/economia-icons.png";
-import iconSalud from "../../assets/icons/home/salud-icons.png";
-import iconComunicacion from "../../assets/icons/home/comunicacion-icons.png";
-import iconEducacion from "../../assets/icons/home/educacion-icons.png";
-import iconDerecho from "../../assets/icons/home/derecho-icons.png";
+
+import iconIngenieria from "../../assets/icons/home/ingenieria-icons.webp";
+import iconEconomia from "../../assets/icons/home/economia-icons.webp";
+import iconSalud from "../../assets/icons/home/salud-icons.webp";
+import iconComunicacion from "../../assets/icons/home/comunicacion-icons.webp";
+import iconEducacion from "../../assets/icons/home/educacion-icons.webp";
+import iconDerecho from "../../assets/icons/home/derecho-icons.webp";
 
 import useFetch from "../../hooks/useFetch";
 
@@ -46,7 +46,6 @@ const imagenes = [
   encuentraBeca5,
   encuentraBeca6,
   encuentraBeca7,
-  logoCompleto,
 ];
 
 const HomeLayout = () => {
@@ -94,7 +93,7 @@ const HomeLayout = () => {
   };
 
   useEffect(() => {
-    fetchData("https://unibecas.onrender.com/main");
+    fetchData("https://unibecas.onrender.com/main/becas");
   }, []);
 
   return (
@@ -128,13 +127,17 @@ const HomeLayout = () => {
             alt="Flecha izquierda"
           />
         </button>
-
-        <img
-          className="carrusel-becas-imagen"
-          src={imagenes[actual]}
-          alt={`Encuentra tu beca ${actual + 1}`}
-        />
-
+        <div className="carrusel-becas-imagenes">
+          {imagenes.map((imagen, index) => (
+            <img
+              key={imagen}
+              className={`carrusel-becas-imagen ${index === actual ? "activa" : ""
+                }`}
+              src={imagen}
+              alt={`Encuentra tu beca ${index + 1}`}
+            />
+          ))}
+        </div>
         <button
           className="carrusel-becas-flecha carrusel-becas-flecha-der"
           onClick={siguiente}

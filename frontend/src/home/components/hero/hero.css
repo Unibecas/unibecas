@@ -9,17 +9,17 @@
   width: 100%;
   display: flex;
   gap: 20px;
-  padding: 5px 0 25px 90px;
+  padding: 5px 20px 25px 115px;
 }
 
 .contenido-izquierda {
   position: relative;
-  min-width: 525px;
+  min-width: 0;
 }
 
 .contenido-derecha {
   width: 100%;
-  height: 600px;
+  height: 655px;
   position: absolute;
   object-fit: cover;
   right: 0;
@@ -53,16 +53,21 @@
 
 .hero-contenido h1 {
   font-size: 4.38rem;
-  margin: 15px 0 8px 0;
+  margin: 40px 0 12px 0;
 }
 
-.hero-contenido h1 span {
-  background: linear-gradient(90deg,
-      #a31a1c 0%,
-      #c92b35 20%,
-      #7d1f93 48%,
-      #a64ab5 72%,
-      #9742ac 100%);
+.hero-contenido h1 .typing-text {
+  display: inline-block;
+  width: 11ch;
+  white-space: nowrap;
+  background: linear-gradient(
+    90deg,
+    #a31a1c 0%,
+    #c92b35 20%,
+    #7d1f93 48%,
+    #a64ab5 72%,
+    #9742ac 100%
+  );
   background-size: 220% 100%;
   color: transparent;
   background-clip: text;
@@ -101,6 +106,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: absolute;
 }
 
 .hero-buscador div {
@@ -160,59 +166,32 @@
   margin-top: 10px;
 }
 
-.typing-cursor {
-  display: inline-block;
-  height: 0.9em;
-  margin-left: 4px;
-  border-right: 3px solid currentColor;
-  vertical-align: -0.05em;
-  animation: parpadeo 0.7s steps(1) infinite;
-}
-
-@keyframes parpadeo {
-  50% {
-    opacity: 0;
-  }
-}
-
-@media (min-width: 1200px) {
+@media (max-width: 1024px) {
   .hero-contenido h1 {
-    margin: 15px 0 20px 0;
-  }
-
-  .hero-contenido p {
-    line-height: 1.45;
-  }
-
-  .hero-buscador {
-    margin-top: 60px;
+    font-size: 4rem;
   }
 }
 
-@media (max-width: 1028px) {
-  .hero-buscador {
-    margin-right: auto;
-    margin-left: auto;
-  }
-}
-
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   .hero-contenido {
-    padding: 5px 20px 25px;
-  }
-
-  .contenido-izquierda {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .hero-buscador {
-    margin-top: 50px;
+    padding: 5px 20px 25px 70px;
   }
 }
 
-@media (max-width: 630px) {
+@media (max-width: 800px) {
   .hero-contenido h1 {
-    font-size: 3rem;
+    font-size: 3.4rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .hero-contenido {
+    padding: 5px 20px 25px 30px;
+  }
+}
+
+@media (max-width: 572px) {
+  .contenido-derecha {
+    height: 710px;
   }
 }
