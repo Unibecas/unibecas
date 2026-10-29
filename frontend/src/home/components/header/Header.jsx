@@ -237,7 +237,7 @@ const Header = () => {
                 </li>
                 {mostrarBecas && (
                   <div className="becas">
-                    {data.slice(0, 10).map((info) => (
+                    {data.datos.slice(0, 10).map((info) => (
                       <Link
                         key={info.id}
                         to={`/beca/${info.id}`}

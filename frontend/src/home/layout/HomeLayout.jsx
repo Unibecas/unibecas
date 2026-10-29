@@ -28,7 +28,6 @@ import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.webp";
 import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.webp";
 import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.webp";
 
-
 import iconIngenieria from "../../assets/icons/home/ingenieria-icons.webp";
 import iconEconomia from "../../assets/icons/home/economia-icons.webp";
 import iconSalud from "../../assets/icons/home/salud-icons.webp";
@@ -131,8 +130,9 @@ const HomeLayout = () => {
           {imagenes.map((imagen, index) => (
             <img
               key={imagen}
-              className={`carrusel-becas-imagen ${index === actual ? "activa" : ""
-                }`}
+              className={`carrusel-becas-imagen ${
+                index === actual ? "activa" : ""
+              }`}
               src={imagen}
               alt={`Encuentra tu beca ${index + 1}`}
             />
@@ -235,7 +235,6 @@ const HomeLayout = () => {
         <section className="carrusel-universidades">
           <div className="carrusel-track">
             <div className="grupo-universidades">
-
               {universidades.map((universidad, index) => (
                 <a
                   key={`primera-${index}`}
@@ -251,16 +250,17 @@ const HomeLayout = () => {
                   />
                 </a>
               ))}
-
             </div>
 
             <div className="grupo-universidades" aria-hidden="true">
               {universidades.map((universidad, index) => (
-                <a key={`segunda-${index}`}
+                <a
+                  key={`segunda-${index}`}
                   href={universidad.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Visitar ${universidad.alt}`}>
+                  aria-label={`Visitar ${universidad.alt}`}
+                >
                   <img
                     src={universidad.logo}
                     className={universidad.className}
@@ -303,43 +303,43 @@ const HomeLayout = () => {
           {contenedorBecas === "mas-recientes"
             ? loading
               ? Array.from({ length: 5 }).map((_, index) => (
-                <BecaCardSkeleton key={index} />
-              ))
-              : data?.map((info) => (
+                  <BecaCardSkeleton key={index} />
+                ))
+              : data?.datos?.map((info) => (
+                  <Link
+                    to={`/beca/${info.id}`}
+                    className="link-beca-card"
+                    key={info.id}
+                  >
+                    <BecaCard
+                      universidad={info.universidad}
+                      nombre={info.nombre}
+                      vigencia={info.vigencia}
+                      descripcion={info.descripcion_informacion}
+                      info_aplicar={info.aplicar}
+                      modalidad={info.modalidad}
+                      estado={info.estado}
+                    />
+                  </Link>
+                ))
+            : becasPopulares.map((info) => (
                 <Link
-                  to={`/beca/${info?.id}`}
+                  to={`/beca/${info.id_beca}`}
                   className="link-beca-card"
-                  key={info.id}
+                  key={info.id_beca}
                 >
                   <BecaCard
                     universidad={info.universidad}
-                    nombre={info.nombre}
-                    vigencia={info.vigencia}
+                    nombre={info.nombre_beca}
+                    vigencia={info.vigencia_programa}
                     descripcion={info.descripcion_informacion}
-                    info_aplicar={info.aplicar}
+                    info_aplicar={info.informacion_aplicar}
                     modalidad={info.modalidad}
                     estado={info.estado}
+                    cobertura={info.cobertura}
                   />
                 </Link>
-              ))
-            : becasPopulares.map((info) => (
-              <Link
-                to={`/beca/${info.id_beca}`}
-                className="link-beca-card"
-                key={info.id_beca}
-              >
-                <BecaCard
-                  universidad={info.universidad}
-                  nombre={info.nombre_beca}
-                  vigencia={info.vigencia_programa}
-                  descripcion={info.descripcion_informacion}
-                  info_aplicar={info.informacion_aplicar}
-                  modalidad={info.modalidad}
-                  estado={info.estado}
-                  cobertura={info.cobertura}
-                />
-              </Link>
-            ))}
+              ))}
         </div>
 
         <div className="contenedor-arrows">
