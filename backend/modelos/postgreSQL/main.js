@@ -83,7 +83,7 @@ export class MainInfo {
                     `, [idValido])
 
         if (datos.rowCount === 0) {
-            return false
+            return datos.rows[0]
         }
         return datos.rows[0]
     }

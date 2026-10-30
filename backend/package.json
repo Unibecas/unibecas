@@ -22,7 +22,7 @@
   "main": "index.js",
   "scripts": {
     "testAPI": "node --watch --env-file=.env index.js",
-    "render": "node --watch index.js"
+    "render": "node index.js"
   },
   "dependencies": {
     "cors": "2.8.6",

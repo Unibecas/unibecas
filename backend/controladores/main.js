@@ -28,7 +28,6 @@ export class MainControl {
         } catch (error) {
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
-                ok: false,
                 error: 'Error interno de servidor'
             })
         }
@@ -39,20 +38,17 @@ export class MainControl {
             const findData = await MainInfo.idRecovery({ id: req.params.id })
             if (findData) {
                 return res.status(200).json({
-                    ok: true,
                     message: `Beca con la ID: ${req.params.id} encontrado`,
                     INFO: findData
                 })
             }
 
             return res.status(404).json({
-                ok: false,
                 error: `Beca ${req.params.id} no encontrada`
             })
         } catch (error) {
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
-                ok: false,
                 error: 'Error interno de servidor'
             })
         }
@@ -71,14 +67,12 @@ export class MainControl {
             const newScsh = await MainInfo.newData({ dataVal: validaciones.data })
 
             return res.status(201).json({
-                ok: true,
                 message: 'Beca insertada con exito',
                 INFO: newScsh
             })
         } catch (error) {
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
-                ok: false,
                 error: 'Error interno de servidor'
             })
         }
@@ -90,20 +84,17 @@ export class MainControl {
 
             if (filData) {
                 return res.status(200).json({
-                    ok: true,
                     message: `ID: ${req.params.id} eliminada con éxito`
                 })
             }
 
             return res.status(404).json({
-                ok: false,
                 error: `ID: ${req.params.id} no existe en los datos`
             })
 
         } catch (error) {
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
-                ok: false,
                 error: 'Error interno de servidor'
             })
         }
@@ -115,7 +106,6 @@ export class MainControl {
 
             if (!validaciones.success) {
                 return res.status(400).json({
-                    ok: false,
                     invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
                 })
             }
@@ -124,13 +114,11 @@ export class MainControl {
 
             if (!data) {
                 return res.status(404).json({
-                    ok: false,
                     error: `No existe dato con la ID: ${req.params.id}`
                 })
             }
 
             return res.status(200).json({
-                ok: true,
                 message: `Dato ${req.params.id} actualizado con éxito`,
                 info: data
             })
@@ -138,14 +126,12 @@ export class MainControl {
             if (error instanceof ErrorValidacion) {
                 console.log(`[server - ${horaActual()}] - Validación: ${error.message} - Info: ${req.params.id}`, error.cause?.message ?? '', error.cause?.parametro ?? '')
                 return res.status(400).json({
-                    ok: false,
                     error: error.message
                 })
             }
 
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
             return res.status(500).json({
-                ok: false,
                 error: 'Error interno de servidor'
             })
         }
