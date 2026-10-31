@@ -135,11 +135,11 @@ const esquemaEntidades = z.object({
         'IES',
         'Entidades Privadas',
         'ESAL o Fundacion',
-        'Organismo Internacion',
+        'Organismo Internacional',
         'N/A'
     ], {
         error: 'El tipo de dato ingresado es invalido'
-    }).default('N/A'),
+    })
 })
 
 // Esquema para querys

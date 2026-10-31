@@ -66,17 +66,17 @@ export class UniversidadesControl {
                 })
             }
 
-            const filData = await UniversidadesInfo.deleteUni({})
+            const filData = await UniversidadesInfo.deleteUni({ id: idVal.data.id })
 
             if (filData) {
+                console.log(`[server - ${horaActual()}] - ID ${req.params.id} elimiinada con éxito`)
                 return res.status(200).json({
                     message: `ID: ${req.params.id} eliminada con éxito`
                 })
             }
 
-            console.log(`[server - ${horaActual()}] - ID ${req.params.id} elimiinada con éxito`)
             return res.status(404).json({
-                message: `ID ${req.params.id} eliminada con éxito`
+                error: `ID ${req.params.id} no existe`
             })
 
         } catch (error) {
@@ -100,7 +100,7 @@ export class UniversidadesControl {
             const data = await UniversidadesInfo.patchDataUni({ id: id.data.id, input: validaciones.data })
 
             if (!data) {
-                return res.status(404).json({
+                return res.status(400).json({
                     error: `No existe dato con la ID: ${req.params.id}`
                 })
             }

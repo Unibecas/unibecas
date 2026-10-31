@@ -14,7 +14,7 @@ export class MainControl {
                 return res.status(400).json({
                     invalid_type_error: `Error validación de campos: ${JSON.parse(validaciones.error.message)[0].message} - ${JSON.parse(validaciones.error.message)[0].path[0]}`
                 })
-            } else if (validaciones.data.schsp && validaciones.data.schsp.includes('%')) {
+            } else if (validaciones.data.schsp && (validaciones.data.schsp.includes('%') || validaciones.data.schsp.includes('_'))) {
                 return res.status(400).json({
                     invalid_type_error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.schsp}')`
                 })
@@ -80,7 +80,15 @@ export class MainControl {
 
     static async deleteDataCont(req, res) {
         try {
-            const filData = await MainInfo.deleteData({ id: req.params.id })
+            const idVal = validacionPaginacion({ id: req.params.id })
+
+            if (!idVal.success) {
+                return res.status(400).json({
+                    invalid_type_error: `Error validación de campos: ${JSON.parse(idVal.error.message)[0].message} - ${JSON.parse(idVal.error.message)[0].path[0]}`
+                })
+            }
+
+            const filData = await MainInfo.deleteData({ id: idVal.data.id })
 
             if (filData) {
                 return res.status(200).json({
