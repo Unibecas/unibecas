@@ -1,6 +1,18 @@
 import "./footer.css";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const Footer = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+
+    document.querySelector(hash)?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [hash]);
+
   return (
     <footer className="footer">
       <div className="footer-contenido">
@@ -12,13 +24,13 @@ const Footer = () => {
           <h3>Navegación</h3>
           <ul>
             <li>
-              <a href="#inicio">Inicio</a>
+              <Link to="/#inicio">Inicio</Link>
             </li>
             <li>
-              <a href="#becas">Becas</a>
+              <Link to="/#becas">Becas</Link>
             </li>
             <li>
-              <a href="#acerca-de-unibecas">Sobre UNIBECAS</a>
+              <Link to="/#oferta-academica">Sobre UNIBECAS</Link>
             </li>
           </ul>
         </div>
