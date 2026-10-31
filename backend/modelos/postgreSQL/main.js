@@ -198,10 +198,7 @@ export class MainInfo {
             `, valores
         )
 
-        if (resultado.rowCount === 0) {
-            return false
-        }
-
+        if (resultado.rowCount === 0) return false
         return resultado.rows[0]
     }
 }

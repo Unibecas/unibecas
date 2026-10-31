@@ -2,7 +2,7 @@
 import { MainInfo } from "../modelos/postgreSQL/main.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { ErrorValidacion } from "../utils/errores/errorcharcount.js"
-import { actualizarBeca, validacionPaginacion, validarBeca } from "../esquemas/esquemas.js"
+import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/esquemas.js"
 
 export class MainControl {
 
@@ -56,7 +56,7 @@ export class MainControl {
 
     static async newDataCont(req, res) {
         try {
-            const validaciones = validarBeca(req.body)
+            const validaciones = validarBody(req.body, 'beca')
 
             if (!validaciones.success) {
                 return res.status(400).json({
@@ -68,7 +68,7 @@ export class MainControl {
 
             return res.status(201).json({
                 message: 'Beca insertada con exito',
-                INFO: newScsh
+                info: newScsh
             })
         } catch (error) {
             console.log(`[server - ${horaActual()}] - Error de servidor:`, error)
@@ -102,7 +102,7 @@ export class MainControl {
 
     static async patchDataCont(req, res) {
         try {
-            const validaciones = actualizarBeca(req.body)
+            const validaciones = actualizarBody(req.body, 'beca')
 
             if (!validaciones.success) {
                 return res.status(400).json({
