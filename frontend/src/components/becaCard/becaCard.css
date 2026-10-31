@@ -139,3 +139,15 @@
   align-items: center;
   justify-content: space-between;
 }
+
+@media (max-width: 970px) {
+  .becaCard {
+    width: 260px;
+  }
+}
+
+@media (max-width: 560px) {
+  .becaCard {
+    width: 350px;
+  }
+}
