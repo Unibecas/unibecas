@@ -120,6 +120,28 @@ const esquemaUniversidad = z.object({
     })
 })
 
+// Esquema para Entidades
+
+const esquemaEntidades = z.object({
+    nombreent: z.string({
+        error: 'El campo debe ser string'
+    }).trim().min(1, {
+        error: 'El campo no puede estar vacío'
+    }).max(120, {
+        error: 'Limite de caracteres: 120'
+    }),
+    tipo_entidad: z.enum([
+        'Entidad Publica',
+        'IES',
+        'Entidades Privadas',
+        'ESAL o Fundacion',
+        'Organismo Internacion',
+        'N/A'
+    ], {
+        error: 'El tipo de dato ingresado es invalido'
+    }).default('N/A'),
+})
+
 // Esquema para querys
 
 const esquemaPaginacion = z.object({
@@ -153,15 +175,6 @@ const esquemaPaginacion = z.object({
         .nonnegative('Offset no puede ser negativo'),
 })
 
-const esquemaEntidades = z.object({
-    nombreent: z.string({
-        error: 'El campo debe ser string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(120, {
-        error: 'Limite de caracteres: 120'
-    })
-})
 
 // funciones de validación
 
