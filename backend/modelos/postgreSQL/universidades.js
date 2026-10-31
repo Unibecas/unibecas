@@ -2,7 +2,6 @@
 import { pool } from './conexion.js'
 // Aqui van validaciones nuevas de eschemas ZOD
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
-import { validarIdEntero } from '../../utils/funciones/funciones.js'
 
 const columnas = `id_universidad AS id, nom_institucion AS nombre, siglas AS siglas, codigo_snies AS snies, mod_presencial AS presencial, mod_virtual as virtual, mod_hibrida AS hibrida, mod_adistancia AS distancia, ciudad AS ciudad, departamento AS departamento`
 
@@ -21,7 +20,6 @@ const MAPA_COLUMNAS_UNIVERSIDADES = {
 export class UniversidadesInfo {
     static async allRecovery({ uvrst, id, limit, offset }) {
         const busquedaFormateada = uvrst ? `%${uvrst}%` : false
-        const idValido = id ? validarIdEntero(id) : false
 
         const params = []
         let querystmt = `
@@ -32,7 +30,7 @@ export class UniversidadesInfo {
         WHERE 1=1 `
 
         querystmt += busquedaFormateada ? ` AND f_unaccent(lower(nom_institucion)) ILIKE f_unaccent(lower($${params.push(busquedaFormateada)}))` : ''
-        querystmt += idValido ? ` AND id_universidad = $${params.push(idValido)}` : ''
+        querystmt += id ? ` AND id_universidad = $${params.push(id)}` : ''
 
         querystmt += ` LIMIT $${params.push(limit)}`
         querystmt += ` OFFSET $${params.push(offset)}`

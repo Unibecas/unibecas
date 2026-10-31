@@ -1,7 +1,5 @@
 //@ts-nocheck
 import { MainInfo } from "../modelos/postgreSQL/main.js"
-import { horaActual } from "../utils/funciones/funciones.js"
-import { ErrorValidacion } from "../utils/errores/errorcharcount.js"
 import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/esquemas.js"
 
 export class MainControl {
@@ -64,9 +62,10 @@ export class MainControl {
     }
 
     static async patchDataCont(req, res) {
+        const id = validacionPaginacion({ id: req.params.id })
         const validaciones = actualizarBody(req.body, 'beca')
 
-        const data = await MainInfo.patchData({ id: req.params.id, input: validaciones.data })
+        const data = await MainInfo.patchData({ id: id.data.id, input: validaciones.data })
 
         if (!data) {
             return res.status(404).json({

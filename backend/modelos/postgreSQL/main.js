@@ -1,7 +1,6 @@
 //@ts-nocheck
 import { pool } from './conexion.js'
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
-import { validarIdEntero } from '../../utils/funciones/funciones.js'
 
 const MAPA_COLUMNAS_BECAS = {
     nombrebeca: 'nombre_beca',
@@ -130,9 +129,6 @@ export class MainInfo {
     }
 
     static async patchData({ id, input }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         if (input.proveedor || input.iduniversidad) {
             throw new ErrorValidacion(
                 'No puedes modificar proveedores o universidades', {
@@ -158,7 +154,7 @@ export class MainInfo {
 
         const valores = claves.map(clave => input[clave])
 
-        valores.push(idValido)
+        valores.push(id)
         const posicionId = valores.length
 
         const resultado = await pool.query(`
