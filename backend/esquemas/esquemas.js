@@ -3,24 +3,29 @@ import z from 'zod'
 
 const esquemaBeca = z.object({
     nombrebeca: z.string({
-        error: 'El campo debe ser un string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacio'
-    }).max(120, {
-        error: 'Limite de caracteres: 120'
-    }),
+        error: 'El campo es incorrecto y obligatorio'
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacio'
+        })
+        .max(120, {
+            error: 'Limite de caracteres: 120'
+        }),
     vigencia: z.string({
-        error: 'El campo nombre debe ser un string'
-    }).min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(50, {
-        error: 'Limite de caracteres: 50'
-    }),
+        error: 'El campo es incorrecto y obligatorio'
+    })
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(50, {
+            error: 'Limite de caracteres: 50'
+        }),
     descripcion: z.string({
         error: 'El campo debe ser string'
     }),
     aplicar: z.string({
-        error: 'El campo nombre debe ser un string'
+        error: 'El campo es incorrecto y obligatorio'
     }),
     modalidad: z.enum([
         'Pregrado',
@@ -37,13 +42,16 @@ const esquemaBeca = z.object({
     }),
     iduniversidad: z.number({
         error: 'El dato debe ser un numero'
-    }).int({
-        error: 'El numero debe ser entero'
-    }).positive({
-        error: 'El numero debe ser positivo'
-    }).max(80000, {
-        error: 'El numero debe ser menor o igual a 80.000'
-    }),
+    })
+        .int({
+            error: 'El numero debe ser entero'
+        })
+        .positive({
+            error: 'El numero debe ser positivo'
+        })
+        .max(80000, {
+            error: 'El numero debe ser menor o igual a 80.000'
+        }),
     estado: z.enum([
         'Activa',
         'En proceso',
@@ -54,9 +62,10 @@ const esquemaBeca = z.object({
     }),
     urlinfo: z.httpUrl({
         error: 'El dato debe de ser tipo URL'
-    }).max(255, {
-        error: 'Maximo 255 caracteres'
-    }),
+    })
+        .max(255, {
+            error: 'Maximo 255 caracteres'
+        }),
     proveedor: z.number({
         error: 'El dato debe ser un numero'
     }).int({
@@ -73,25 +82,34 @@ const esquemaBeca = z.object({
 const esquemaUniversidad = z.object({
     nombreuni: z.string({
         error: 'El campo debe ser un string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacio'
-    }).max(120, {
-        error: 'Limite de caracteres: 120'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacio'
+        })
+        .max(120, {
+            error: 'Limite de caracteres: 120'
+        }),
     siglas: z.string({
         error: 'el campo debe ser un string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(25, {
-        error: 'Limite de caracteres: 120'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(25, {
+            error: 'Limite de caracteres: 120'
+        }),
     snies: z.string({
         error: 'El campo debe de ser un string'
-    }).trim().min(24, {
-        error: 'El SNIES como minimo debe tener 24 caracteres'
-    }).max(28, {
-        error: 'El codigo SNIES como maximo tiene 28 caracteres'
-    }),
+    })
+        .trim()
+        .min(24, {
+            error: 'El SNIES como minimo debe tener 24 caracteres'
+        })
+        .max(28, {
+            error: 'El codigo SNIES como maximo tiene 28 caracteres'
+        }),
     presencial: z.boolean({
         error: 'La modalidad debe de ser un booleano'
     }),
@@ -106,18 +124,24 @@ const esquemaUniversidad = z.object({
     }),
     ciudad: z.string({
         error: 'El campo debe de ser un string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(80, {
-        error: 'Limite de caracteres: 80'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(80, {
+            error: 'Limite de caracteres: 80'
+        }),
     departamento: z.string({
         error: 'El campo debe de ser un string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(80, {
-        error: 'Limite de caracteres: 80'
     })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(80, {
+            error: 'Limite de caracteres: 80'
+        })
 })
 
 // Esquema para Entidades
@@ -125,11 +149,14 @@ const esquemaUniversidad = z.object({
 const esquemaEntidades = z.object({
     nombreent: z.string({
         error: 'El campo debe ser string'
-    }).trim().min(1, {
-        error: 'El campo no puede estar vacío'
-    }).max(120, {
-        error: 'Limite de caracteres: 120'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(120, {
+            error: 'Limite de caracteres: 120'
+        }),
     tipo_entidad: z.enum([
         'Entidad Publica',
         'IES',
@@ -145,34 +172,83 @@ const esquemaEntidades = z.object({
 // Esquema para querys
 
 const esquemaPaginacion = z.object({
-    schsp: z.string({ error: 'Debe ser un string' })
-        .min(4, 'Minimo 4 caracteres')
-        .max(60, 'Maximo 60 caracteres')
-        .regex(/^[^?&<>]+$/, "Caracteres no permitidos"),
-    fmod: z.string({ error: 'Debe de ser un string' })
-        .min(4, 'Minimo 4 caracteres')
-        .max(25, 'Maximo 25 caracteres')
-        .regex(/^[^?&<>]+$/, "Caracteres no permitidos"),
-    uvrst: z.string({ error: 'Debe ser un string' })
-        .min(4, 'Minimo 4 caracteres')
-        .max(60, 'Maximo 60 caracteres')
-        .regex(/^[^?&<>]+$/, "Caracteres no permitidos"),
+    schsp: z.string({
+        error: 'Debe ser un string'
+    })
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(60, {
+            error: 'Maximo 60 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+    fmod: z.string({
+        error: 'Debe de ser un string'
+    })
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(25, {
+            error: 'Maximo 25 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+    uvrst: z.string({
+        error: 'Debe ser un string'
+    })
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(60, {
+            error: 'Maximo 60 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
     limit: z.coerce
-        .number({ error: 'El limite debe ser un numero' })
-        .int('El numero para limite debe de ser un entero')
-        .min(1, 'El numero debe de ser minimo 1')
-        .max(100, 'El limite maximo es de 100')
+        .number({
+            error: 'El limite debe ser un numero'
+        })
+        .int({
+            error: 'El numero para limite debe de ser un entero'
+        })
+        .min(1, {
+            error: 'El numero debe de ser minimo 1'
+        })
+        .max(100, {
+            error: 'El limite maximo es de 100'
+        })
         .default(10),
     offset: z.coerce
-        .number({ error: 'El offset debe de ser un numero' })
-        .int('Offset debe de ser un entero')
-        .nonnegative('Offset no puede ser negativo')
+        .number({
+            error: 'El offset debe de ser un numero'
+        })
+        .int({
+            error: 'Offset debe de ser un entero'
+        })
+        .nonnegative({
+            error: 'Offset no puede ser negativo'
+        })
         .default(0),
     id: z.coerce
-        .number({ error: 'El ID debe de ser un numero' })
-        .min(1, 'el ID como minimo tiene que ser 1')
-        .int('ID debe de ser un entero')
-        .nonnegative('Offset no puede ser negativo'),
+        .number({
+            error: 'El ID debe de ser un numero'
+        })
+        .min(1, {
+            error: 'el ID como minimo tiene que ser 1'
+        })
+        .max(2147483647, {
+            error: 'Limite de caracteres superado'
+        })
+        .int({
+            error: 'ID debe de ser un entero'
+        })
+        .nonnegative({
+            error: 'Offset no puede ser negativo'
+        }),
 })
 
 
@@ -180,26 +256,47 @@ const esquemaPaginacion = z.object({
 
 export function validarBody(objeto, esquema) {
     switch (esquema) {
-        case 'beca':
-            return esquemaBeca.safeParse(objeto)
-        case 'universidad':
-            return esquemaUniversidad.safeParse(objeto)
-        case 'entidad':
-            return esquemaEntidades.safeParse(objeto)
+        case 'beca': {
+            const r = esquemaBeca.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'universidad': {
+            const r = esquemaUniversidad.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'entidad': {
+            const r = esquemaEntidades.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+
     }
 }
 
 export function actualizarBody(objeto, esquema) {
     switch (esquema) {
-        case 'beca':
-            return esquemaBeca.partial().safeParse(objeto)
-        case 'universidad':
-            return esquemaUniversidad.partial().safeParse(objeto)
-        case 'entidad':
-            return esquemaEntidades.partial().safeParse(objeto)
+        case 'beca': {
+            const r = esquemaBeca.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'universidad': {
+            const r = esquemaUniversidad.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'entidad': {
+            const r = esquemaEntidades.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 
 export function validacionPaginacion(objeto) {
-    return esquemaPaginacion.partial().safeParse(objeto)
+    const r = esquemaPaginacion.partial().safeParse(objeto)
+    if (!r.success) throw r.error
+    return r
 }
