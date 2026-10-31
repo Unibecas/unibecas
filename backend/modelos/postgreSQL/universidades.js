@@ -4,7 +4,7 @@ import { pool } from './conexion.js'
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
 import { validarIdEntero } from '../../utils/funciones/funciones.js'
 
-const columnas = `nom_institucion AS nombre, siglas AS siglas, codigo_snies AS snies, mod_presencial AS presencial, mod_virtual as virtual, mod_hibrida AS hibrida, mod_adistancia AS distancia, ciudad AS ciudad, departamento AS departamento`
+const columnas = `id_universidad AS id, nom_institucion AS nombre, siglas AS siglas, codigo_snies AS snies, mod_presencial AS presencial, mod_virtual as virtual, mod_hibrida AS hibrida, mod_adistancia AS distancia, ciudad AS ciudad, departamento AS departamento`
 
 const MAPA_COLUMNAS_UNIVERSIDADES = {
     nombreuni: 'nom_institucion',
@@ -97,12 +97,9 @@ export class UniversidadesInfo {
     }
 
     static async deleteUni({ id }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const datos = await pool.query(`
             DELETE FROM universidades WHERE id_universidad = $1
-            `, [idValido])
+            `, [id])
 
         if (datos.rowCount === 0) {
             return false
@@ -112,9 +109,6 @@ export class UniversidadesInfo {
     }
 
     static async patchDataUni({ id, input }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_UNIVERSIDADES, clave))
 
         if (claves.length === 0) {
@@ -130,7 +124,7 @@ export class UniversidadesInfo {
 
         const valores = claves.map(clave => input[clave])
 
-        valores.push(idValido)
+        valores.push(id)
         const posicionID = valores.length
 
         const resultado = await pool.query(`

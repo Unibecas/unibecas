@@ -57,9 +57,6 @@ export class MainInfo {
     }
 
     static async idRecovery({ id }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const datos = await pool.query(`
                         SELECT
                         ${columnas} 
@@ -69,7 +66,7 @@ export class MainInfo {
                         LEFT JOIN entidades AS e
                             ON b.proveedor_beca = e.id_entidad
                         WHERE b.id_beca = $1
-                    `, [idValido])
+                    `, [id])
 
         return datos.rows[0]
     }
@@ -120,13 +117,10 @@ export class MainInfo {
     }
 
     static async deleteData({ id }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const datos = await pool.query(`
                 DELETE FROM becas WHERE id_beca = $1 
                 RETURNING * 
-                `, [idValido])
+                `, [id])
 
         if (datos.rowCount === 0) {
             return false
