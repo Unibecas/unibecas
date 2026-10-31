@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 import useFetch from "../../../hooks/useFetch";
 
+import { Search } from "../../../components/icons/home/Search";
+
 const Hero = () => {
   const frases = ["beca ideal", "futuro", "próxima meta"];
 
@@ -78,7 +80,7 @@ const Hero = () => {
   return (
     <div className="hero" id="inicio">
       <div className="hero-contenido">
-        <div className="contenido-izquierda">
+        <div className="contenido-principal">
           <h1>
             Encuentra tu <span className="typing-text">{texto}</span>
           </h1>
@@ -90,6 +92,18 @@ const Hero = () => {
           <div className="hero-buscador">
             <h2>Filtrar por</h2>
             <div>
+              <div className="filtro-nombre">
+                <Input
+                  id="buscador"
+                  type="text"
+                  placeholder="Palabra clave..."
+                  className="buscador-input"
+                  onChange={(e) => setNombreBeca(e.target.value)}
+                />
+                <button>
+                  <Search className="icono-busqueda" />
+                </button>
+              </div>
               <div>
                 <span>Modalidad</span>
                 <select onChange={(e) => setModalidad(e.target.value)}>
@@ -112,19 +126,13 @@ const Hero = () => {
                 </select>
               </div>
             </div>
-            <Input
-              id="buscador"
-              type="text"
-              placeholder="Palabra clave..."
-              className="buscador-input"
-              onChange={(e) => setNombreBeca(e.target.value)}
-            />
+
             <button className="buscador-boton" onClick={filtrarBecas}>
               Buscar
             </button>
           </div>
         </div>
-        <div className="contenido-derecha">
+        <div className="hero-background">
           <img src={heroImg} alt="Mujer leyendo" />
         </div>
       </div>

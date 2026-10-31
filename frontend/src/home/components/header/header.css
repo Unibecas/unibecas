@@ -255,7 +255,7 @@ header a {
   left: 0;
   width: min(82vw, 360px);
   height: 100%;
-  padding: 62px 24px 24px;
+  padding: 22px 24px 24px;
   background-color: var(--background);
   transform: translateX(-100%);
   transition: transform 0.25s ease;
@@ -274,15 +274,20 @@ header a {
   position: relative;
 }
 
-.cerrar-menu-mobile {
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  font-size: 28px;
-  color: var(--error);
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.3s ease;
+.top-nav-mobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.top-nav-mobile img {
+  height: 38px;
+}
+
+.top-nav-mobile .cerrar-menu-mobile {
+  font-size: 2rem;
+  transition: transform 0.4s;
 }
 
 .cerrar-menu-mobile:hover {

@@ -13,10 +13,12 @@ import { Link } from "react-router-dom";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
 
-const Header = ({ data, loading }) => {
+import { useContext } from "react";
+import { BecaContext } from "../../../context/BecaContext";
+
+const Header = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -49,6 +51,8 @@ const Header = ({ data, loading }) => {
     useState(seePassword);
 
   const [mostrarBecas, setMostrarBecas] = useState(false);
+
+  const { data, loading } = useContext(BecaContext);
 
   const becas = data?.datos ?? [];
 
@@ -187,20 +191,23 @@ const Header = ({ data, loading }) => {
             className="nav-mobile"
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              className="cerrar-menu-mobile"
-              onClick={() => setMenuAbierto(false)}
-            >
-              X
-            </button>
+            <div className="top-nav-mobile">
+              <img src={logo} alt="Logo unibecas" />
+              <button
+                type="button"
+                className="cerrar-menu-mobile"
+                onClick={() => setMenuAbierto(false)}
+              >
+                X
+              </button>
+            </div>
 
             <ul>
               <li onClick={() => setMenuAbierto(false)}>
-                <span>Programas</span>
+                <Link>Programas</Link>
               </li>
               <li onClick={() => setMenuAbierto(false)}>
-                <span>Becas</span>
+                <Link to="/becas">Becas</Link>
               </li>
             </ul>
           </nav>

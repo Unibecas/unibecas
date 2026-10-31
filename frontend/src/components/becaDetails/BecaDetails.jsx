@@ -72,7 +72,7 @@ const BecaDetails = () => {
                 <div className="contenedor-link">
                   <a
                     href={data?.INFO?.url}
-                    target="_blanck"
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     Aplica aquí

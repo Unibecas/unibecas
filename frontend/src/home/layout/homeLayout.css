@@ -3,7 +3,7 @@
 }
 
 .contenedor-info-becas {
-  margin: 460px auto 20px auto;
+  margin: 70px auto 20px auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -374,46 +374,9 @@ h2 {
 .link-beca-card {
   flex-shrink: 0;
   text-decoration: none;
+  min-width: 0;
 }
 
-@media (max-width: 600px) {
-  .carrusel-becas {
-    padding: 0 40px;
-  }
-
-  .carrusel-becas-flecha {
-    width: 36px;
-    height: 36px;
-    font-size: 22px;
-    padding: auto 0;
-  }
-}
-.carrusel-becas-flecha-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-@media (max-width: 660px) {
-  .contenedor-info-becas {
-    padding: 22px 30px;
-  }
-
-  .contenedor-info-becas h2 {
-    text-align: center;
-  }
-
-  .contenedor-info-becas p {
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .contenedor-botones button {
-    font-size: 1rem;
-    padding: 5px 20px;
-  }
-}
 .carrusel-becas-imagenes {
   position: relative;
   width: 100%;
@@ -456,4 +419,61 @@ h2 {
   width: 60px;
   height: 54px;
   object-fit: contain;
+}
+
+@media (max-width: 970px) {
+  .seccion-becas .contenedor-becas {
+    max-width: 830px;
+  }
+}
+
+@media (max-width: 850px) {
+  .seccion-becas .contenedor-becas {
+    max-width: 550px;
+  }
+}
+
+@media (max-width: 560px) {
+  .seccion-becas .contenedor-becas {
+    max-width: 370px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carrusel-becas {
+    padding: 0 40px;
+  }
+
+  .carrusel-becas-flecha {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+    padding: auto 0;
+  }
+}
+.carrusel-becas-flecha-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 660px) {
+  .contenedor-info-becas {
+    padding: 22px 30px;
+  }
+
+  .contenedor-info-becas h2 {
+    text-align: center;
+  }
+
+  .contenedor-info-becas p {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .contenedor-botones button {
+    font-size: 1rem;
+    padding: 5px 20px;
+  }
 }
