@@ -1,26 +1,23 @@
 import "./homeLayout.css";
 import Hero from "../components/hero/Hero";
 import infoBecasImg from "../../assets/icons/home/info-becas-icon.svg";
-
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-
 import PanelAccesible from "../../components/panelAccesible/PanelAccesible";
-
 import BecaCard from "../../components/becaCard/BecaCard";
 
 import { useState, useEffect, useRef } from "react";
-
 import { becasPopulares, universidades, infoBecas } from "../data";
 
 import arrowLeft from "../../assets/icons/home/arrow-left.svg";
 import arrowRight from "../../assets/icons/home/arrow-right.svg";
-
 import { Link } from "react-router-dom";
 
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
-
 import Error from "../../components/error/Error";
+
+import { useContext } from "react";
+import { BecaContext } from "../../context/BecaContext";
 
 import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.webp";
 import encuentraBeca2 from "../../assets/images/home/encuentra-beca2.webp";
@@ -53,9 +50,12 @@ const HomeLayout = () => {
   const [contenedorBecas, setContenedorBecas] = useState("mas-recientes");
   const [actual, setActual] = useState(0);
 
-  const { data, loading, error, fetchData } = useFetch();
+  const { data, loading, error, fetchData } = useContext(BecaContext);
 
   const contenedorRef = useRef(null);
+  const becaCardRef = useRef(null);
+
+  const becaCardWidth = becaCardRef.current?.getBoundingClientRect().width;
 
   const siguiente = () => {
     setActual((actual + 1) % imagenes.length);
@@ -83,13 +83,13 @@ const HomeLayout = () => {
 
   const moverAIzquierda = () => {
     contenedorRef.current.scrollBy({
-      left: -320,
+      left: -becaCardWidth - 20, // mover el carrusel a la izquierda, considerando el width de la tarjeta y el gap de 20px
     });
   };
 
   const moverADerecha = () => {
     contenedorRef.current.scrollBy({
-      left: 320,
+      left: becaCardWidth + 20,
     });
   };
 
@@ -97,15 +97,11 @@ const HomeLayout = () => {
     fetchData("https://unibecas.onrender.com/main/becas");
   };
 
-  useEffect(() => {
-    reintentar();
-  }, []);
-
   if (error) return <Error reintentar={reintentar} />;
 
   return (
     <div className="home-layout">
-      <Header data={data} loading={loading} />
+      <Header />
 
       <Hero />
 
@@ -158,7 +154,7 @@ const HomeLayout = () => {
         </button>
       </section>
 
-      <section className="contenedor-sobre-becas-ofertas" id="sobre-becas">
+      <section className="contenedor-sobre-becas-ofertas" id="oferta-academica">
         <h2>Oferta académica</h2>
         <p className="descripcion-oferta">
           Explora diferentes áreas de estudio y encuentra oportunidades para
@@ -320,6 +316,7 @@ const HomeLayout = () => {
                     key={info.id}
                   >
                     <BecaCard
+                      ref={becaCardRef}
                       universidad={info.universidad}
                       nombre={info.nombre}
                       vigencia={info.vigencia}
