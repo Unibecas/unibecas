@@ -14,6 +14,7 @@
   --error: #ff3b4f;
 
   --skeleton-background: #deebf7;
+  --color-subtitulo: #555;
 }
 
 * {
@@ -41,6 +42,7 @@ body.darkmode {
   --color: #fff;
 
   --skeleton-background: #172b46;
+  --color-subtitulo: #aaa;
 }
 
 body {

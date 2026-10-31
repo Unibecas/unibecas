@@ -158,7 +158,7 @@ h2 {
 
 .contenedor-sobre-becas-ofertas h2 {
   margin: 0 0 12px;
-  color: #a31a1c;
+  color: var(--color-primario);
   font-size: 2rem;
   font-weight: 700;
 }
@@ -166,7 +166,7 @@ h2 {
 .descripcion-oferta {
   max-width: 650px;
   margin: 0 auto 35px;
-  color: #555;
+  color: var(--color-subtitulo);
   font-size: 1rem;
   line-height: 2;
   text-align: center;
@@ -188,7 +188,7 @@ h2 {
   padding: 26px 24px;
   border: 2px solid #a31a1c;
   border-radius: 8px;
-  background-color: #f1f4fc;
+  background-color: var(--color-superficie-blanca);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -197,7 +197,7 @@ h2 {
 
 .tarjeta-categoria:hover {
   transform: translateY(-5px);
-  background-color: #f1f4fc;
+  background-color: var(--color-superficie-blanca);
   box-shadow: 0 8px 22px rgb(125, 23, 221/ 12%);
 }
 
@@ -209,22 +209,22 @@ h2 {
   height: 42px;
   margin-bottom: 20px;
   border-radius: 8px;
-  background-color: #f1f4fc;
+  background-color: var(--color-superficie-blanca);
   color: #7d17dd0f;
   font-size: 1.8rem;
 }
 
 .tarjeta-categoria h3 {
   margin: 0 0 12px;
-  color: #a31a1c;
+  color: var(--color-primario);
   font-size: 2rem;
   line-height: 1.4;
 }
 
 .tarjeta-categoria p {
   margin: 0 35px 20px 0;
-  color: #444;
-  font-size: 0.95rem;
+  color: var(--color-subtitulo);
+  font-size: 1.25rem;
   line-height: 1.6;
 }
 
@@ -412,7 +412,7 @@ h2 {
 
   width: 64px;
   height: 44px;
-  background-color: #f1f4fc;
+  background-color: var(--color-superficie-blanca);
 }
 
 .icono-categoria img {
