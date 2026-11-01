@@ -1,6 +1,5 @@
 //@ts-nocheck
 import express from 'express'
-
 import { mainRouter } from './rutas/main.js'
 import { corsMiddleware } from './middlewares/cors.js'
 import { cabecerasJSON } from './middlewares/cabeceras.js'
@@ -9,14 +8,16 @@ import { universidadesRouter } from './rutas/universidades.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
 import { originErr } from './middlewares/originErr.js'
 import { errGlobal } from './middlewares/errGlobal.js'
+import { validacionesErr } from './middlewares/validacionesErr.js'
+import { postgresqlErr } from './middlewares/postgresqlErr.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
-app.use(cabecerasJSON)
 
 app.use(express.json())
+app.use(cabecerasJSON)
 app.use(expressJsonify)
 
 app.get('/', (req, res) => {
@@ -24,7 +25,6 @@ app.get('/', (req, res) => {
 })
 
 // Recursos
-
 app.use('/main', mainRouter)
 app.use('/entidades', entidadesRouter)
 app.use('/universidades', universidadesRouter)
@@ -33,9 +33,13 @@ app.use((req, res) => {
     res.status(404).json({ error: 'Not found' })
 })
 
+// Middleware para validaciones Zod
+app.use(validacionesErr)
+// Middleware para errores de PGSQL
+app.use(postgresqlErr)
 // Middleware para origenes de CORS
 app.use(originErr)
-// Middleware para errores globales
+// Middleware para errores globales (Siempre al final)
 app.use(errGlobal)
 
 app.listen(PORT, () => {

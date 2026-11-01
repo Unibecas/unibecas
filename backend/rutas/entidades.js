@@ -6,6 +6,5 @@ export const entidadesRouter = Router()
 
 entidadesRouter.get('/', EntidadesControl)
 entidadesRouter.post('/', EntidadesControl)
-entidadesRouter.get('/:id', EntidadesControl)
 entidadesRouter.patch('/:id', EntidadesControl)
 entidadesRouter.delete('/:id', EntidadesControl)

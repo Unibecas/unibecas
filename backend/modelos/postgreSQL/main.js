@@ -1,7 +1,6 @@
 //@ts-nocheck
 import { pool } from './conexion.js'
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
-import { validarIdEntero } from '../../utils/funciones/funciones.js'
 
 const MAPA_COLUMNAS_BECAS = {
     nombrebeca: 'nombre_beca',
@@ -46,17 +45,6 @@ export class MainInfo {
 
         const datos = await pool.query(querystmt, params)
 
-        if (datos.rowCount === 0) {
-            return {
-                datos: datos.rows,
-                meta: {
-                    limit: limit,
-                    offset: offset,
-                    hasMore: datos.rows.length === limit
-                }
-            }
-        }
-
         return {
             datos: datos.rows,
             meta: {
@@ -68,9 +56,6 @@ export class MainInfo {
     }
 
     static async idRecovery({ id }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const datos = await pool.query(`
                         SELECT
                         ${columnas} 
@@ -80,11 +65,8 @@ export class MainInfo {
                         LEFT JOIN entidades AS e
                             ON b.proveedor_beca = e.id_entidad
                         WHERE b.id_beca = $1
-                    `, [idValido])
+                    `, [id])
 
-        if (datos.rowCount === 0) {
-            return false
-        }
         return datos.rows[0]
     }
 
@@ -134,13 +116,10 @@ export class MainInfo {
     }
 
     static async deleteData({ id }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         const datos = await pool.query(`
                 DELETE FROM becas WHERE id_beca = $1 
                 RETURNING * 
-                `, [idValido])
+                `, [id])
 
         if (datos.rowCount === 0) {
             return false
@@ -150,9 +129,6 @@ export class MainInfo {
     }
 
     static async patchData({ id, input }) {
-        const idValido = validarIdEntero(id)
-        if (!idValido) return false
-
         if (input.proveedor || input.iduniversidad) {
             throw new ErrorValidacion(
                 'No puedes modificar proveedores o universidades', {
@@ -178,7 +154,7 @@ export class MainInfo {
 
         const valores = claves.map(clave => input[clave])
 
-        valores.push(idValido)
+        valores.push(id)
         const posicionId = valores.length
 
         const resultado = await pool.query(`
@@ -198,10 +174,7 @@ export class MainInfo {
             `, valores
         )
 
-        if (resultado.rowCount === 0) {
-            return false
-        }
-
+        if (resultado.rowCount === 0) return false
         return resultado.rows[0]
     }
 }
