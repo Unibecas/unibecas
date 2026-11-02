@@ -7,7 +7,7 @@ export class MainControl {
     static async allRecoveryCont(req, res) {
         const validaciones = validacionPaginacion(req.query)
 
-        if ((validaciones.data.schsp || validaciones.data.fmod) && ((validaciones.data.schsp.includes('%') || validaciones.data.schsp.includes('_')) || (validaciones.data.fmod.includes('%') || validaciones.data.fmod.includes('_')))) {
+        if ((validaciones.data.schsp && (validaciones.data.schsp.includes('%') || validaciones.data.schsp.includes('_'))) || (validaciones.data.fmod && (validaciones.data.fmod.includes('%') || validaciones.data.fmod.includes('_')))) {
             return res.status(400).json({
                 error: `Error de validación de campos: No puedes usar comodines en busquedas - (Busqueda: ${validaciones.data.schsp ? `schsp: '${validaciones.data.schsp}'` : ''} ${validaciones.data.fmod ? ` - fmod: '${validaciones.data.fmod}'` : ''})`
             })
