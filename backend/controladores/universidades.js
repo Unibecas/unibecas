@@ -6,9 +6,9 @@ import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/e
 export class UniversidadesControl {
     static async allRecoveryCont(req, res) {
         const validaciones = validacionPaginacion(req.query)
-        if (validaciones.data.uvrst && validaciones.data.uvrst.includes('%')) {
+        if (validaciones.data.uvrst && (validaciones.data.uvrst.includes('%') || validaciones.data.uvrst.includes('_'))) {
             return res.status(400).json({
-                invalid_type_error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.uvrst}')`
+                error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.uvrst}')`
             })
         }
 
@@ -25,7 +25,7 @@ export class UniversidadesControl {
         const newUni = await UniversidadesInfo.newDataUni({ dataVal: validaciones.data })
 
         return res.status(201).json({
-            message: 'Beca insertada con exito',
+            message: 'Universidad insertada con exito',
             info: newUni
         })
     }
@@ -36,7 +36,7 @@ export class UniversidadesControl {
         const filData = await UniversidadesInfo.deleteUni({ id: idVal.data.id })
 
         if (filData) {
-            console.log(`[server - ${horaActual()}] - ID ${req.params.id} elimiinada con éxito`)
+            console.log(`[server - ${horaActual()}] - ID ${req.params.id} eliminada con éxito`)
             return res.status(200).json({
                 message: `ID: ${req.params.id} eliminada con éxito`
             })

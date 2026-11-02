@@ -24,7 +24,6 @@ export class UniversidadesInfo {
         const params = []
         let querystmt = `
         SELECT 
-        id_universidad AS id, 
         ${columnas}
         FROM universidades
         WHERE 1=1 `

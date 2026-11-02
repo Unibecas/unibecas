@@ -9,7 +9,7 @@ export class MainControl {
 
         if (validaciones.data.schsp && (validaciones.data.schsp.includes('%') || validaciones.data.schsp.includes('_'))) {
             return res.status(400).json({
-                invalid_type_error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.schsp}')`
+                error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.schsp}')`
             })
         }
         const { schsp, fmod, limit, offset } = validaciones.data

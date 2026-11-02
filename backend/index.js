@@ -30,7 +30,7 @@ app.use('/entidades', entidadesRouter)
 app.use('/universidades', universidadesRouter)
 
 app.use((req, res) => {
-    res.status(404).json({ error: 'Not found' })
+    res.status(404).json({ error: '404 - La página no existe' })
 })
 
 // Middleware para validaciones Zod

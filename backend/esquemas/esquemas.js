@@ -68,13 +68,16 @@ const esquemaBeca = z.object({
         }),
     proveedor: z.number({
         error: 'El dato debe ser un numero'
-    }).int({
-        error: 'El numero debe ser positivo'
-    }).positive({
-        error: 'El numero debe ser positivo'
-    }).max(80000, {
-        error: 'El numero debe ser menor o igual a 80.000'
     })
+        .int({
+            error: 'El numero debe ser positivo'
+        })
+        .positive({
+            error: 'El numero debe ser positivo'
+        })
+        .max(80000, {
+            error: 'El numero debe ser menor o igual a 80.000'
+        })
 })
 
 // Esquema Universidades
@@ -98,7 +101,7 @@ const esquemaUniversidad = z.object({
             error: 'El campo no puede estar vacío'
         })
         .max(25, {
-            error: 'Limite de caracteres: 120'
+            error: 'Limite de caracteres: 25'
         }),
     snies: z.string({
         error: 'El campo debe de ser un string'
@@ -247,7 +250,7 @@ const esquemaPaginacion = z.object({
             error: 'ID debe de ser un entero'
         })
         .nonnegative({
-            error: 'Offset no puede ser negativo'
+            error: 'El ID no puede ser negativo'
         }),
 })
 

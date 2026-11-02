@@ -105,10 +105,10 @@ export class MainInfo {
             d.aplicar,
             d.modalidad,
             d.cobertura,
-            Number(d.iduniversidad),
+            d.iduniversidad,
             d.estado,
             d.urlinfo,
-            Number(d.proveedor)
+            d.proveedor
         ])
 
         return newScsh.rows[0]
