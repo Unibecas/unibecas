@@ -7,7 +7,7 @@ const metodos = [
 
 export const cabecerasJSON = (req, res, next) => {
     if (metodos.includes(req.method) && !req.body) {
-        return res.status(400).json({
+        return res.status(415).json({
             error: `La petición ${req.method} esta vacía`
         })
     } else if (metodos.includes(req.method) && !req.is('application/json')) {

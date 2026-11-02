@@ -70,7 +70,7 @@ const esquemaBeca = z.object({
         error: 'El dato debe ser un numero'
     })
         .int({
-            error: 'El numero debe ser positivo'
+            error: 'El numero debe ser entero'
         })
         .positive({
             error: 'El numero debe ser positivo'

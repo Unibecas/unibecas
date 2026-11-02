@@ -118,7 +118,6 @@ export class MainInfo {
     static async deleteData({ id }) {
         const datos = await pool.query(`
                 DELETE FROM becas WHERE id_beca = $1 
-                RETURNING * 
                 `, [id])
 
         if (datos.rowCount === 0) {
