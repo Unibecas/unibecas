@@ -1,15 +1,23 @@
 import "./panelAccesible.css";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 
 import darkmode from "../../assets/icons/home/darkmode.svg";
 import lightmode from "../../assets/icons/home/lightmode.svg";
 
 export const PanelAccesible = () => {
-  const [fontSize, setFontSize] = useState(1);
+  const [fontSize, setFontSize] = useState(() => {
+    const fontSizeLocalStorage = Number(localStorage.getItem("fontSize")) || 1;
+    return fontSizeLocalStorage;
+  });
   const [mode, setMode] = useState("lightmode");
 
   const verificarTamanno = (nuevoFontSize) =>
     nuevoFontSize >= 1.4 || nuevoFontSize <= 0.8;
+
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${fontSize}rem`;
+    localStorage.setItem("fontSize", String(fontSize));
+  }, [fontSize]);
 
   const aumentarTamanno = () => {
     let nuevoFontSize = fontSize + 0.05;
@@ -17,7 +25,6 @@ export const PanelAccesible = () => {
     if (verificarTamanno(nuevoFontSize)) return;
 
     setFontSize(nuevoFontSize);
-    document.documentElement.style.fontSize = `${nuevoFontSize}rem`;
   };
 
   const disminuirTamanno = () => {
@@ -26,7 +33,6 @@ export const PanelAccesible = () => {
     if (verificarTamanno(nuevoFontSize)) return;
 
     setFontSize(nuevoFontSize);
-    document.documentElement.style.fontSize = `${nuevoFontSize}rem`;
   };
 
   const cambiarModo = () => {

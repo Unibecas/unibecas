@@ -9,11 +9,12 @@ const BecaCard = ({
   info_aplicar,
   modalidad,
   estado,
+  ref,
 }) => {
   const clase = estado === "Activa" ? "activa" : "vencida";
 
   return (
-    <article className="becaCard">
+    <article className="becaCard" ref={ref}>
       <header className="becaCard-header">
         <span className="becaCard-modalidad">{modalidad}</span>
         <h2 className="becaCard-universidad">{universidad}</h2>

@@ -1,24 +1,23 @@
 import "./homeLayout.css";
 import Hero from "../components/hero/Hero";
 import infoBecasImg from "../../assets/icons/home/info-becas-icon.svg";
-
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-
 import PanelAccesible from "../../components/panelAccesible/PanelAccesible";
-
 import BecaCard from "../../components/becaCard/BecaCard";
 
 import { useState, useEffect, useRef } from "react";
-
 import { becasPopulares, universidades, infoBecas } from "../data";
 
 import arrowLeft from "../../assets/icons/home/arrow-left.svg";
 import arrowRight from "../../assets/icons/home/arrow-right.svg";
-
 import { Link } from "react-router-dom";
 
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
+import Error from "../../components/error/Error";
+
+import { useContext } from "react";
+import { BecaContext } from "../../context/BecaContext";
 
 import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.webp";
 import encuentraBeca2 from "../../assets/images/home/encuentra-beca2.webp";
@@ -28,13 +27,12 @@ import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.webp";
 import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.webp";
 import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.webp";
 
-
-import iconIngenieria from "../../assets/icons/home/ingenieria-icons.webp";
-import iconEconomia from "../../assets/icons/home/economia-icons.webp";
-import iconSalud from "../../assets/icons/home/salud-icons.webp";
-import iconComunicacion from "../../assets/icons/home/comunicacion-icons.webp";
-import iconEducacion from "../../assets/icons/home/educacion-icons.webp";
-import iconDerecho from "../../assets/icons/home/derecho-icons.webp";
+import { Ingenieria } from "../../components/icons/home/Ingenieria.jsx";
+import { Economia } from "../../components/icons/home/Economia.jsx";
+import { Salud } from "../../components/icons/home/Salud.jsx";
+import { Comunicacion } from "../../components/icons/home/Comunicacion.jsx";
+import { Educacion } from "../../components/icons/home/Educacion.jsx";
+import { Derechos } from "../../components/icons/home/Derechos.jsx";
 
 import useFetch from "../../hooks/useFetch";
 
@@ -52,9 +50,12 @@ const HomeLayout = () => {
   const [contenedorBecas, setContenedorBecas] = useState("mas-recientes");
   const [actual, setActual] = useState(0);
 
-  const [data, loading, error, fetchData] = useFetch();
+  const { data, loading, error, fetchData } = useContext(BecaContext);
 
   const contenedorRef = useRef(null);
+  const becaCardRef = useRef(null);
+
+  const becaCardWidth = becaCardRef.current?.getBoundingClientRect().width;
 
   const siguiente = () => {
     setActual((actual + 1) % imagenes.length);
@@ -82,19 +83,21 @@ const HomeLayout = () => {
 
   const moverAIzquierda = () => {
     contenedorRef.current.scrollBy({
-      left: -320,
+      left: -becaCardWidth - 20, // mover el carrusel a la izquierda, considerando el width de la tarjeta y el gap de 20px
     });
   };
 
   const moverADerecha = () => {
     contenedorRef.current.scrollBy({
-      left: 320,
+      left: becaCardWidth + 20,
     });
   };
 
-  useEffect(() => {
+  const reintentar = () => {
     fetchData("https://unibecas.onrender.com/main/becas");
-  }, []);
+  };
+
+  if (error) return <Error reintentar={reintentar} />;
 
   return (
     <div className="home-layout">
@@ -131,8 +134,9 @@ const HomeLayout = () => {
           {imagenes.map((imagen, index) => (
             <img
               key={imagen}
-              className={`carrusel-becas-imagen ${index === actual ? "activa" : ""
-                }`}
+              className={`carrusel-becas-imagen ${
+                index === actual ? "activa" : ""
+              }`}
               src={imagen}
               alt={`Encuentra tu beca ${index + 1}`}
             />
@@ -150,7 +154,7 @@ const HomeLayout = () => {
         </button>
       </section>
 
-      <section className="contenedor-sobre-becas-ofertas" id="sobre-becas">
+      <section className="contenedor-sobre-becas-ofertas" id="oferta-academica">
         <h2>Oferta académica</h2>
         <p className="descripcion-oferta">
           Explora diferentes áreas de estudio y encuentra oportunidades para
@@ -159,9 +163,7 @@ const HomeLayout = () => {
 
         <div className="contenedor-sobre-becas-ofertas-categorias">
           <div className="ingenieria-tecnologia tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconIngenieria} alt="Icono de ingeniería" />
-            </span>
+            <Ingenieria className="icono-categoria" />
             <h3>Ingeniería y tecnología</h3>
             <p>Software, sistemas, datos e innovación digital.</p>
             <span className="flecha-categoria">
@@ -170,9 +172,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="economia-negocios tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconEconomia} alt="Icono de economía" />
-            </span>
+            <Economia className="icono-categoria" />
             <h3>Economía y negocios</h3>
             <p>Administración, finanzas y emprendimiento.</p>
             <span className="flecha-categoria">
@@ -181,9 +181,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="salud-bienestar tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconSalud} alt="Icono de salud y bienestar" />
-            </span>
+            <Salud className="icono-categoria" />
             <h3>Salud y bienestar</h3>
             <p>Programas relacionados con la salud y el bienestar.</p>
             <span className="flecha-categoria">
@@ -192,12 +190,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="comunicacion-diseño tarjeta-categoria">
-            <span className="icono-categoria">
-              <img
-                src={iconComunicacion}
-                alt="Icono de comunicación y diseño"
-              />
-            </span>
+            <Comunicacion className="icono-categoria" />
             <h3>Comunicación y diseño</h3>
             <p>Marketing, comunicación, artes y creatividad.</p>
             <span className="flecha-categoria">
@@ -206,9 +199,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="educacion-ciencias tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconEducacion} alt="Icono de educación y ciencias" />
-            </span>
+            <Educacion className="icono-categoria" />
             <h3>Educación y ciencias</h3>
             <p>Enseñanza, investigación, idiomas y conocimiento.</p>
             <span className="flecha-categoria">
@@ -217,9 +208,7 @@ const HomeLayout = () => {
           </div>
 
           <div className="derecho-idiomas tarjeta-categoria">
-            <span className="icono-categoria">
-              <img src={iconDerecho} alt="Icono de derecho e idiomas" />
-            </span>
+            <Derechos className="icono-categoria" />
             <h3>Derecho e idiomas</h3>
             <p>Legislación, lenguas y relaciones internacionales.</p>
             <span className="flecha-categoria">
@@ -235,7 +224,6 @@ const HomeLayout = () => {
         <section className="carrusel-universidades">
           <div className="carrusel-track">
             <div className="grupo-universidades">
-
               {universidades.map((universidad, index) => (
                 <a
                   key={`primera-${index}`}
@@ -251,16 +239,17 @@ const HomeLayout = () => {
                   />
                 </a>
               ))}
-
             </div>
 
             <div className="grupo-universidades" aria-hidden="true">
               {universidades.map((universidad, index) => (
-                <a key={`segunda-${index}`}
+                <a
+                  key={`segunda-${index}`}
                   href={universidad.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Visitar ${universidad.alt}`}>
+                  aria-label={`Visitar ${universidad.alt}`}
+                >
                   <img
                     src={universidad.logo}
                     className={universidad.className}
@@ -303,43 +292,44 @@ const HomeLayout = () => {
           {contenedorBecas === "mas-recientes"
             ? loading
               ? Array.from({ length: 5 }).map((_, index) => (
-                <BecaCardSkeleton key={index} />
-              ))
-              : data?.map((info) => (
+                  <BecaCardSkeleton key={index} />
+                ))
+              : data?.datos?.map((info) => (
+                  <Link
+                    to={`/beca/${info.id}`}
+                    className="link-beca-card"
+                    key={info.id}
+                  >
+                    <BecaCard
+                      ref={becaCardRef}
+                      universidad={info.universidad}
+                      nombre={info.nombre}
+                      vigencia={info.vigencia}
+                      descripcion={info.descripcion_informacion}
+                      info_aplicar={info.aplicar}
+                      modalidad={info.modalidad}
+                      estado={info.estado}
+                    />
+                  </Link>
+                ))
+            : becasPopulares.map((info) => (
                 <Link
-                  to={`/beca/${info?.id}`}
+                  to={`/beca/${info.id_beca}`}
                   className="link-beca-card"
-                  key={info.id}
+                  key={info.id_beca}
                 >
                   <BecaCard
                     universidad={info.universidad}
-                    nombre={info.nombre}
-                    vigencia={info.vigencia}
+                    nombre={info.nombre_beca}
+                    vigencia={info.vigencia_programa}
                     descripcion={info.descripcion_informacion}
-                    info_aplicar={info.aplicar}
+                    info_aplicar={info.informacion_aplicar}
                     modalidad={info.modalidad}
                     estado={info.estado}
+                    cobertura={info.cobertura}
                   />
                 </Link>
-              ))
-            : becasPopulares.map((info) => (
-              <Link
-                to={`/beca/${info.id_beca}`}
-                className="link-beca-card"
-                key={info.id_beca}
-              >
-                <BecaCard
-                  universidad={info.universidad}
-                  nombre={info.nombre_beca}
-                  vigencia={info.vigencia_programa}
-                  descripcion={info.descripcion_informacion}
-                  info_aplicar={info.informacion_aplicar}
-                  modalidad={info.modalidad}
-                  estado={info.estado}
-                  cobertura={info.cobertura}
-                />
-              </Link>
-            ))}
+              ))}
         </div>
 
         <div className="contenedor-arrows">

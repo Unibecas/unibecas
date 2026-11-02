@@ -7,9 +7,13 @@ function useFetch() {
 
   const fetchData = async (url) => {
     try {
+      setError(null);
       setLoading(true);
 
       const response = await fetch(url);
+
+      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
       const data = await response.json();
 
       setData(data);
@@ -22,7 +26,7 @@ function useFetch() {
     }
   };
 
-  return [data, loading, error, fetchData];
+  return { data, loading, error, fetchData };
 }
 
 export default useFetch;

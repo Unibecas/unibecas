@@ -1,0 +1,43 @@
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.error div p,
+.error div h2 {
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.error div p {
+  text-align: center;
+  line-height: 1.4;
+  font-size: 1.1rem;
+}
+
+.error div img {
+  height: 300px;
+}
+
+.error div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.error div button {
+  padding: 10px 18px;
+  color: #fff;
+  background-color: var(--color-superficie-azul);
+  border-radius: 999px;
+  border: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  outline: none;
+}
