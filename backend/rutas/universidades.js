@@ -4,8 +4,7 @@ import { UniversidadesControl } from '../controladores/universidades.js'
 
 export const universidadesRouter = Router()
 
-universidadesRouter.get('/', UniversidadesControl)
-universidadesRouter.post('/', UniversidadesControl)
-universidadesRouter.get('/:id', UniversidadesControl)
-universidadesRouter.patch('/:id', UniversidadesControl)
-universidadesRouter.delete('/:id', UniversidadesControl)
+universidadesRouter.get('/', UniversidadesControl.allRecoveryCont)
+universidadesRouter.post('/', UniversidadesControl.newDataUniCont)
+universidadesRouter.patch('/:id', UniversidadesControl.patchDataUniCont)
+universidadesRouter.delete('/:id', UniversidadesControl.deleteUniCont)
