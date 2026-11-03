@@ -26,7 +26,8 @@ export class UniversidadesInfo {
         SELECT 
         ${columnas}
         FROM universidades
-        WHERE 1=1 `
+        WHERE 1=1 
+        `
 
         querystmt += busquedaFormateada ? ` AND f_unaccent(lower(nom_institucion)) ILIKE f_unaccent(lower($${params.push(busquedaFormateada)}))` : ''
         querystmt += id ? ` AND id_universidad = $${params.push(id)}` : ''
@@ -87,10 +88,7 @@ export class UniversidadesInfo {
             DELETE FROM universidades WHERE id_universidad = $1
             `, [id])
 
-        if (datos.rowCount === 0) {
-            return false
-        }
-
+        if (datos.rowCount === 0) return false
         return true
     }
 

@@ -23,10 +23,18 @@ const esquemaBeca = z.object({
         }),
     descripcion: z.string({
         error: 'El campo debe ser string'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo de descripcion no puede estar vacío'
+        }),
     aplicar: z.string({
         error: 'El campo es incorrecto y obligatorio'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: `El campo 'Aplicar' puede estar vacío`
+        }),
     modalidad: z.enum([
         'Pregrado',
         'Posgrado',
@@ -39,7 +47,11 @@ const esquemaBeca = z.object({
     }),
     cobertura: z.string({
         error: 'El campo debe ser un string'
-    }),
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        }),
     iduniversidad: z.number({
         error: 'El dato debe ser un numero'
     })
@@ -169,7 +181,17 @@ const esquemaEntidades = z.object({
         'N/A'
     ], {
         error: 'El tipo de dato ingresado es invalido'
+    }),
+    nit: z.string({
+        error: 'el NIT debe de ser un string'
     })
+        .trim()
+        .min(4, {
+            error: 'El NIT debe tener minimo 4 caracteres'
+        })
+        .max(40, {
+            error: 'Limite de caracteres: 40'
+        })
 })
 
 // Esquema para querys
@@ -178,6 +200,7 @@ const esquemaPaginacion = z.object({
     schsp: z.string({
         error: 'Debe ser un string'
     })
+        .trim()
         .min(4, {
             error: 'Minimo 4 caracteres'
         })
@@ -202,6 +225,7 @@ const esquemaPaginacion = z.object({
     uvrst: z.string({
         error: 'Debe ser un string'
     })
+        .trim()
         .min(4, {
             error: 'Minimo 4 caracteres'
         })
@@ -211,6 +235,33 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
+
+    entty: z.string({
+        error: 'Debe ser un string'
+    })
+        .trim()
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(120, {
+            error: 'Maximo 120 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+    frscial: z.string({
+        error: 'Debe de ser un string'
+    })
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(120, {
+            error: 'Maximo 120 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+
     limit: z.coerce
         .number({
             error: 'El limite debe ser un numero'
