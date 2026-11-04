@@ -3,7 +3,7 @@ import { DatabaseError } from "pg"
 import { horaActual } from "../utils/funciones/funciones.js"
 
 function consoleError(error) {
-    return `[database - ${horaActual()}] Error DB - codigo: ${error.code} - detalles: ${error.detail}`
+    return `[database - ${horaActual()}] Error DB - codigo: ${error.code ? error.code : 'No definido'} - ${error.detail ? `Detalles: ${error.detail}` : `Fila: ${error.file}`}`
 }
 
 export const postgresqlErr = (err, req, res, next) => {
@@ -29,7 +29,7 @@ export const postgresqlErr = (err, req, res, next) => {
             case '23502':
                 console.log(consoleError(err))
                 return res.status(400).json({
-                    error: `"Falta uno o más campos obligatorios en la solicitud`
+                    error: `Falta uno o más campos obligatorios en la solicitud`
                 })
             case '23514':
                 console.log(consoleError(err))
@@ -44,7 +44,7 @@ export const postgresqlErr = (err, req, res, next) => {
             case '22P02':
                 console.log(consoleError(err))
                 return res.status(400).json({
-                    error: `El formato de uno de los valores proporciondos es invalido`
+                    error: `El formato de uno de los valores proporcionados es invalido`
                 })
             case '22003':
                 console.log(consoleError(err))
@@ -87,8 +87,8 @@ export const postgresqlErr = (err, req, res, next) => {
                     code: 'EIS100'
                 })
         }
-    } else if (err.code && err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
-        console.log(consoleError(err))
+    } else if (err.code && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT')) {
+        console.log(consoleError(err.detail))
         return res.status(503).json({
             error: 'Error de conexion, intentalo de nuevo mas tarde'
         })

@@ -40,17 +40,19 @@ export class MainInfo {
             ? ` AND f_unaccent(lower(b.modalidad)) ILIKE f_unaccent(lower($${params.push(filtroFormat)}))`
             : ''
 
-        querystmt += ` LIMIT $${params.push(limit)}`
+        querystmt += ` ORDER BY b.id_beca DESC`
+        querystmt += ` LIMIT $${params.push(limit + 1)}`
         querystmt += ` OFFSET $${params.push(offset)}`
 
         const datos = await pool.query(querystmt, params)
+        const hasMore = datos.rows.length > limit
 
         return {
-            datos: datos.rows,
+            datos: hasMore ? datos.rows.slice(0, limit) : datos.rows,
             meta: {
                 limit: limit,
                 offset: offset,
-                hasMore: datos.rows.length === limit
+                hasMore: hasMore
             }
         }
     }

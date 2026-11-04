@@ -163,7 +163,7 @@ const esquemaUniversidad = z.object({
 
 const esquemaEntidades = z.object({
     nombreent: z.string({
-        error: 'El campo debe ser string'
+        error: 'El campo debe ser string y obligatorio'
     })
         .trim()
         .min(1, {
@@ -180,10 +180,10 @@ const esquemaEntidades = z.object({
         'Organismo Internacional',
         'N/A'
     ], {
-        error: 'El tipo de dato ingresado es invalido'
+        error: 'El tipo de dato ingresado es invalido y/o obligatorio'
     }),
     nit: z.string({
-        error: 'el NIT debe de ser un string'
+        error: 'el NIT debe de ser un string y obligatorio'
     })
         .trim()
         .min(4, {
@@ -252,7 +252,7 @@ const esquemaPaginacion = z.object({
     frscial: z.string({
         error: 'Debe de ser un string'
     })
-        .min(4, {
+        .min(3, {
             error: 'Minimo 4 caracteres'
         })
         .max(120, {
