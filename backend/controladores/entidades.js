@@ -1,12 +1,13 @@
 //@ts-nocheck
 import { EntidadesInfo } from "../modelos/postgreSQL/entidades.js"
 import { validacionPaginacion, actualizarBody, validarBody } from "../esquemas/esquemas.js"
+import { chequeoComodines } from "../utils/funciones/funciones.js"
 
 export class EntidadesControl {
     static async recoveryAllCont(req, res) {
         const validaciones = validacionPaginacion(req.query)
 
-        if ((validaciones.data.entty && (validaciones.data.entty.includes('%') || validaciones.data.entty.includes('_'))) || (validaciones.data.frscial && (validaciones.data.frscial.includes('%') || validaciones.data.frscial.includes('_')))) {
+        if (chequeoComodines(validaciones.data.entty, validaciones.data.frscial)) {
             return res.status(400).json({
                 error: `Error de validación de campos: No puedes usar comodines en busquedas - (Busqueda: ${validaciones.data.entty ? `entty: '${validaciones.data.entty}'` : ''} ${validaciones.data.frscial ? ` - frscial: '${validaciones.data.frscial}'` : ''})`
             })
@@ -53,7 +54,7 @@ export class EntidadesControl {
         const data = await EntidadesInfo.patchDataEnt({ id: id.data.id, input: validaciones.data })
 
         if (!data) {
-            return res.status(400).json({
+            return res.status(404).json({
                 error: `No existe dato con la ID: ${req.params.id}`
             })
         }
