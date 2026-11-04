@@ -34,8 +34,6 @@ import { Comunicacion } from "../../components/icons/home/Comunicacion.jsx";
 import { Educacion } from "../../components/icons/home/Educacion.jsx";
 import { Derechos } from "../../components/icons/home/Derechos.jsx";
 
-import useFetch from "../../hooks/useFetch";
-
 const imagenes = [
   encuentraBeca1,
   encuentraBeca2,
