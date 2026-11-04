@@ -99,7 +99,7 @@
   z-index: 10;
 }
 
-body.darkmode .beca-layout .filtros {
+html.darkmode .beca-layout .filtros {
   background-color: #223147;
 }
 
@@ -143,7 +143,7 @@ body.darkmode .beca-layout .filtros {
   color: var(--color);
 }
 
-body.darkmode .beca-layout .filtros .filtro-nombre input {
+html.darkmode .beca-layout .filtros .filtro-nombre input {
   background-color: #334155;
   border: 1px solid #535e6f;
 }
@@ -156,7 +156,7 @@ body.darkmode .beca-layout .filtros .filtro-nombre input {
   right: -1px;
   top: 5px;
   height: 37px;
-  background-color: #ad2022;
+  background-color: var(--color-terciario);
   cursor: pointer;
 }
 
