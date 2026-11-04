@@ -163,7 +163,7 @@ const esquemaUniversidad = z.object({
 
 const esquemaEntidades = z.object({
     nombreent: z.string({
-        error: 'El campo debe ser string'
+        error: 'El campo debe ser string y obligatorio'
     })
         .trim()
         .min(1, {
@@ -180,10 +180,10 @@ const esquemaEntidades = z.object({
         'Organismo Internacional',
         'N/A'
     ], {
-        error: 'El tipo de dato ingresado es invalido'
+        error: 'El tipo de dato ingresado es invalido y/o obligatorio'
     }),
     nit: z.string({
-        error: 'el NIT debe de ser un string'
+        error: 'el NIT debe de ser un string y obligatorio'
     })
         .trim()
         .min(4, {
@@ -192,6 +192,98 @@ const esquemaEntidades = z.object({
         .max(40, {
             error: 'Limite de caracteres: 40'
         })
+})
+
+const esquemaProgramas = z.object({
+    snies: z.string({
+        error: 'El campo debe de ser un string'
+    })
+        .trim()
+        .min(18, {
+            error: 'El SNIES como minimo debe tener 24 caracteres'
+        })
+        .max(20, {
+            error: 'El codigo SNIES como maximo tiene 28 caracteres'
+        }),
+    nombreprograma: z.string({
+        error: 'El campo debe de ser un string'
+    })
+        .trim()
+        .min(4, {
+            error: 'El campo no puede tener menos de 4 caracteres'
+        })
+        .max(150, {
+            error: 'Limite de caracteres: 150'
+        }),
+    titulo: z.string({
+        error: 'El campo debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El campo no puede estar vacío'
+        })
+        .max(150, {
+            error: 'Limite de caracteres: 150'
+        }),
+    nivel: z.enum([
+        'Técnico profesional',
+        'Tecnólogo',
+        'Pregrado universitario',
+        'Especialización',
+        'Maestría',
+        'Doctorado'
+    ], {
+        error: 'El tipo de dato ingresado es invalido'
+    }),
+    semestres: z.number({
+        error: 'El campo debe de ser un numero'
+    })
+        .int({
+            error: 'El dato debe de ser un entero'
+        })
+        .positive({
+            error: 'El dato debe de ser positivo'
+        })
+        .max(30, {
+            error: 'Limite de: 30'
+        }),
+    creditos: z.number({
+        error: 'El campo debe de ser un numero'
+    })
+        .int({
+            error: 'El dato debe de ser un entero'
+        })
+        .positive({
+            error: 'El dato debe de ser positivo'
+        })
+        .max(1000, {
+            error: 'Limite de 1000 "creditos"'
+        }),
+    periodo_admision: z.enum([
+        'Semestral',
+        'Anual'
+    ], {
+        error: 'El tipo de dato ingresado es invalido'
+    }),
+    id_universidad: z.number({
+        error: 'El campo debe de ser un numero'
+    })
+        .int({
+            error: 'El dato debe de ser un entero'
+        })
+        .positive({
+            error: 'El dato debe de ser positivo'
+        })
+        .max(10000, {
+            error: 'Limite de 1000 "creditos"'
+        }),
+    acreditacion: z.enum([
+        'Registro Calificado',
+        'Acreditacion de Alta Calidad',
+        'No definido'
+    ], {
+        error: 'El tipo de dato ingresado es invalido'
+    })
 })
 
 // Esquema para querys
@@ -210,6 +302,7 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
+
     fmod: z.string({
         error: 'Debe de ser un string'
     })
@@ -222,6 +315,7 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
+
     uvrst: z.string({
         error: 'Debe ser un string'
     })
@@ -249,14 +343,43 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
+
     frscial: z.string({
         error: 'Debe de ser un string'
     })
-        .min(4, {
-            error: 'Minimo 4 caracteres'
+        .min(3, {
+            error: 'Minimo 3 caracteres'
         })
         .max(120, {
             error: 'Maximo 120 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+
+    nprog: z.string({
+        error: 'Debe ser un string'
+    })
+        .trim()
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(60, {
+            error: 'Maximo 60 caracteres'
+        })
+        .regex(/^[^?&<>]+$/, {
+            error: "Caracteres no permitidos"
+        }),
+
+    nform: z.string({
+        error: 'Debe ser un string'
+    })
+        .trim()
+        .min(4, {
+            error: 'Minimo 4 caracteres'
+        })
+        .max(60, {
+            error: 'Maximo 60 caracteres'
         })
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
@@ -276,6 +399,7 @@ const esquemaPaginacion = z.object({
             error: 'El limite maximo es de 100'
         })
         .default(10),
+
     offset: z.coerce
         .number({
             error: 'El offset debe de ser un numero'
@@ -287,6 +411,7 @@ const esquemaPaginacion = z.object({
             error: 'Offset no puede ser negativo'
         })
         .default(0),
+
     id: z.coerce
         .number({
             error: 'El ID debe de ser un numero'
@@ -325,6 +450,11 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
+        case 'programa': {
+            const r = esquemaProgramas.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
 
     }
 }
@@ -343,6 +473,11 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'entidad': {
             const r = esquemaEntidades.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'programa': {
+            const r = esquemaProgramas.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

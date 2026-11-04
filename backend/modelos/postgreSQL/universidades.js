@@ -32,17 +32,19 @@ export class UniversidadesInfo {
         querystmt += busquedaFormateada ? ` AND f_unaccent(lower(nom_institucion)) ILIKE f_unaccent(lower($${params.push(busquedaFormateada)}))` : ''
         querystmt += id ? ` AND id_universidad = $${params.push(id)}` : ''
 
-        querystmt += ` LIMIT $${params.push(limit)}`
+        querystmt += ` ORDER BY id_universidad DESC`
+        querystmt += ` LIMIT $${params.push(limit + 1)}`
         querystmt += ` OFFSET $${params.push(offset)}`
 
         const datos = await pool.query(querystmt, params)
+        const hasMore = datos.rows.length > limit
 
         return {
-            datos: datos.rows,
+            datos: hasMore ? datos.rows.slice(0, limit) : datos.rows,
             meta: {
                 limit: limit,
                 offset: offset,
-                hasMore: datos.rows.length === limit
+                hasMore: hasMore
             }
         }
     }

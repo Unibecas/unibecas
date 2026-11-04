@@ -1,12 +1,13 @@
 //@ts-nocheck
 import { UniversidadesInfo } from "../modelos/postgreSQL/universidades.js"
-import { horaActual } from "../utils/funciones/funciones.js"
+import { chequeoComodines, horaActual } from "../utils/funciones/funciones.js"
 import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/esquemas.js"
 
 export class UniversidadesControl {
     static async allRecoveryCont(req, res) {
         const validaciones = validacionPaginacion(req.query)
-        if (validaciones.data.uvrst && (validaciones.data.uvrst.includes('%') || validaciones.data.uvrst.includes('_'))) {
+
+        if (chequeoComodines(validaciones.data.uvrst)) {
             return res.status(400).json({
                 error: `Error de validación de campos: No puedes usar comodines en busquedas! (Busqueda: '${validaciones.data.uvrst}')`
             })
@@ -54,7 +55,7 @@ export class UniversidadesControl {
         const data = await UniversidadesInfo.patchDataUni({ id: id.data.id, input: validaciones.data })
 
         if (!data) {
-            return res.status(400).json({
+            return res.status(404).json({
                 error: `No existe dato con la ID: ${req.params.id}`
             })
         }

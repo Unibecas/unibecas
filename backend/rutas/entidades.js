@@ -4,7 +4,7 @@ import { EntidadesControl } from '../controladores/entidades.js'
 
 export const entidadesRouter = Router()
 
-entidadesRouter.get('/', EntidadesControl)
-entidadesRouter.post('/', EntidadesControl)
-entidadesRouter.patch('/:id', EntidadesControl)
-entidadesRouter.delete('/:id', EntidadesControl)
+entidadesRouter.get('/', EntidadesControl.recoveryAllCont)
+entidadesRouter.post('/', EntidadesControl.newEntCont)
+entidadesRouter.patch('/:id', EntidadesControl.patchEntCont)
+entidadesRouter.delete('/:id', EntidadesControl.deleteEntCont)
