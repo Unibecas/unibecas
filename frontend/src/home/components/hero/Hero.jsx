@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import useFetch from "../../../hooks/useFetch";
-
 import { Search } from "../../../components/icons/home/Search";
+
+import { toast } from "sonner";
 
 const Hero = () => {
   const frases = ["beca ideal", "futuro", "próxima meta"];
@@ -60,22 +61,36 @@ const Hero = () => {
     return () => clearTimeout(temporizador);
   }, [texto, indiceFrase, borrando]);
 
-  const filtrarBecas = () => {
-    const params = new URLSearchParams();
+  const buscarBeca = () => {
+    const parametros = new URLSearchParams();
+
     const nombre = nombreBeca.trim();
+    console.log({ nombreBeca, longitud: nombreBeca.length });
+
+    if (nombre.length < 4) {
+      toast.error("Escribe al menos 4 caracteres para buscar una beca");
+      return;
+    }
 
     if (nombre.length >= 4) {
-      params.set("schsp", nombre);
+      parametros.set("schsp", nombre);
     }
 
-    if (modalidad) {
-      params.set("fmod", modalidad);
-    }
-
-    fetchData(`https://unibecas.onrender.com/main/becas?${params}`);
-
-    navigate("/becas");
+    navigate(`becas?${parametros}`);
   };
+
+  // const filtrarBecas = () => {
+  //   const params = new URLSearchParams();
+  //   const nombre = nombreBeca.trim();
+
+  //   if (modalidad) {
+  //     params.set("fmod", modalidad);
+  //   }
+
+  //   fetchData(`https://unibecas.onrender.com/main/becas?${params}`);
+
+  //   navigate("/becas");
+  // };
 
   return (
     <div className="hero" id="inicio">
@@ -96,11 +111,12 @@ const Hero = () => {
                 <Input
                   id="buscador"
                   type="text"
-                  placeholder="Palabra clave..."
+                  placeholder="Buscar por palabra clave..."
                   className="buscador-input"
+                  value={nombreBeca}
                   onChange={(e) => setNombreBeca(e.target.value)}
                 />
-                <button>
+                <button onClick={buscarBeca}>
                   <Search className="icono-busqueda" />
                 </button>
               </div>
@@ -127,9 +143,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <button className="buscador-boton" onClick={filtrarBecas}>
-              Buscar
-            </button>
+            <button className="buscador-boton">Buscar</button>
           </div>
         </div>
         <div className="hero-background">
