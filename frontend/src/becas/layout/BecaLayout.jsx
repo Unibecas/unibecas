@@ -17,8 +17,12 @@ import { Estado } from "../../components/icons/home/Estado";
 import Input from "../../components/input/Input";
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
 
+import { useSearchParams } from "react-router-dom";
+
 const BecaLayout = () => {
   const { data, loading } = useContext(BecaContext);
+
+  const [searchParams] = useSearchParams();
 
   const [mostrarFiltroModalidad, setMostrarFiltroModalidad] = useState(false);
   const [mostrarFiltroUniversidad, setMostrarFiltroUniversidad] =
@@ -28,6 +32,13 @@ const BecaLayout = () => {
   const [ordenarUniversidad, setOrdenarUniversidad] = useState(false);
   const [ordenarRecientes, setOrdenarRecientes] = useState(false);
   const [ordenarPopulares, setOrdenarPopulares] = useState(false);
+
+  const nombreInicial = searchParams.get("schsp") || "";
+  const modalidadInicial = searchParams.get("fmod") || "";
+
+  const [nombreBeca, setNombreBeca] = useState(nombreInicial);
+
+  const [busqueda, setBusqueda] = useState(nombreInicial);
 
   // Funciones para manejar el ordenamiento de becas
   const handleOrdenarUniversidad = () => {
@@ -67,6 +78,23 @@ const BecaLayout = () => {
     setMostrarFiltroEstado(!mostrarFiltroEstado);
   };
 
+  const becas = data?.datos ?? [];
+
+  const becasFiltradas = becas.filter((beca) => {
+    const coincideNombre = beca.nombre
+      .toLowerCase()
+      .includes(busqueda.toLowerCase().trim());
+
+    const coincideModalidad =
+      !modalidadInicial || beca.modalidad === modalidadInicial;
+
+    return coincideNombre && coincideModalidad;
+  });
+
+  const actualizarBusqueda = () => {
+    setBusqueda(nombreBeca.trim());
+  };
+
   return (
     <div className="beca-layout">
       <Header />
@@ -79,9 +107,20 @@ const BecaLayout = () => {
                 type="text"
                 placeholder="Buscar por palabra clave..."
                 className="buscador-input"
+                value={nombreBeca}
+                onChange={(e) => {
+                  const valor = e.target.value;
+                  setNombreBeca(valor);
+                  if (valor.trim() === "") {
+                    setBusqueda("");
+                  }
+                }}
               />
               <button>
-                <Search className="icono-busqueda" />
+                <Search
+                  className="icono-busqueda"
+                  onClick={actualizarBusqueda}
+                />
               </button>
             </div>
             <div className="filtro-botones">
@@ -171,7 +210,7 @@ const BecaLayout = () => {
             </>
           )}
         </div>
-        <BecaList becas={data?.datos} />
+        <BecaList becas={becasFiltradas} />
       </main>
 
       <PanelAccesible />

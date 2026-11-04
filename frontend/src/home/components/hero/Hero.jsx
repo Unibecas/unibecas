@@ -65,7 +65,6 @@ const Hero = () => {
     const parametros = new URLSearchParams();
 
     const nombre = nombreBeca.trim();
-    console.log({ nombreBeca, longitud: nombreBeca.length });
 
     if (nombre.length < 4) {
       toast.error("Escribe al menos 4 caracteres para buscar una beca");
@@ -79,18 +78,15 @@ const Hero = () => {
     navigate(`becas?${parametros}`);
   };
 
-  // const filtrarBecas = () => {
-  //   const params = new URLSearchParams();
-  //   const nombre = nombreBeca.trim();
+  const filtrarBecas = () => {
+    const params = new URLSearchParams();
 
-  //   if (modalidad) {
-  //     params.set("fmod", modalidad);
-  //   }
+    if (modalidad) {
+      params.set("fmod", modalidad);
+    }
 
-  //   fetchData(`https://unibecas.onrender.com/main/becas?${params}`);
-
-  //   navigate("/becas");
-  // };
+    navigate(`/becas?${params}`);
+  };
 
   return (
     <div className="hero" id="inicio">
@@ -143,7 +139,9 @@ const Hero = () => {
               </div>
             </div>
 
-            <button className="buscador-boton">Buscar</button>
+            <button className="buscador-boton" onClick={filtrarBecas}>
+              Buscar
+            </button>
           </div>
         </div>
         <div className="hero-background">
