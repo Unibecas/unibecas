@@ -22,6 +22,8 @@ import { useSearchParams } from "react-router-dom";
 const BecaLayout = () => {
   const { data, loading } = useContext(BecaContext);
 
+  const becas = data?.datos ?? [];
+
   const [searchParams] = useSearchParams();
 
   const [mostrarFiltroModalidad, setMostrarFiltroModalidad] = useState(false);
@@ -40,9 +42,35 @@ const BecaLayout = () => {
 
   const [busqueda, setBusqueda] = useState(nombreInicial);
 
-  // Funciones para manejar el ordenamiento de becas
+  const [orden, setOrden] = useState("");
+
+  const becasFiltradas = becas.filter((beca) => {
+    const coincideNombre = beca.nombre
+      .toLowerCase()
+      .includes(busqueda.toLowerCase().trim());
+
+    const coincideModalidad =
+      !modalidadInicial || beca.modalidad === modalidadInicial;
+
+    return coincideNombre && coincideModalidad;
+  });
+
+  // manejar el ordenamiento de becas
+  const becasOrdenadas = [...becasFiltradas];
+
+  if (orden === "universidad-asc") {
+    becasOrdenadas.sort((a, b) => a.universidad.localeCompare(b.universidad));
+  }
+
+  if (orden === "universidad-desc") {
+    becasOrdenadas.sort((a, b) => b.universidad.localeCompare(a.universidad));
+  }
+
   const handleOrdenarUniversidad = () => {
-    setOrdenarUniversidad(!ordenarUniversidad);
+    setOrden((prev) =>
+      prev === "universidad-asc" ? "universidad-desc" : "universidad-asc",
+    );
+
     setOrdenarRecientes(false);
     setOrdenarPopulares(false);
   };
@@ -77,19 +105,6 @@ const BecaLayout = () => {
     setMostrarFiltroUniversidad(false);
     setMostrarFiltroEstado(!mostrarFiltroEstado);
   };
-
-  const becas = data?.datos ?? [];
-
-  const becasFiltradas = becas.filter((beca) => {
-    const coincideNombre = beca.nombre
-      .toLowerCase()
-      .includes(busqueda.toLowerCase().trim());
-
-    const coincideModalidad =
-      !modalidadInicial || beca.modalidad === modalidadInicial;
-
-    return coincideNombre && coincideModalidad;
-  });
 
   const actualizarBusqueda = () => {
     setBusqueda(nombreBeca.trim());
@@ -210,7 +225,7 @@ const BecaLayout = () => {
             </>
           )}
         </div>
-        <BecaList becas={becasFiltradas} />
+        <BecaList becas={becasOrdenadas} />
       </main>
 
       <PanelAccesible />
