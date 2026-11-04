@@ -18,7 +18,7 @@ export const postgresqlErr = (err, req, res, next) => {
                 })
             case '23503':
                 console.log(consoleError(err))
-                if (res.method === 'DELETE') {
+                if (req.method === 'DELETE') {
                     return res.status(409).json({
                         error: `El recurso tiene datos relacionados`
                     })
@@ -94,7 +94,7 @@ export const postgresqlErr = (err, req, res, next) => {
                 })
         }
     } else if (err.code && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT')) {
-        console.log(consoleError(err.code))
+        console.log(consoleError(err))
         return res.status(503).json({
             error: 'Error de conexion, intentalo de nuevo mas tarde'
         })

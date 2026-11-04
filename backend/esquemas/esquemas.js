@@ -200,10 +200,10 @@ const esquemaProgramas = z.object({
     })
         .trim()
         .min(18, {
-            error: 'El SNIES como minimo debe tener 24 caracteres'
+            error: 'El SNIES como minimo debe tener 18 caracteres'
         })
         .max(20, {
-            error: 'El codigo SNIES como maximo tiene 28 caracteres'
+            error: 'El codigo SNIES como maximo tiene 20 caracteres'
         }),
     nombreprograma: z.string({
         error: 'El campo debe de ser un string'
@@ -226,9 +226,9 @@ const esquemaProgramas = z.object({
             error: 'Limite de caracteres: 150'
         }),
     nivel: z.enum([
-        'Técnico profesional',
+        'Técnico Profesional',
         'Tecnólogo',
-        'Pregrado universitario',
+        'Pregrado Universitario',
         'Especialización',
         'Maestría',
         'Doctorado'
@@ -275,7 +275,7 @@ const esquemaProgramas = z.object({
             error: 'El dato debe de ser positivo'
         })
         .max(10000, {
-            error: 'Limite de 1000 "creditos"'
+            error: 'Limite de 10000 "creditos"'
         }),
     acreditacion: z.enum([
         'Registro Calificado',

@@ -301,6 +301,18 @@ export class ProgramasInfo {
     }
 
     static async patchData({ id, input }) {
+
+        if (input.id_universidad) {
+            throw new ErrorValidacion(
+                'No puedes modificar las universidades de las carreras', {
+                cause: {
+                    message: 'Intento de modificacion en el modelo patchData (iduniversidad)',
+                    parametro: `Id proveedor: ${input.proveedor}`
+                }
+            }
+            )
+        }
+
         const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_PROGRAMAS, clave))
 
         if (claves.length === 0) {
