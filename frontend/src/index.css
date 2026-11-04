@@ -31,7 +31,7 @@ html {
   scroll-behavior: smooth;
 }
 
-body.darkmode {
+:root.darkmode {
   --background: #242a33;
 
   --color-primario: #e33437;
