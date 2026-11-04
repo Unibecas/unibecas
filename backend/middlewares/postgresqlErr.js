@@ -57,6 +57,16 @@ export const postgresqlErr = (err, req, res, next) => {
                 return res.status(400).json({
                     error: `El valor numerico proporcionado está fuera de rango`
                 })
+            case '23001':
+                console.log(consoleError(err))
+                if (req.method === 'DELETE') {
+                    return res.status(409).json({
+                        error: `El recurso a eliminar viola restricciones y/o datos relacionados`
+                    })
+                }
+                return res.status(409).json({
+                    error: `El recurso relacionado intenta ignorar restricciones de modificación`
+                })
             // 1000
             case '42P01':
                 console.log(consoleError(err))
