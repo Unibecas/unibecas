@@ -1,9 +1,4 @@
 //@ts-nocheck
-
-
-// HACER CONTROLADORES DE ENTIDADES PARA PROBAR EL USO DE ESTAS.
-
-
 import { ErrorValidacion } from "../../utils/errores/errorcharcount.js"
 import { pool } from "./conexion.js"
 
@@ -30,17 +25,19 @@ export class EntidadesInfo {
         querystmt += frscial ? ` AND f_unaccent(lower(tipo_ent)) ILIKE f_unaccent(lower($${params.push(`%${frscial}%`)}))` : ''
         querystmt += id ? ` AND id_entidad = $${params.push(id)}` : ''
 
-        querystmt += ` LIMIT $${params.push(limit)}`
+        querystmt += ` ORDER BY id_entidad DESC`
+        querystmt += ` LIMIT $${params.push(limit + 1)}`
         querystmt += ` OFFSET $${params.push(offset)}`
 
         const datos = await pool.query(querystmt, params)
+        const hasMore = datos.rows.length > limit
 
         return {
-            datos: datos.rows,
+            datos: hasMore ? datos.rows.slice(0, limit) : datos.rows,
             meta: {
                 limit: limit,
                 offset: offset,
-                hasMore: datos.rows.length === limit
+                hasMore: hasMore
             }
         }
     }
@@ -83,7 +80,7 @@ export class EntidadesInfo {
         const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_ENTIDADES, clave))
 
         if (claves.length === 0) {
-            throw new ErrorValidacion('NO hay campos para actualizar', {
+            throw new ErrorValidacion('No hay campos para actualizar', {
                 cause: {
                     message: 'No hay campos para actualizar la entidad'
                 }
@@ -101,7 +98,7 @@ export class EntidadesInfo {
             WITH entidad_actualizada AS (
                 UPDATE entidades
                 SET ${asignaciones.join(', ')}
-                WHERE id_entidades = $${posicionID}
+                WHERE id_entidad = $${posicionID}
                 RETURNING *
                 )
             SELECT
