@@ -23,7 +23,7 @@ export const postgresqlErr = (err, req, res, next) => {
                         error: `El recurso tiene datos relacionados`
                     })
                 }
-                return res.status(409).json({
+                return res.status(422).json({
                     error: `El recurso relacionado especificado no existe o no es válido`
                 })
 
@@ -59,11 +59,6 @@ export const postgresqlErr = (err, req, res, next) => {
                 })
             case '23001':
                 console.log(consoleError(err))
-                if (req.method === 'DELETE') {
-                    return res.status(409).json({
-                        error: `El recurso a eliminar viola restricciones y/o datos relacionados`
-                    })
-                }
                 return res.status(409).json({
                     error: `El recurso relacionado intenta ignorar restricciones de modificación`
                 })
