@@ -16,8 +16,8 @@ const PORT = process.env.PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 
-app.use(express.json())
 app.use(cabecerasJSON)
+app.use(express.json())
 app.use(expressJsonify)
 
 app.get('/', (req, res) => {
@@ -33,13 +33,10 @@ app.use((req, res) => {
     res.status(404).json({ error: '404 - La ruta no existe' })
 })
 
-// Middleware para validaciones Zod
+// Middlewares de errores  
 app.use(validacionesErr)
-// Middleware para errores de PGSQL
 app.use(postgresqlErr)
-// Middleware para origenes de CORS
 app.use(originErr)
-// Middleware para errores globales (Siempre al final)
 app.use(errGlobal)
 
 app.listen(PORT, () => {
