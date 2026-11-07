@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import useFetch from "../../../hooks/useFetch";
-
 import { Search } from "../../../components/icons/home/Search";
+
+import { toast } from "sonner";
 
 const Hero = () => {
   const frases = ["beca ideal", "futuro", "próxima meta"];
@@ -60,21 +61,31 @@ const Hero = () => {
     return () => clearTimeout(temporizador);
   }, [texto, indiceFrase, borrando]);
 
-  const filtrarBecas = () => {
-    const params = new URLSearchParams();
+  const buscarBeca = () => {
+    const parametros = new URLSearchParams();
+
     const nombre = nombreBeca.trim();
 
-    if (nombre.length >= 4) {
-      params.set("schsp", nombre);
+    if (nombre.length < 4) {
+      toast.error("Escribe al menos 4 caracteres para buscar una beca");
+      return;
     }
+
+    if (nombre.length >= 4) {
+      parametros.set("schsp", nombre);
+    }
+
+    navigate(`becas?${parametros}`);
+  };
+
+  const filtrarBecas = () => {
+    const params = new URLSearchParams();
 
     if (modalidad) {
       params.set("fmod", modalidad);
     }
 
-    fetchData(`https://unibecas.onrender.com/main/becas?${params}`);
-
-    navigate("/becas");
+    navigate(`/becas?${params}`);
   };
 
   return (
@@ -96,11 +107,12 @@ const Hero = () => {
                 <Input
                   id="buscador"
                   type="text"
-                  placeholder="Palabra clave..."
+                  placeholder="Buscar por palabra clave..."
                   className="buscador-input"
+                  value={nombreBeca}
                   onChange={(e) => setNombreBeca(e.target.value)}
                 />
-                <button>
+                <button onClick={buscarBeca}>
                   <Search className="icono-busqueda" />
                 </button>
               </div>

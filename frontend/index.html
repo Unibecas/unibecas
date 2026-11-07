@@ -2,6 +2,21 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      const temaGuardado = localStorage.getItem("mode");
+
+      if (temaGuardado === "darkmode") {
+        document.documentElement.classList.add("darkmode");
+      }
+    </script>
+
+    <style>
+      html.darkmode body {
+        background-color: #242a33;
+        color: #fff;
+      }
+    </style>
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unibecas | Encuentra becas y oportunidades</title>
