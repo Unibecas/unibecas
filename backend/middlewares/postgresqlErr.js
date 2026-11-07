@@ -96,6 +96,19 @@ export const postgresqlErr = (err, req, res, next) => {
                     error: `Error interno del servidor: Recurso no alcanzable`,
                     code: '1003'
                 })
+            // 1004
+            case '57014':
+                console.log(consoleError(err))
+                return res.status(406).json({
+                    error: `Error de tiempo de espera: La solicitud ha tardado demasiado en procesarse`,
+                    code: '1004'
+                })
+            case '57P01':
+                console.log(consoleError(err))
+                return res.status(503).json({
+                    error: `Error de servicio: La base de datos no está disponible temporalmente`,
+                    code: '1005'
+                })
             // EIS100
             default:
                 console.log(consoleError(err))

@@ -27,11 +27,6 @@ export const expressJsonify = (err, req, res, next) => {
         return res.status(err.status).json({
             error: 'Error de sintaxis: Exceso de parametros en el body JSON o en la URL (queryparams)'
         })
-    } else if (err.name === 'BadRequestError') {
-        console.log(`[cliente - ${horaActual()}] - Error de cliente - Peticion invalida (BadRequestError) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
-        return res.status(err.status).json({
-            error: 'Error de sintaxis: Peticion invalida (BadRequestError)'
-        })
     }
     next(err)
 }

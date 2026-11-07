@@ -74,7 +74,7 @@ export class BecasControl {
         const data = await BecasInfo.patchData({ id: id.data.id, input: validaciones.data })
 
         if (data === null) {
-            return res.status(404).json({
+            return res.status(400).json({
                 error: `No hay campos para actualizar`
             })
         } else if (!data) {
@@ -162,7 +162,7 @@ export class ProgramasControl {
         const data = await ProgramasInfo.patchData({ id: id.data.id, input: validaciones.data })
 
         if (data === null) {
-            return res.status(404).json({
+            return res.status(400).json({
                 error: `No hay campos para actualizar`
             })
         } else if (!data) {

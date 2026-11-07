@@ -9,7 +9,8 @@ export const pool = new Pool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     max: 12,
-    idleTimeoutMillis: 12000
+    idleTimeoutMillis: 12000,
+    connectionTimeoutMillis: 16000
 })
 
 function estadisticas() {
