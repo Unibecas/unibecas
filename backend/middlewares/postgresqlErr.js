@@ -58,6 +58,12 @@ export const postgresqlErr = (err, req, res, next) => {
                     error: `El valor numerico proporcionado está fuera de rango`
                 })
             case '23001':
+                if (req.method === 'DELETE') {
+                    console.log(consoleError(err))
+                    return res.status(409).json({
+                        error: 'Este campo tiene datos relacionados'
+                    })
+                }
                 console.log(consoleError(err))
                 return res.status(409).json({
                     error: `Tiene datos relacionados`
