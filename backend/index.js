@@ -10,6 +10,7 @@ import { originErr } from './middlewares/originErr.js'
 import { errGlobal } from './middlewares/errGlobal.js'
 import { validacionesErr } from './middlewares/validacionesErr.js'
 import { postgresqlErr } from './middlewares/postgresqlErr.js'
+import { expressErr } from './middlewares/expressErr.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
@@ -38,6 +39,7 @@ app.use((req, res) => {
 app.use(validacionesErr)
 app.use(postgresqlErr)
 app.use(originErr)
+app.use(expressErr)
 app.use(errGlobal)
 
 app.listen(PORT, () => {
