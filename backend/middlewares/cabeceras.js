@@ -15,7 +15,7 @@ export const cabecerasJSON = (req, res, next) => {
 }
 
 export const bodyJSON = (req, res, next) => {
-    if (metodos.includes(req.method) && (!req.body || Object.keys(req.body).length === 0)) {
+    if (metodos.includes(req.method) && (req.is('application/json') && (Object.keys(req.body).length === 0 || req.body === undefined))) {
         return res.status(400).json({
             error: `La petición ${req.method} esta vacía`
         })
