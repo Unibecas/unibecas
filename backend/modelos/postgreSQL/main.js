@@ -306,8 +306,8 @@ export class ProgramasInfo {
             throw new ErrorValidacion(
                 'No puedes modificar las universidades de las carreras', {
                 cause: {
-                    message: 'Intento de modificacion en el modelo patchData (iduniversidad)',
-                    parametro: `Id proveedor: ${input.proveedor}`
+                    message: 'Intento de modificacion en el modelo patchData (id_universidad)',
+                    parametro: `Id universidad: ${input.id_universidad}`
                 }
             }
             )

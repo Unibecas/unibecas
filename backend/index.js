@@ -2,7 +2,7 @@
 import express from 'express'
 import { mainRouter } from './rutas/main.js'
 import { corsMiddleware } from './middlewares/cors.js'
-import { cabecerasJSON } from './middlewares/cabeceras.js'
+import { cabecerasJSON, bodyJSON } from './middlewares/cabeceras.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
@@ -18,6 +18,7 @@ app.use(corsMiddleware())
 
 app.use(cabecerasJSON)
 app.use(express.json())
+app.use(bodyJSON)
 app.use(expressJsonify)
 
 app.get('/', (req, res) => {

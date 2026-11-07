@@ -10,7 +10,12 @@ export const cabecerasJSON = (req, res, next) => {
         return res.status(415).json({
             error: `El metodo ${req.method} no puede ser tratado si no es C/T -> APP/JSON`
         })
-    } else if (metodos.includes(req.method) && !req.body) {
+    }
+    next()
+}
+
+export const bodyJSON = (req, res, next) => {
+    if (metodos.includes(req.method) && (!req.body || Object.keys(req.body).length === 0)) {
         return res.status(400).json({
             error: `La petición ${req.method} esta vacía`
         })

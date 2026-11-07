@@ -194,6 +194,8 @@ const esquemaEntidades = z.object({
         })
 })
 
+// Esquema para Programas
+
 const esquemaProgramas = z.object({
     snies: z.string({
         error: 'El campo debe de ser un string'
@@ -273,6 +275,9 @@ const esquemaProgramas = z.object({
         })
         .positive({
             error: 'El dato debe de ser positivo'
+        })
+        .min(1, {
+            error: 'El ID no puede ser menor que 1'
         })
         .max(10000, {
             error: 'Limite de 10000 "creditos"'

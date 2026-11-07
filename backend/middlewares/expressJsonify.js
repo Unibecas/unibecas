@@ -18,7 +18,7 @@ export const expressJsonify = (err, req, res, next) => {
             error: 'Error de sintaxis: Formato charset para JSON invalido'
         })
     } else if (err.type === 'encoding.unsupported') {
-        console.log(`[cliente - ${horaActual()}] - Error de cliente - Cabecera de codificación es invalida (header charset) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
+        console.log(`[cliente - ${horaActual()}] - Error de cliente - Cabecera de codificación es invalida (header encoding) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
         return res.status(err.status).json({
             error: 'Error de sintaxis: Codificacion y formato del body JSON es invalida'
         })
@@ -26,6 +26,16 @@ export const expressJsonify = (err, req, res, next) => {
         console.log(`[cliente - ${horaActual()}] - Error de cliente - Exceso de queryparams (?a=b&...) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
         return res.status(err.status).json({
             error: 'Error de sintaxis: Exceso de parametros en la URL'
+        })
+    } else if (err instanceof URIError && err.status === 400) {
+        console.log(`[cliente - ${horaActual()}] - Error de cliente - URI invalida (URL) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
+        return res.status(err.status).json({
+            error: 'Error de sintaxis: URI invalida (URL)'
+        })
+    } else if (err.name === 'BadRequestError') {
+        console.log(`[cliente - ${horaActual()}] - Error de cliente - Peticion invalida (BadRequestError) - origen: ${req.headers.origin || req.headers.referer} - Estado: ${err.status}`)
+        return res.status(err.status).json({
+            error: 'Error de sintaxis: Peticion invalida (BadRequestError)'
         })
     }
     next(err)
