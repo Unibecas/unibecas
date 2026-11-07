@@ -60,7 +60,7 @@ export const postgresqlErr = (err, req, res, next) => {
             case '23001':
                 console.log(consoleError(err))
                 return res.status(409).json({
-                    error: `El recurso relacionado intenta ignorar restricciones de modificación`
+                    error: `Tiene datos relacionados`
                 })
             // 1000
             case '42P01':

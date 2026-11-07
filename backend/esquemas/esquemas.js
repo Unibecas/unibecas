@@ -276,11 +276,8 @@ const esquemaProgramas = z.object({
         .positive({
             error: 'El dato debe de ser positivo'
         })
-        .min(1, {
-            error: 'El ID no puede ser menor que 1'
-        })
         .max(10000, {
-            error: 'Limite de 10000 "creditos"'
+            error: 'ID limite de 10.000'
         }),
     acreditacion: z.enum([
         'Registro Calificado',
