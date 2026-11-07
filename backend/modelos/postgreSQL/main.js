@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { pool } from './conexion.js'
-import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
 
 const MAPA_COLUMNAS_BECAS = {
     nombrebeca: 'nombre_beca',
@@ -144,27 +143,12 @@ export class BecasInfo {
     }
 
     static async patchData({ id, input }) {
-        if (input.proveedor || input.iduniversidad) {
-            throw new ErrorValidacion(
-                'No puedes modificar proveedores o universidades', {
-                cause: {
-                    message: 'Intento de modificacion en el modelo patchData (proveedor - iduniversidad)',
-                    parametro: input.proveedor ? `Id proveedor: ${input.proveedor}` : `Id universidad: ${input.iduniversidad}`
-                }
-            }
-            )
-        }
-
         const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_BECAS, clave))
 
         if (claves.length === 0) {
-            throw new ErrorValidacion('No hay campos para actualizar', {
-                cause: {
-                    message: 'No hay campos para actualizar'
-                }
-            }
-            )
+            return null
         }
+
         const asignaciones = claves.map((clave, i) => `${MAPA_COLUMNAS_BECAS[clave]} = $${i + 1}`)
 
         const valores = claves.map(clave => input[clave])
@@ -304,12 +288,7 @@ export class ProgramasInfo {
         const claves = Object.keys(input).filter(clave => Object.hasOwn(MAPA_COLUMNAS_PROGRAMAS, clave))
 
         if (claves.length === 0) {
-            throw new ErrorValidacion('No hay campos para actualizar', {
-                cause: {
-                    message: 'No hay campos para actualizar'
-                }
-            }
-            )
+            return null
         }
         const asignaciones = claves.map((clave, i) => `${MAPA_COLUMNAS_PROGRAMAS[clave]} = $${i + 1}`)
 

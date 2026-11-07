@@ -6,13 +6,18 @@ const metodos = [
 ]
 
 export const cabecerasJSON = (req, res, next) => {
-    if (metodos.includes(req.method) && !req.body) {
+    if (metodos.includes(req.method) && !req.is('application/json')) {
+        return res.status(415).json({
+            error: `El metodo ${req.method} no puede ser tratado si no es C/T -> APP/JSON`
+        })
+    }
+    next()
+}
+
+export const bodyJSON = (req, res, next) => {
+    if (metodos.includes(req.method) && (req.is('application/json') && (req.body === undefined || Object.keys(req.body).length === 0))) {
         return res.status(400).json({
             error: `La petición ${req.method} esta vacía`
-        })
-    } else if (metodos.includes(req.method) && !req.is('application/json')) {
-        return res.status(400).json({
-            error: `El metodo ${req.method} no puede ser tratado si no es C/T -> APP/JSON`
         })
     }
     next()
