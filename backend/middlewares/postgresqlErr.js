@@ -99,7 +99,7 @@ export const postgresqlErr = (err, req, res, next) => {
             // 1004
             case '57014':
                 console.log(consoleError(err))
-                return res.status(406).json({
+                return res.status(408).json({
                     error: `Error de tiempo de espera: La solicitud ha tardado demasiado en procesarse`,
                     code: '1004'
                 })
