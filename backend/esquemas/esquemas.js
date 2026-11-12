@@ -432,6 +432,49 @@ const esquemaPaginacion = z.object({
         }),
 })
 
+// esquema para usuario
+
+const esquemaUsuario = z.object({
+    username: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'El nombre de usuario no puede estar vacío'
+      })
+      .max(24, {
+        error: 'El nombre de usuario no puede tener más de 24 caracteres'
+      }),
+    email: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    password: z.string({
+        error: 'El campo debe de ser un string'
+    })
+     .min(1, {
+        error: 'La contraseña no puede estar vacía'
+     })
+     .max(255, {
+        error: 'La contraseña no puede tener más de 255 caracteres'
+     })
+})
+
+const userId = z.object({
+    id: z.string({
+        error: 'El campo debe de ser un string'
+    })
+    .min(1, {
+        error: 'El ID de usuario no puede estar vacío'
+    })
+    .max(255, {
+        error: 'El ID de usuario no puede tener más de 255 caracteres'
+    })
+})
 
 // funciones de validación
 
@@ -457,7 +500,16 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
-
+        case 'usuario': {
+            const r = esquemaUsuario.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userId': {
+            const r = userId.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 
@@ -480,6 +532,16 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'programa': {
             const r = esquemaProgramas.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'usuario': {
+            const r = esquemaUsuario.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userId': {
+            const r = userId.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

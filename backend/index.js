@@ -1,10 +1,11 @@
 //@ts-nocheck
 import express from 'express'
 import { mainRouter } from './rutas/main.js'
-import { corsMiddleware } from './middlewares/cors.js'
-import { cabecerasJSON, bodyJSON } from './middlewares/cabeceras.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
+import { authRouter } from './rutas/auth.js'
+import { corsMiddleware } from './middlewares/cors.js'
+import { cabecerasJSON, bodyJSON } from './middlewares/cabeceras.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
 import { originErr } from './middlewares/originErr.js'
 import { errGlobal } from './middlewares/errGlobal.js'
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 // Recursos
+app.use('/auth', authRouter)
 app.use('/main', mainRouter)
 app.use('/entidades', entidadesRouter)
 app.use('/universidades', universidadesRouter)
