@@ -18,12 +18,12 @@ export const postgresqlErr = (err, req, res, next) => {
                 })
             case '23503':
                 console.log(consoleError(err))
-                if (res.method === 'DELETE') {
+                if (req.method === 'DELETE') {
                     return res.status(409).json({
                         error: `El recurso tiene datos relacionados`
                     })
                 }
-                return res.status(409).json({
+                return res.status(422).json({
                     error: `El recurso relacionado especificado no existe o no es válido`
                 })
 
@@ -57,6 +57,17 @@ export const postgresqlErr = (err, req, res, next) => {
                 return res.status(400).json({
                     error: `El valor numerico proporcionado está fuera de rango`
                 })
+            case '23001':
+                if (req.method === 'DELETE') {
+                    console.log(consoleError(err))
+                    return res.status(409).json({
+                        error: 'Este campo tiene datos relacionados'
+                    })
+                }
+                console.log(consoleError(err))
+                return res.status(409).json({
+                    error: `Tiene datos relacionados`
+                })
             // 1000
             case '42P01':
                 console.log(consoleError(err))
@@ -85,6 +96,19 @@ export const postgresqlErr = (err, req, res, next) => {
                     error: `Error interno del servidor: Recurso no alcanzable`,
                     code: '1003'
                 })
+            // 1004
+            case '57014':
+                console.log(consoleError(err))
+                return res.status(504).json({
+                    error: `Error de tiempo de espera: La solicitud ha tardado demasiado en procesarse`,
+                    code: '1004'
+                })
+            case '57P01':
+                console.log(consoleError(err))
+                return res.status(503).json({
+                    error: `Error de servicio: La base de datos no está disponible temporalmente`,
+                    code: '1005'
+                })
             // EIS100
             default:
                 console.log(consoleError(err))
@@ -94,7 +118,7 @@ export const postgresqlErr = (err, req, res, next) => {
                 })
         }
     } else if (err.code && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT')) {
-        console.log(consoleError(err.code))
+        console.log(consoleError(err))
         return res.status(503).json({
             error: 'Error de conexion, intentalo de nuevo mas tarde'
         })

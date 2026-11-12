@@ -64,10 +64,20 @@ export class BecasControl {
     static async patchDataCont(req, res) {
         const id = validacionPaginacion({ id: req.params.id })
         const validaciones = actualizarBody(req.body, 'beca')
+        if (validaciones.data.proveedor || validaciones.data.iduniversidad) {
+            return res.status(400).json({
+                error: 'Intento de modificacion en el modelo patchData (proveedor - iduniversidad)',
+                parametro: validaciones.data.proveedor ? `Id proveedor: ${validaciones.data.proveedor}` : `Id universidad: ${validaciones.data.iduniversidad}`
+            })
+        }
 
         const data = await BecasInfo.patchData({ id: id.data.id, input: validaciones.data })
 
-        if (!data) {
+        if (data === null) {
+            return res.status(400).json({
+                error: `No hay campos para actualizar`
+            })
+        } else if (!data) {
             return res.status(404).json({
                 error: `No existe dato con la ID: ${req.params.id}`
             })
@@ -141,9 +151,21 @@ export class ProgramasControl {
         const id = validacionPaginacion({ id: req.params.id })
         const validaciones = actualizarBody(req.body, 'programa')
 
+        if (validaciones.data.id_universidad) {
+            return res.status(400).json({
+                error: 'Intento de modificacion en el modelo patchData (id_universidad) - No se puede modificar el id de la universidad asociada a un programa',
+                parametro: `Id universidad: ${validaciones.data.id_universidad}`
+            })
+        }
+
+
         const data = await ProgramasInfo.patchData({ id: id.data.id, input: validaciones.data })
 
-        if (!data) {
+        if (data === null) {
+            return res.status(400).json({
+                error: `No hay campos para actualizar`
+            })
+        } else if (!data) {
             return res.status(404).json({
                 error: `No existe dato con la ID: ${req.params.id}`
             })

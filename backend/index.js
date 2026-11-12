@@ -2,7 +2,7 @@
 import express from 'express'
 import { mainRouter } from './rutas/main.js'
 import { corsMiddleware } from './middlewares/cors.js'
-import { cabecerasJSON } from './middlewares/cabeceras.js'
+import { cabecerasJSON, bodyJSON } from './middlewares/cabeceras.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
@@ -10,14 +10,16 @@ import { originErr } from './middlewares/originErr.js'
 import { errGlobal } from './middlewares/errGlobal.js'
 import { validacionesErr } from './middlewares/validacionesErr.js'
 import { postgresqlErr } from './middlewares/postgresqlErr.js'
+import { expressErr } from './middlewares/expressErr.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 
-app.use(express.json())
 app.use(cabecerasJSON)
+app.use(express.json())
+app.use(bodyJSON)
 app.use(expressJsonify)
 
 app.get('/', (req, res) => {
@@ -33,13 +35,11 @@ app.use((req, res) => {
     res.status(404).json({ error: '404 - La ruta no existe' })
 })
 
-// Middleware para validaciones Zod
+// Middlewares de errores  
 app.use(validacionesErr)
-// Middleware para errores de PGSQL
 app.use(postgresqlErr)
-// Middleware para origenes de CORS
 app.use(originErr)
-// Middleware para errores globales (Siempre al final)
+app.use(expressErr)
 app.use(errGlobal)
 
 app.listen(PORT, () => {
