@@ -1,13 +1,12 @@
 // @ts-nocheck
 import jwt from 'jsonwebtoken'
 
-
 export class autenticacion {
   static async verificarJWT (req, res, next) {
     const t = req.cookies.access_token
 
     if (!t){
-      res.status(401).json({
+      return res.status(401).json({
         error: 'No tienes autorización para hacer esto'
       })
     }
