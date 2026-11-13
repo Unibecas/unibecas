@@ -5,8 +5,17 @@ const metodos = [
     'PATCH'
 ]
 
+function postException(path) {
+    switch(path) {
+        case '/auth/logout':
+            return true
+        default:
+            return false
+    }
+}
+
 export const cabecerasJSON = (req, res, next) => {
-    if (metodos.includes(req.method) && !req.is('application/json')) {
+    if (metodos.includes(req.method) && !req.is('application/json') && !postException(req.path)) {
         return res.status(415).json({
             error: `El metodo ${req.method} no puede ser tratado si no es C/T -> APP/JSON`
         })
@@ -15,7 +24,7 @@ export const cabecerasJSON = (req, res, next) => {
 }
 
 export const bodyJSON = (req, res, next) => {
-    if (metodos.includes(req.method) && (req.is('application/json') && (req.body === undefined || Object.keys(req.body).length === 0))) {
+    if ((metodos.includes(req.method) && !postException(req.path)) && (req.is('application/json') && (req.body === undefined || Object.keys(req.body).length === 0))) {
         return res.status(400).json({
             error: `La petición ${req.method} esta vacía`
         })

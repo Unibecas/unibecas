@@ -63,17 +63,11 @@ export class AuthControl {
   }
 
   static async userLogoutCont(req, res) {
-    const validaciones = validarBody(req.body, 'userId')
-    const resultado = await AuthInfo.userLogout({
-      id: validaciones.data.id
+    res.clearCookie('access_token', {
+      httpOnly: true
     })
-
-    if (!resultado) {
-      return res.status(400).json({
-        error: 'No se pudo cerrar sesión. ID de usuario inválido.'
-      })
-    }
-
-    return res.status(200).json(resultado)
+    res.status(200).json({
+      info: 'Cierre de sesión exitoso'
+    })
   }
 }

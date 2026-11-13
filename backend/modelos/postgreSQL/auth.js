@@ -25,12 +25,4 @@ export class AuthInfo {
 
     return user.rows[0]
   }
-
-  static async userLogout({ id }) {
-    // Implementar la lógica de cierre de sesión según sea necesario, por ejemplo, invalidando tokens o eliminando sesiones.
-    if (!id) {
-      return false
-    }
-    return { message: 'Usuario deslogueado con éxito' }
-  }
 }
