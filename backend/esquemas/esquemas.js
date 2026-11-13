@@ -438,8 +438,12 @@ const esquemaUsuario = z.object({
     username: z.string({
         error: 'El campo debe de ser un string'
     })
+      .trim()
       .min(1, {
         error: 'El nombre de usuario no puede estar vacío'
+      })
+      .includes(' ', {
+        error: 'El nombre de usuario no puede incluir espacios'
       })
       .max(24, {
         error: 'El nombre de usuario no puede tener más de 24 caracteres'
@@ -449,6 +453,45 @@ const esquemaUsuario = z.object({
     })
       .min(1, {
         error: 'El email no puede estar vacío'
+      })
+      .includes('@', {
+        error: 'El email necesita un @'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    password: z.string({
+        error: 'El campo debe de ser un string'
+    })
+     .min(8, {
+        error: 'La contraseña debe de ser de minimo 8 caracteres'
+     })
+     .includes('*', {
+        error: 'La contraseña debe de incluir al menos un caracter especial'
+     })
+     .includes('&', {
+        error: 'La contraseña debe de incluir al menos un caracter especial'
+     })
+     .includes('-', {
+        error: 'La contraseña debe de incluir al menos un caracter especial'
+     })
+     .includes('_', {
+        error: 'La contraseña debe de incluir al menos un caracter especial'
+     }) 
+     .max(255, {
+        error: 'La contraseña no puede tener más de 255 caracteres'
+     })
+})
+
+const esquemaLogin = z.object({
+    username: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .includes('@', {
+        error: 'El email necesita un @'
       })
       .max(56, {
         error: 'El email no puede tener más de 56 caracteres'
@@ -502,6 +545,11 @@ export function validarBody(objeto, esquema) {
         }
         case 'usuario': {
             const r = esquemaUsuario.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'login': {
+            const r = esquemaLogin.safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }
