@@ -16,7 +16,7 @@ export class AuthInfo {
 
   static async userLogin({ username, password }) {
     const user = await pool.query(`
-      SELECT id_usuario AS id, username, email, psswd FROM usuarios WHERE username = $1 OR email = $1
+      SELECT id_usuario AS id, username, email, rol, psswd FROM usuarios WHERE email = $1
     `, [username])
     if (user.rows.length === 0) return null
 

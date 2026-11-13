@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { AuthInfo } from '../modelos/postgreSQL/auth.js'
 import { actualizarBody, validarBody } from '../esquemas/esquemas.js'
+import jwt from 'jsonwebtoken'
 
 export class AuthControl {
   static async userRegisterCont(req, res) {
@@ -32,12 +33,31 @@ export class AuthControl {
       })
     }
 
-    return res.status(200).json({
+    const token = jwt.sign({
+      id: user.id,
+      user: user.username,
+      admin: user.rol === 'Admin' ? true : false
+    }, 
+    process.env.JWT_KEY, 
+    {
+      expiresIn: '1h'
+    })
+
+    return res.status(200)
+    .cookie('access_token', token, {
+      httpOnly: true 
+      // para no hacer que sea accesible la cookie en js con document.cookie desde el cliente
+      // secure: true hacer que funcione solo en https
+      // sameSite: lax o strict para hacer que funcione en un solo dominio
+      // maxAge: expiracion de la cookie pero con la del kwt esta mas q bien
+    })
+    .json({
       message: 'Usuario logueado con exito',
+      token: token,
       info: {
         id: user.id,
-        username: user.username,
-        email: user.email
+        user: user.username,
+        rol: user.rol
       }
     })
   }

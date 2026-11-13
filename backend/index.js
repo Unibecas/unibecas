@@ -1,5 +1,6 @@
 //@ts-nocheck
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { mainRouter } from './rutas/main.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
@@ -12,6 +13,7 @@ import { errGlobal } from './middlewares/errGlobal.js'
 import { validacionesErr } from './middlewares/validacionesErr.js'
 import { postgresqlErr } from './middlewares/postgresqlErr.js'
 import { expressErr } from './middlewares/expressErr.js'
+import { jwtErr } from './middlewares/jwtErr.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
@@ -22,6 +24,7 @@ app.use(cabecerasJSON)
 app.use(express.json())
 app.use(bodyJSON)
 app.use(expressJsonify)
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
     res.status(200).send('<p>UniBecas API</p>')
@@ -39,6 +42,7 @@ app.use((req, res) => {
 
 // Middlewares de errores  
 app.use(validacionesErr)
+app.use(jwtErr)
 app.use(postgresqlErr)
 app.use(originErr)
 app.use(expressErr)
