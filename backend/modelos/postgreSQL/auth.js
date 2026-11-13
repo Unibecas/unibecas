@@ -18,7 +18,7 @@ export class AuthInfo {
     const user = await pool.query(`
       SELECT id_usuario AS id, username, email, psswd FROM usuarios WHERE username = $1 OR email = $1
     `, [username])
-    if (user.length === 0) return null
+    if (user.rows.length === 0) return null
 
     const isPasswordValid = await bycrypt.compare(password, user.rows[0].psswd)
     if (!isPasswordValid) return null
