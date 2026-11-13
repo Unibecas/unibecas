@@ -20,7 +20,7 @@ export class AuthControl {
   }
 
   static async userLoginCont(req, res) {
-    const validaciones = actualizarBody(req.body, 'usuario')
+    const validaciones = validarBody(req.body, 'login')
 
     const user = await AuthInfo.userLogin({
       username: validaciones.data.username,
@@ -66,7 +66,10 @@ export class AuthControl {
     res.clearCookie('access_token', {
       httpOnly: true
     })
-    res.status(200).json({
+    res.status(200)
+    // .redirect('http://localhost:5173') para hacer la redireccion, sustituye la respuesta de json,
+    //  haciendo que el cliente redirija automaticamente a la pagina del home
+    .json({
       info: 'Cierre de sesión exitoso'
     })
   }
