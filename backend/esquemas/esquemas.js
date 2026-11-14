@@ -464,7 +464,6 @@ const esquemaUsuario = z.object({
     password: z.string({
         error: 'El campo debe de ser un string'
     })
-     .trim()
      .min(8, {
         error: 'La contraseña debe de ser de minimo 8 caracteres'
      })
