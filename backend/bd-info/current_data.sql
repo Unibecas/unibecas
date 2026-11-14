@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict 8UJnFb48zZHLPhDuWRiY6sZbvilVxG5Y1bg5OJqUvj75ng2eScwTnOisGYLgzVi
+\restrict yF1p5d4FFTtZ1cZWwaJGQjAgtBY72rE0a7iTscU2hTnBRFDVIFSShh5esw5qwfV
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
 
--- Started on 2026-11-13 01:26:09
+-- Started on 2026-11-14 02:33:32
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22,9 +22,75 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 4986 (class 0 OID 16618)
--- Dependencies: 227
--- Data for Name: becas; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 4944 (class 0 OID 24717)
+-- Dependencies: 224
+-- Data for Name: entidades; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.entidades (id_entidad, nom_ent, tipo_ent, nit_ent) FROM stdin;
+20	Universidad de Cartagena	IES	890480123-5
+21	Universidad Tecnológica de Bolívar	IES	890401962-0
+22	Institución Universitaria Bellas Artes y Ciencias de Bolívar	IES	890480308-0
+23	Universidad de San Buenaventura	IES	890307400-1
+24	Fundación Universitaria Antonio de Arévalo	IES	890481264-1
+25	Corporación Universitaria Rafael Núñez	IES	890481276-8
+26	Fundación Universitaria Tecnológico Comfenalco	IES	890481183-1
+27	Fundación Universitaria Colombo Internacional	IES	900131269-0
+28	Universidad del Sinú - Elías Bechara Zainúm	IES	891000692-1
+29	Servicio Nacional de Aprendizaje - SENA	IES	899999034-1
+30	Alcaldía Mayor de Cartagena de Indias	Entidad Publica	890480184-4
+31	Gobernación del Departamento de Bolívar	Entidad Publica	890480059-1
+32	ICETEX	Entidad Publica	899999035-7
+33	Fundación Promigas	ESAL o Fundacion	802010620-9
+34	Fundación Coosalud para el Desarrollo de la Economía Solidaria	ESAL o Fundacion	806011962-1
+35	Refinería de Cartagena S.A.S. (Reficar)	Entidades Privadas	900112515-7
+36	Esenttia S.A.	Entidades Privadas	800059470-5
+37	Cabot Colombiana S.A.S.	Entidades Privadas	890400080-5
+38	Dow Química de Colombia S.A.	Entidades Privadas	860014659-4
+39	Colectivo TRASO de Transformación Social	ESAL o Fundacion	890480468-0
+40	Ministerio de Educación Nacional de Colombia	Entidad Publica	899999001-7
+41	Caja de Compensación Familiar de Fenalco del Departamento de Bolívar - COMFENALCO	ESAL o Fundacion	890400560-6
+\.
+
+
+--
+-- TOC entry 4946 (class 0 OID 24728)
+-- Dependencies: 226
+-- Data for Name: universidades; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.universidades (id_universidad, nom_institucion, siglas, codigo_snies, mod_presencial, mod_virtual, mod_hibrida, mod_adistancia, ciudad, departamento) FROM stdin;
+21	Universidad de Cartagena	UdeC	1205	t	f	f	t	Cartagena de Indias	Bolívar
+22	Universidad Tecnológica de Bolívar	UTB	1832	t	t	f	f	Cartagena de Indias	Bolívar
+23	Universidad del Sinú - Elías Bechara Zainúm	Unisinu	1834	t	t	f	t	Cartagena de Indias	Bolívar
+24	Corporación Universitaria Rafael Núñez	UniNúñez	2825	t	t	f	f	Cartagena de Indias	Bolívar
+25	Fundación Universitaria Tecnológico Comfenalco - Cartagena	Comfenalco	3705	t	t	f	f	Cartagena de Indias	Bolívar
+26	Fundación Universitaria Antonio de Arévalo	Unitecnar	3710	t	t	f	t	Cartagena de Indias	Bolívar
+27	Institución Universitaria Mayor de Cartagena	Umayor	3103	t	t	f	f	Cartagena de Indias	Bolívar
+28	Institución Universitaria Bellas Artes y Ciencias de Bolívar	Bellas Artes	2211	t	f	f	f	Cartagena de Indias	Bolívar
+29	Fundación Universidad de Bogotá Jorge Tadeo Lozano - Seccional Cartagena	UTadeo	1708	t	f	f	f	Cartagena de Indias	Bolívar
+30	Universidad de San Buenaventura - Seccional Cartagena	USB	1724	t	f	f	f	Cartagena de Indias	Bolívar
+31	Corporación Universitaria Regional del Caribe	IAFIC	4826	t	f	f	f	Cartagena de Indias	Bolívar
+32	Fundación Universitaria Colombo Internacional	Unicolombo	9121	t	f	f	f	Cartagena de Indias	Bolívar
+33	Escuela Naval de Cadetes Almirante Padilla	ENAP	9105	t	f	f	f	Cartagena de Indias	Bolívar
+34	Universidad Nacional Abierta y a Distancia	UNAD	2102	f	t	f	t	Cartagena de Indias	Bolívar
+35	Fundación Universitaria Los Libertadores	Libertadores	2713	t	t	f	f	Cartagena de Indias	Bolívar
+36	Fundación Universitaria San Martín	San Martín	2709	t	t	f	f	Cartagena de Indias	Bolívar
+37	Corporación Universitaria Autónoma de Nariño	AUNAR	3817	t	t	f	f	Cartagena de Indias	Bolívar
+38	Corporación Universitaria Minuto de Dios	Uniminuto	2829	t	t	f	t	Cartagena de Indias	Bolívar
+39	Corporación Unificada Nacional de Educación Superior	CUN	4813	t	t	f	t	Cartagena de Indias	Bolívar
+40	Escuela Superior de Administración Pública	ESAP	2104	f	f	f	t	Cartagena de Indias	Bolívar
+41	Todas las IES aliadas	TLIESA	0000	t	t	t	t	Cartagena	Bolívar
+42	Centros de Formación Surtigas	CFS	No aplica	t	t	t	f	Cartagena	Bolívar
+43	Universidades con Convenio Regional	CONV-REG	No aplica	t	t	t	t	Múltiples	Bolívar
+44	IES con convenio de posgrado	IES-POS	No aplica	t	t	t	t	Múltiples	Bolívar
+\.
+
+
+--
+-- TOC entry 4940 (class 0 OID 24676)
+-- Dependencies: 220
+-- Data for Name: becas; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.becas (id_beca, nombre_beca, fecha_creacion_sys, vigencia_programa, descripcion_informacion, informacion_aplicar, modalidad, cobertura, id_universidad_acceso, estado, url_informacion, proveedor_beca) FROM stdin;
@@ -36,14 +102,15 @@ COPY public.becas (id_beca, nombre_beca, fecha_creacion_sys, vigencia_programa, 
 13	Becas Lucho Bermúdez - Gobernación de Bolívar	2026-10-08 17:23:40.12655	Mañana	Programa de la Gobernación de Bolívar en convenio con la Institución Universitaria Bellas Artes y Ciencias de Bolívar (UNIBAC) orientada a la formación profesional y técnica de talentos en disciplinas artísticas y culturales.	Ser residente de cualquiera de los municipios del departamento de Bolívar, realizar la inscripción formal en UNIBAC y diligenciar el formulario de postulación de la Secretaría de Educación Departamental.	Pregrado	Cobertura del 100% del valor de la matrícula académica durante la totalidad de la carrera universitaria en UNIBAC.	28	Activa	https://www.bolivar.gov.co/web/seccion/becas-lucho-bermudez-junio-2025/	31
 14	Becas Boomerang - Colectivo Traso	2026-10-08 17:23:40.12655	Convocatoria Anual	Iniciativa de formación superior y empleabilidad impulsada por el Colectivo Traso y empresas del sector industrial de Cartagena para el desarrollo de competencias laborales, bilingüismo y fortalecimiento socioemocional.	Jóvenes entre 16 y 21 años egresados de colegios oficiales de Cartagena, Turbaco o Turbana, residentes en viviendas de estrato 1 o 2. Registro e inscripción virtual en el portal oficial del programa.	Tecnologica	100% del costo de la matrícula tecnológica, formación intensiva en inglés, talleres de liderazgo, coaching psicosocial y auxilio de transporte o conectividad.	41	Vencida	https://colectivotraso.org/becas-boomerang/	39
 21	Becas de Formación en Maestría y Doctorado - Regalías Bolívar	2026-10-08 17:23:40.12655	Convocatoria Periódica	Fondo condonable financiado con recursos del Sistema General de Regalías (SGR) de la Gobernación de Bolívar y MinCiencias para la formación de talento humano de alto nivel académico.	Profesionales nacidos o residentes en el departamento de Bolívar cuyo proyecto de investigación esté alineado con los focos estratégicos del territorio (agroindustria, logística, turismo, ambiente).	Posgrado	Financiación condonable del 100% de la matrícula de posgrado y estipendio mensual de sostenimiento para el estudiante.	24	Activa	https://minciencias.gov.co/convocatorias/formacion-y-vinculacion-de-capital-humano-de-alto-nivel	31
-71	Teta estudios	2026-10-31 16:30:46.306885	80 años	aksjakjskjaskaskajkskjasjakjskajskajskajskjasjkahskjfhslkdfhklngcidggfsnkf	llama al kevin navarro	Tecnica	Cartagena	22	Suspendida	http://localhost.com	28
+72	Teta estudios	2026-11-13 01:33:39.219021	80 años	aksjakjskjaskaskajkskjasjakjskajskajskajskjasjkahskjfhslkdfhklngcidggfsnkf	No sabemos	Tecnica	Cartagena	22	Suspendida	http://www.juan.com	28
+71	Teta estudios	2026-10-31 16:30:46.306885	80 años	aksjakjskjaskaskajkskjasjakjskajskajskajskjasjkahskjfhslkdfhklngcidggfsnkf	No sabemos	Tecnica	Cartagena	22	Suspendida	http://localhost.com	28
 \.
 
 
 --
--- TOC entry 4988 (class 0 OID 16654)
--- Dependencies: 229
--- Data for Name: carreras; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 4942 (class 0 OID 24697)
+-- Dependencies: 222
+-- Data for Name: carreras; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.carreras (id_carrera, codigo_snies_programa, nombre_programa, titulo_otorgado, nivel_formacion, numero_semestres, creditos_totales, periodicidad_admision, id_universidad_fk, tipo_acreditacion) FROM stdin;
@@ -1467,134 +1534,46 @@ COPY public.carreras (id_carrera, codigo_snies_programa, nombre_programa, titulo
 
 
 --
--- TOC entry 4984 (class 0 OID 16602)
--- Dependencies: 225
--- Data for Name: entidades; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.entidades (id_entidad, nom_ent, tipo_ent, nit_ent) FROM stdin;
-20	Universidad de Cartagena	IES	890480123-5
-21	Universidad Tecnológica de Bolívar	IES	890401962-0
-22	Institución Universitaria Bellas Artes y Ciencias de Bolívar	IES	890480308-0
-23	Universidad de San Buenaventura	IES	890307400-1
-24	Fundación Universitaria Antonio de Arévalo	IES	890481264-1
-25	Corporación Universitaria Rafael Núñez	IES	890481276-8
-26	Fundación Universitaria Tecnológico Comfenalco	IES	890481183-1
-27	Fundación Universitaria Colombo Internacional	IES	900131269-0
-28	Universidad del Sinú - Elías Bechara Zainúm	IES	891000692-1
-29	Servicio Nacional de Aprendizaje - SENA	IES	899999034-1
-30	Alcaldía Mayor de Cartagena de Indias	Entidad Publica	890480184-4
-31	Gobernación del Departamento de Bolívar	Entidad Publica	890480059-1
-32	ICETEX	Entidad Publica	899999035-7
-33	Fundación Promigas	ESAL o Fundacion	802010620-9
-34	Fundación Coosalud para el Desarrollo de la Economía Solidaria	ESAL o Fundacion	806011962-1
-35	Refinería de Cartagena S.A.S. (Reficar)	Entidades Privadas	900112515-7
-36	Esenttia S.A.	Entidades Privadas	800059470-5
-37	Cabot Colombiana S.A.S.	Entidades Privadas	890400080-5
-38	Dow Química de Colombia S.A.	Entidades Privadas	860014659-4
-39	Colectivo TRASO de Transformación Social	ESAL o Fundacion	890480468-0
-40	Ministerio de Educación Nacional de Colombia	Entidad Publica	899999001-7
-41	Caja de Compensación Familiar de Fenalco del Departamento de Bolívar - COMFENALCO	ESAL o Fundacion	890400560-6
-45	Empresa de california super amigable	Entidades Privadas	0000
-47	Empresa de california super amigable	Entidades Privadas	1234
-\.
-
-
---
--- TOC entry 4982 (class 0 OID 16581)
--- Dependencies: 223
--- Data for Name: universidades; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.universidades (id_universidad, nom_institucion, siglas, codigo_snies, mod_presencial, mod_virtual, mod_hibrida, mod_adistancia, ciudad, departamento) FROM stdin;
-21	Universidad de Cartagena	UdeC	1205	t	f	f	t	Cartagena de Indias	Bolívar
-22	Universidad Tecnológica de Bolívar	UTB	1832	t	t	f	f	Cartagena de Indias	Bolívar
-23	Universidad del Sinú - Elías Bechara Zainúm	Unisinu	1834	t	t	f	t	Cartagena de Indias	Bolívar
-24	Corporación Universitaria Rafael Núñez	UniNúñez	2825	t	t	f	f	Cartagena de Indias	Bolívar
-25	Fundación Universitaria Tecnológico Comfenalco - Cartagena	Comfenalco	3705	t	t	f	f	Cartagena de Indias	Bolívar
-26	Fundación Universitaria Antonio de Arévalo	Unitecnar	3710	t	t	f	t	Cartagena de Indias	Bolívar
-27	Institución Universitaria Mayor de Cartagena	Umayor	3103	t	t	f	f	Cartagena de Indias	Bolívar
-28	Institución Universitaria Bellas Artes y Ciencias de Bolívar	Bellas Artes	2211	t	f	f	f	Cartagena de Indias	Bolívar
-29	Fundación Universidad de Bogotá Jorge Tadeo Lozano - Seccional Cartagena	UTadeo	1708	t	f	f	f	Cartagena de Indias	Bolívar
-30	Universidad de San Buenaventura - Seccional Cartagena	USB	1724	t	f	f	f	Cartagena de Indias	Bolívar
-31	Corporación Universitaria Regional del Caribe	IAFIC	4826	t	f	f	f	Cartagena de Indias	Bolívar
-32	Fundación Universitaria Colombo Internacional	Unicolombo	9121	t	f	f	f	Cartagena de Indias	Bolívar
-33	Escuela Naval de Cadetes Almirante Padilla	ENAP	9105	t	f	f	f	Cartagena de Indias	Bolívar
-34	Universidad Nacional Abierta y a Distancia	UNAD	2102	f	t	f	t	Cartagena de Indias	Bolívar
-35	Fundación Universitaria Los Libertadores	Libertadores	2713	t	t	f	f	Cartagena de Indias	Bolívar
-36	Fundación Universitaria San Martín	San Martín	2709	t	t	f	f	Cartagena de Indias	Bolívar
-37	Corporación Universitaria Autónoma de Nariño	AUNAR	3817	t	t	f	f	Cartagena de Indias	Bolívar
-38	Corporación Universitaria Minuto de Dios	Uniminuto	2829	t	t	f	t	Cartagena de Indias	Bolívar
-39	Corporación Unificada Nacional de Educación Superior	CUN	4813	t	t	f	t	Cartagena de Indias	Bolívar
-40	Escuela Superior de Administración Pública	ESAP	2104	f	f	f	t	Cartagena de Indias	Bolívar
-41	Todas las IES aliadas	TLIESA	0000	t	t	t	t	Cartagena	Bolívar
-42	Centros de Formación Surtigas	CFS	No aplica	t	t	t	f	Cartagena	Bolívar
-43	Universidades con Convenio Regional	CONV-REG	No aplica	t	t	t	t	Múltiples	Bolívar
-44	IES con convenio de posgrado	IES-POS	No aplica	t	t	t	t	Múltiples	Bolívar
-\.
-
-
---
--- TOC entry 4980 (class 0 OID 16561)
+-- TOC entry 4953 (class 0 OID 0)
 -- Dependencies: 221
--- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Name: becas_id_beca_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-COPY public.usuario (id_user, nombre_com, apellido_com, correo, num_tel, passcon, rol, estado) FROM stdin;
-1	admon	admon	admon@admin.admon	00000	adm0nadm1n	AaAdmin	t
-\.
+SELECT pg_catalog.setval('public.becas_id_beca_seq', 72, true);
 
 
 --
--- TOC entry 5000 (class 0 OID 0)
--- Dependencies: 226
--- Name: becas_id_beca_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.becas_id_beca_seq', 71, true);
-
-
---
--- TOC entry 5001 (class 0 OID 0)
--- Dependencies: 228
--- Name: carreras_id_carrera_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- TOC entry 4954 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: carreras_id_carrera_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.carreras_id_carrera_seq', 1422, true);
 
 
 --
--- TOC entry 5002 (class 0 OID 0)
--- Dependencies: 224
--- Name: entidades_id_entidad_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- TOC entry 4955 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: entidades_id_entidad_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.entidades_id_entidad_seq', 47, true);
 
 
 --
--- TOC entry 5003 (class 0 OID 0)
--- Dependencies: 222
--- Name: universidades_id_universidad_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- TOC entry 4956 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: universidades_id_universidad_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.universidades_id_universidad_seq', 49, true);
 
 
---
--- TOC entry 5004 (class 0 OID 0)
--- Dependencies: 220
--- Name: usuario_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.usuario_id_user_seq', 2, true);
-
-
--- Completed on 2026-11-13 01:26:09
+-- Completed on 2026-11-14 02:33:36
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 8UJnFb48zZHLPhDuWRiY6sZbvilVxG5Y1bg5OJqUvj75ng2eScwTnOisGYLgzVi
+\unrestrict yF1p5d4FFTtZ1cZWwaJGQjAgtBY72rE0a7iTscU2hTnBRFDVIFSShh5esw5qwfV
 
