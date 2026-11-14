@@ -482,6 +482,7 @@ const esquemaLogin = z.object({
     username: z.string({
         error: 'El campo debe de ser un string'
     })
+      .trim()
       .min(1, {
         error: 'El email no puede estar vacío'
       })
