@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 export const jwtErr = (err, req, res, next) => {
   console.log(`Error TOKEN: ${err.name} - Detalles: ${err.message}`)
   if (err instanceof jwt.TokenExpiredError || err instanceof jwt.JsonWebTokenError) {
-    return res.status(498).json({
+    return res.status(401).json({
       error: 'Token invalido o expirado'
     })
   }
