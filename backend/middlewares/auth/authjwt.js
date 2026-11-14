@@ -18,7 +18,7 @@ export class autenticacion {
 
   static soloAdmin (req, res, next) {
     if (!req.user.admin) {
-      return res.status(401).json({
+      return res.status(403).json({
         error: 'No tienes permisos'
       })
     }
