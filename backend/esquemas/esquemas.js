@@ -442,8 +442,8 @@ const esquemaUsuario = z.object({
       .min(1, {
         error: 'El nombre de usuario no puede estar vacío'
       })
-      .includes(' ', {
-        error: 'El nombre de usuario no puede incluir espacios'
+      .regex(/^[a-zA-Z0-9._]+$/, {
+        error: 'Solo se permiten letras, numeros, puntos y guiones bajos'
       })
       .max(24, {
         error: 'El nombre de usuario no puede tener más de 24 caracteres'
@@ -451,11 +451,12 @@ const esquemaUsuario = z.object({
     email: z.string({
         error: 'El campo debe de ser un string'
     })
+      .trim()
       .min(1, {
         error: 'El email no puede estar vacío'
       })
-      .includes('@', {
-        error: 'El email necesita un @'
+      .regex(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, {
+          error: 'Formato de correo inválido o contiene caracteres no permitidos'
       })
       .max(56, {
         error: 'El email no puede tener más de 56 caracteres'
@@ -463,21 +464,16 @@ const esquemaUsuario = z.object({
     password: z.string({
         error: 'El campo debe de ser un string'
     })
+     .trim()
      .min(8, {
         error: 'La contraseña debe de ser de minimo 8 caracteres'
      })
-     .includes('*', {
-        error: 'La contraseña debe de incluir al menos un caracter especial'
-     })
-     .includes('&', {
-        error: 'La contraseña debe de incluir al menos un caracter especial'
-     })
-     .includes('-', {
-        error: 'La contraseña debe de incluir al menos un caracter especial'
-     })
-     .includes('_', {
-        error: 'La contraseña debe de incluir al menos un caracter especial'
-     }) 
+     .regex(/[!@#$%^&*]/, {
+         error: 'Debe de contener un caracter especial: !@#$%^&*'
+        })
+    .regex(/[0-9]/, {
+        error: 'La contraseña debe contener al menos un numero.'    
+    })
      .max(255, {
         error: 'La contraseña no puede tener más de 255 caracteres'
      })
@@ -490,8 +486,8 @@ const esquemaLogin = z.object({
       .min(1, {
         error: 'El email no puede estar vacío'
       })
-      .includes('@', {
-        error: 'El email necesita un @'
+      .regex(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, {
+          error: 'Formato de correo inválido o contiene caracteres no permitidos'
       })
       .max(56, {
         error: 'El email no puede tener más de 56 caracteres'
