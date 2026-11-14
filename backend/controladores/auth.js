@@ -45,7 +45,7 @@ export class AuthControl {
 
     return res.status(200)
     .cookie('access_token', token, {
-      httpOnly: true 
+      httpOnly: true
       // para no hacer que sea accesible la cookie en js con document.cookie desde el cliente
       // secure: true hacer que funcione solo en https
       // sameSite: lax o strict para hacer que funcione en un solo dominio

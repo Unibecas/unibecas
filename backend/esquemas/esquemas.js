@@ -474,7 +474,7 @@ const esquemaUsuario = z.object({
     .regex(/[0-9]/, {
         error: 'La contraseña debe contener al menos un numero.'    
     })
-     .max(255, {
+     .max(72, {
         error: 'La contraseña no puede tener más de 255 caracteres'
      })
 })
