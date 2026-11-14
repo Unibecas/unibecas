@@ -452,6 +452,7 @@ const esquemaUsuario = z.object({
         error: 'El campo debe de ser un string'
     })
       .trim()
+      .toLowerCase()
       .min(1, {
         error: 'El email no puede estar vacío'
       })
@@ -483,6 +484,7 @@ const esquemaLogin = z.object({
         error: 'El campo debe de ser un string'
     })
       .trim()
+      .toLowerCase()
       .min(1, {
         error: 'El email no puede estar vacío'
       })
