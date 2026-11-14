@@ -455,7 +455,7 @@ const esquemaUsuario = z.object({
       .min(1, {
         error: 'El email no puede estar vacío'
       })
-      .regex(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, {
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
           error: 'Formato de correo inválido o contiene caracteres no permitidos'
       })
       .max(56, {
@@ -486,7 +486,7 @@ const esquemaLogin = z.object({
       .min(1, {
         error: 'El email no puede estar vacío'
       })
-      .regex(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, {
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
           error: 'Formato de correo inválido o contiene caracteres no permitidos'
       })
       .max(56, {
