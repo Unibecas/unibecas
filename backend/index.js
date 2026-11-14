@@ -1,5 +1,6 @@
 //@ts-nocheck
 import express from 'express'
+// Evaluar helmet como middleware de seguridad
 import cookieParser from 'cookie-parser'
 import { mainRouter } from './rutas/main.js'
 import { entidadesRouter } from './rutas/entidades.js'

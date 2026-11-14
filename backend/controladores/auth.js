@@ -53,7 +53,6 @@ export class AuthControl {
     })
     .json({
       message: 'Usuario logueado con exito',
-      token: token,
       info: {
         id: user.id,
         user: user.username,
