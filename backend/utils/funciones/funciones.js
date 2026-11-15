@@ -1,5 +1,9 @@
 //@ts-nocheck
 
+import { autenticacion } from "../../middlewares/auth/authjwt.js"
+import jwt from 'jsonwebtoken'
+import { JWT_KEY } from "../errores/env.js"
+
 export function horaActual() {
     return new Date().toLocaleString()
 }
@@ -9,4 +13,13 @@ export function chequeoComodines(primero, segundo = undefined) {
         return true
     }
     return false
+}
+
+export async function infoPublicaCheck(token) {
+    try {
+        await jwt.verify(token, JWT_KEY)
+        return true
+    } catch (error) {
+        return false
+    }
 }

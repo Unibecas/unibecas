@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { BecasInfo, ProgramasInfo } from "../modelos/postgreSQL/main.js"
 import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/esquemas.js"
-import { chequeoComodines } from "../utils/funciones/funciones.js"
+import { chequeoComodines, infoPublicaCheck } from "../utils/funciones/funciones.js"
 
 export class BecasControl {
     static async allRecoveryCont(req, res) {
@@ -13,7 +13,7 @@ export class BecasControl {
             })
         }
         const { schsp, fmod, limit, offset } = validaciones.data
-        const t = req.cookies.access_token ? true : false
+        const t = req.cookies.access_token ? await infoPublicaCheck(req.cookies.access_token) : false
         const data = await BecasInfo.allRecovery({ schsp, fmod, limit, offset, token: t})
 
         return res.status(200).json(data)
@@ -21,7 +21,7 @@ export class BecasControl {
 
     static async idRecoveryCont(req, res) {
         const idVal = validacionPaginacion({ id: req.params.id })
-        const t = req.cookies.access_token ? true : false
+        const t = req.cookies.access_token ? await infoPublicaCheck(req.cookies.access_token) : false
         const findData = await BecasInfo.idRecovery({ id: idVal.data.id, token: t })
         if (findData) {
             return res.status(200).json({
@@ -101,7 +101,7 @@ export class ProgramasControl {
         }
 
         const { nprog, nform, limit, offset } = validaciones.data
-        const t = req.cookies.access_token ? true : false
+        const t = req.cookies.access_token ? await infoPublicaCheck(req.cookies.access_token) : false
         const data = await ProgramasInfo.allRecovery({ nprog, nform, limit, offset, token: t })
 
         return res.status(200).json(data)
@@ -109,7 +109,7 @@ export class ProgramasControl {
 
     static async idRecoveryCont(req, res) {
         const idVal = validacionPaginacion({ id: req.params.id })
-        const t = req.cookies.access_token ? true : false
+        const t = req.cookies.access_token ? await infoPublicaCheck(req.cookies.access_token) : false
         const findData = await ProgramasInfo.idRecovery({ id: idVal.data.id, token: t })
 
         if (findData) {
