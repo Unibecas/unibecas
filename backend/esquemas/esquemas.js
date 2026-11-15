@@ -465,18 +465,18 @@ const esquemaUsuario = z.object({
     password: z.string({
         error: 'El campo debe de ser un string'
     })
-     .min(8, {
+      .min(8, {
         error: 'La contraseña debe de ser de minimo 8 caracteres'
-     })
-     .regex(/[!@#$%^&*]/, {
-         error: 'Debe de contener un caracter especial: !@#$%^&*'
-        })
-    .regex(/[0-9]/, {
+      })
+      .regex(/[!@#$%^&*]/, {
+        error: 'Debe de contener un caracter especial: !@#$%^&*'
+      })
+      .regex(/[0-9]/, {
         error: 'La contraseña debe contener al menos un numero.'    
-    })
-     .max(72, {
-        error: 'La contraseña no puede tener más de 255 caracteres'
-     })
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      })
 })
 
 const esquemaLogin = z.object({
@@ -489,7 +489,7 @@ const esquemaLogin = z.object({
         error: 'El email no puede estar vacío'
       })
       .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
-          error: 'Formato de correo inválido o contiene caracteres no permitidos'
+        error: 'Formato de correo inválido o contiene caracteres no permitidos'
       })
       .max(56, {
         error: 'El email no puede tener más de 56 caracteres'
@@ -497,12 +497,12 @@ const esquemaLogin = z.object({
     password: z.string({
         error: 'El campo debe de ser un string'
     })
-     .min(1, {
+      .min(1, {
         error: 'La contraseña no puede estar vacía'
-     })
-     .max(255, {
-        error: 'La contraseña no puede tener más de 255 caracteres'
-     })
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      })
 })
 
 const userId = z.object({
