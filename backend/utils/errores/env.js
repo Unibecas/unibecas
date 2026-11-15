@@ -18,7 +18,12 @@ if (missingVars.length > 0) {
 } else if (process.env.JWT_KEY.length <= 32) {
   console.error(`[error - ${horaActual()}] .env -> JWT_KEY muy corta! - Minimo 32 caracteres`)
   process.exit(1)
+} else if (Number.isNaN(Number(process.env.PORT)) || Number.isNaN(Number(process.env.DB_PORT))) {
+  console.error(`[error - ${horaActual()}] .env -> PORT - DB_PORT No son numeros - Minimo 32 caracteres`)
+  process.exit(1)
 }
+
+
 
 console.log(`[Arranque - ${horaActual()}] Estado: Exitoso - Info: Variables de entorno satisfechas!`)
 
