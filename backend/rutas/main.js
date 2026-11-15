@@ -2,8 +2,11 @@
 import { Router } from 'express'
 import { BecasControl, ProgramasControl } from '../controladores/main.js'
 import { autenticacion } from '../middlewares/auth/authjwt.js'
+import { sesionOpcional } from '../middlewares/sesionOpcional.js'
 
 export const mainRouter = Router()
+
+mainRouter.use(sesionOpcional)
 
 // Becas Universitarias
 mainRouter.get('/becas', BecasControl.allRecoveryCont)
