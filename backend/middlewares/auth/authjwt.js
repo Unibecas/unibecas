@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { JWT_KEY } from '../../utils/errores/env.js'
 import jwt from 'jsonwebtoken'
 
 export class autenticacion {
@@ -11,7 +12,7 @@ export class autenticacion {
       })
     }
 
-    const payload = await jwt.verify(t, process.env.JWT_KEY)
+    const payload = await jwt.verify(t, JWT_KEY)
     req.user = payload
     next()
   }

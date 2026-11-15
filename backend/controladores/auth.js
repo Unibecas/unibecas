@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { AuthInfo } from '../modelos/postgreSQL/auth.js'
 import { validarBody } from '../esquemas/esquemas.js'
+import { JWT_KEY } from '../utils/errores/env.js'
 import jwt from 'jsonwebtoken'
 
 export class AuthControl {
@@ -38,7 +39,7 @@ export class AuthControl {
       user: user.username,
       admin: user.rol === 'Admin' ? true : false
     }, 
-    process.env.JWT_KEY, 
+    JWT_KEY, 
     {
       expiresIn: '1h'
     })

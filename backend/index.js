@@ -1,6 +1,9 @@
 //@ts-nocheck
+// ------------------ Config ------------------
+import { PORT } from './utils/errores/env.js'
+// ------------------ Setup ------------------
 import express from 'express'
-// Evaluar helmet como middleware de seguridad
+// !! Evaluar helmet como middleware de seguridad ??
 import cookieParser from 'cookie-parser'
 import { mainRouter } from './rutas/main.js'
 import { entidadesRouter } from './rutas/entidades.js'
@@ -17,7 +20,7 @@ import { expressErr } from './middlewares/expressErr.js'
 import { jwtErr } from './middlewares/jwtErr.js'
 
 const app = express()
-const PORT = process.env.PORT ?? 3001
+const puerto = PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 
@@ -49,6 +52,6 @@ app.use(originErr)
 app.use(expressErr)
 app.use(errGlobal)
 
-app.listen(PORT, () => {
+app.listen(puerto, () => {
     console.log(`[Server] Running port: http://localhost:${PORT}`)
 })
