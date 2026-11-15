@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict yF1p5d4FFTtZ1cZWwaJGQjAgtBY72rE0a7iTscU2hTnBRFDVIFSShh5esw5qwfV
+\restrict fKjFdhedYOGSAxrJ6Q2dVmXXxbKVM6DNUYAIGax16o5irsmh4AscFuvCOGk1BM9
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
 
--- Started on 2026-11-14 02:33:32
+-- Started on 2026-11-14 19:55:32
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -100,10 +100,8 @@ COPY public.becas (id_beca, nombre_beca, fecha_creacion_sys, vigencia_programa, 
 19	Fondo de Educación Superior para Víctimas del Conflicto Armado - ICETEX	2026-10-08 17:23:40.12655	Convocatoria Anual	Programa nacional que brinda financiación condonable a personas incluidas en el Registro Único de Víctimas (RUV) residentes en Bolívar para cursar estudios técnicos, tecnológicos o universitarios.	Estar figurando en el Registro Único de Víctimas (RUV), contar con admisión en una IES reconocida y formalizar la solicitud a través del portal oficial del ICETEX en las fechas estipuladas.	Pregrado	Financiación del costo de la matrícula hasta por 11 SMMLV por semestre y auxilio de sostenimiento equivalente a 1.5 SMMLV semestrales.	23	Activa	https://web.icetex.gov.co/es/-/victimas-del-conflicto-armado	32
 20	Becas de Excelencia e Incentivos Académicos - Universidad de Cartagena	2026-10-08 17:23:40.12655	Convocatoria Semestral	Exenciones de pago de matrícula académica y auxilios de transporte/alimentación gestionados por la Vicerrectoría de Bienestar Universitario para estudiantes con rendimiento académico superior o de vulnerabilidad económica.	Ser estudiante regular de la Universidad de Cartagena, contar con el promedio acumulado más alto de la facultad o programa académico respectivo, o acreditar vulnerabilidad socioeconómica mediante estudio social.	Pregrado	Exención total o parcial (del 50% al 100%) del pago del valor de la matrícula financiera e inclusión en programas de comedor universitario.	21	Activa	https://www.unicartagena.edu.co/inicio/bienestar-universitario	20
 13	Becas Lucho Bermúdez - Gobernación de Bolívar	2026-10-08 17:23:40.12655	Mañana	Programa de la Gobernación de Bolívar en convenio con la Institución Universitaria Bellas Artes y Ciencias de Bolívar (UNIBAC) orientada a la formación profesional y técnica de talentos en disciplinas artísticas y culturales.	Ser residente de cualquiera de los municipios del departamento de Bolívar, realizar la inscripción formal en UNIBAC y diligenciar el formulario de postulación de la Secretaría de Educación Departamental.	Pregrado	Cobertura del 100% del valor de la matrícula académica durante la totalidad de la carrera universitaria en UNIBAC.	28	Activa	https://www.bolivar.gov.co/web/seccion/becas-lucho-bermudez-junio-2025/	31
-14	Becas Boomerang - Colectivo Traso	2026-10-08 17:23:40.12655	Convocatoria Anual	Iniciativa de formación superior y empleabilidad impulsada por el Colectivo Traso y empresas del sector industrial de Cartagena para el desarrollo de competencias laborales, bilingüismo y fortalecimiento socioemocional.	Jóvenes entre 16 y 21 años egresados de colegios oficiales de Cartagena, Turbaco o Turbana, residentes en viviendas de estrato 1 o 2. Registro e inscripción virtual en el portal oficial del programa.	Tecnologica	100% del costo de la matrícula tecnológica, formación intensiva en inglés, talleres de liderazgo, coaching psicosocial y auxilio de transporte o conectividad.	41	Vencida	https://colectivotraso.org/becas-boomerang/	39
 21	Becas de Formación en Maestría y Doctorado - Regalías Bolívar	2026-10-08 17:23:40.12655	Convocatoria Periódica	Fondo condonable financiado con recursos del Sistema General de Regalías (SGR) de la Gobernación de Bolívar y MinCiencias para la formación de talento humano de alto nivel académico.	Profesionales nacidos o residentes en el departamento de Bolívar cuyo proyecto de investigación esté alineado con los focos estratégicos del territorio (agroindustria, logística, turismo, ambiente).	Posgrado	Financiación condonable del 100% de la matrícula de posgrado y estipendio mensual de sostenimiento para el estudiante.	24	Activa	https://minciencias.gov.co/convocatorias/formacion-y-vinculacion-de-capital-humano-de-alto-nivel	31
-72	Teta estudios	2026-11-13 01:33:39.219021	80 años	aksjakjskjaskaskajkskjasjakjskajskajskajskjasjkahskjfhslkdfhklngcidggfsnkf	No sabemos	Tecnica	Cartagena	22	Suspendida	http://www.juan.com	28
-71	Teta estudios	2026-10-31 16:30:46.306885	80 años	aksjakjskjaskaskajkskjasjakjskajskajskajskjasjkahskjfhslkdfhklngcidggfsnkf	No sabemos	Tecnica	Cartagena	22	Suspendida	http://localhost.com	28
+14	Becas Boomerang - Colectivo Traso	2026-10-08 17:23:40.12655	Convocatoria Anual	Iniciativa de formación superior y empleabilidad impulsada por el Colectivo Traso y empresas del sector industrial de Cartagena para el desarrollo de competencias laborales, bilingüismo y fortalecimiento socioemocional.	Jóvenes entre 16 y 21 años egresados de colegios oficiales de Cartagena, Turbaco o Turbana, residentes en viviendas de estrato 1 o 2. Registro e inscripción virtual en el portal oficial del programa.	Tecnologica	100% del costo de la matrícula tecnológica, formación intensiva en inglés, talleres de liderazgo, coaching psicosocial y auxilio de transporte o conectividad.	41	Activa	https://colectivotraso.org/becas-boomerang/	39
 \.
 
 
@@ -1529,7 +1527,6 @@ COPY public.carreras (id_carrera, codigo_snies_programa, nombre_programa, titulo
 1417	1697	ADMINISTRACION PUBLICA TERRITORIAL	ADMINISTRADOR PUBLICO	Pregrado Universitario	10	156	Semestral	40	Acreditacion de Alta Calidad
 1418	116204	ECONOMÍA PÚBLICA	ECONOMISTA PÚBLICO	Pregrado Universitario	9	150	Semestral	40	Registro Calificado
 1419	119638	Especialización en Comunicación Gubernamental	Especialista en Comunicación Gubernamental	Especialización	2	28	Semestral	40	Registro Calificado
-1422	2222222222222222222	PROFESIONAL EN VAGANCIA Y TURISMO	Profesional en vagancia y turismo	Doctorado	12	50	Anual	41	Acreditacion de Alta Calidad
 \.
 
 
@@ -1569,11 +1566,11 @@ SELECT pg_catalog.setval('public.entidades_id_entidad_seq', 47, true);
 SELECT pg_catalog.setval('public.universidades_id_universidad_seq', 49, true);
 
 
--- Completed on 2026-11-14 02:33:36
+-- Completed on 2026-11-14 19:55:37
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict yF1p5d4FFTtZ1cZWwaJGQjAgtBY72rE0a7iTscU2hTnBRFDVIFSShh5esw5qwfV
+\unrestrict fKjFdhedYOGSAxrJ6Q2dVmXXxbKVM6DNUYAIGax16o5irsmh4AscFuvCOGk1BM9
 
