@@ -1,5 +1,7 @@
 //@ts-nocheck
 import { horaActual } from "../funciones/funciones.js"
+import { esPuertoValido } from "../funciones/funciones.js"
+
 const requiredEnvVars = [
   'PORT',
   'DB_PORT',
@@ -18,8 +20,8 @@ if (missingVars.length > 0) {
 } else if (process.env.JWT_KEY.length <= 32) {
   console.error(`[error - ${horaActual()}] .env -> JWT_KEY muy corta! - Minimo 32 caracteres`)
   process.exit(1)
-} else if ((Number.isNaN(Number(process.env.PORT.trim()))) || Number.isNaN(Number(process.env.DB_PORT.trim()))) {
-  console.error(`[error - ${horaActual()}] .env -> PORT - DB_PORT No son numeros - Minimo 32 caracteres`)
+} else if (!esPuertoValido(process.env.PORT) || !esPuertoValido(process.env.DB_PORT)) {
+  console.error(`[error - ${horaActual()}] .env -> PORT o DB_PORT no están definidos o no son puertos válidos`)
   process.exit(1)
 }
 
