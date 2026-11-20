@@ -10,7 +10,9 @@ export function infoPublicaCheck(token) {
         })
         return true
     } catch (error) {
-        console.log(`[Public - ${horaActual()}] Información publica servida parcialmente - ${error.message}`)
+        if (error.message === 'invalid signature' || error.message === 'invalid token') {
+          console.log(`[Error JWT - ${horaActual()}] - Token invalido - Información publica servida parcialmente - ${error.message}`)
+        }
         return false
     }
 }
