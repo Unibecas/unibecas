@@ -10,10 +10,3 @@ export function chequeoComodines(primero, segundo = undefined) {
     }
     return false
 }
-
-export function esPuertoValido(valor) {
-  if (!valor || valor.trim() === "") return false
-
-  const numero = Number(valor.trim())
-  return Number.isInteger(numero) && numero >= 1 && numero <= 65535
-}

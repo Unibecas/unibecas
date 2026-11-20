@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { AuthInfo } from '../modelos/postgreSQL/auth.js'
 import { validarBody } from '../esquemas/esquemas.js'
-import { JWT_KEY } from '../utils/errores/env.js'
+import { JWT_KEY } from '../env.js'
 import jwt from 'jsonwebtoken'
 
 export class AuthControl {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { JWT_KEY } from '../../utils/errores/env.js'
+import { JWT_KEY } from '../../env.js'
 import jwt from 'jsonwebtoken'
 import { horaActual } from '../../utils/funciones/funciones.js'
 

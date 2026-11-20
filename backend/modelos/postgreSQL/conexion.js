@@ -7,7 +7,7 @@ import {
     DB_USER,
     DB_PASSWORD,
     DB_NAME
-} from '../../utils/errores/env.js'
+} from '../../env.js'
 
 const { Pool } = pg
 export const pool = new Pool({

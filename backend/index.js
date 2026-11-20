@@ -1,6 +1,6 @@
 //@ts-nocheck
 // ------------------ Config ------------------
-import { PORT } from './utils/errores/env.js'
+import { PORT } from './env.js'
 // ------------------ Setup ------------------
 import express from 'express'
 // !! Evaluar helmet como middleware de seguridad ??
