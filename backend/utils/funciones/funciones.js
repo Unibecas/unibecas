@@ -1,8 +1,5 @@
 //@ts-nocheck
 
-import jwt from 'jsonwebtoken'
-import { JWT_KEY } from "../errores/env.js"
-
 export function horaActual() {
     return new Date().toLocaleString()
 }
