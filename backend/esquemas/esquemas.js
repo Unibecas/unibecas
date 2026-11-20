@@ -638,6 +638,11 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
+        case 'checkEnv': {
+            const r = env.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 

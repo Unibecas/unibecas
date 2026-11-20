@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { actualizarBody } from "../../esquemas/esquemas.js"
+import { validarBody } from "../../esquemas/esquemas.js"
 import { horaActual } from "../funciones/funciones.js"
 
 async function env() {
   try {
-    const vars = await actualizarBody({...process.env}, 'checkEnv')
+    const vars = await validarBody({...process.env}, 'checkEnv')
     return vars.data
   } catch (err) {  
       console.log(`[Error - Variables de entorno insatisfechas - ${horaActual()}] Columna: ${err.issues[0].path} - Info: ${err.issues[0].message}`)
