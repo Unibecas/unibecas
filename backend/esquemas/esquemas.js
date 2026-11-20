@@ -577,8 +577,8 @@ const env = z.object({
         .min(1, {
             error: 'El host de la base de datos no puede estar vacío'
         })
-        .max(25, {
-            error: 'El host supera el limite de caracteres: 25'
+        .max(125, {
+            error: 'El host supera el limite de caracteres: 125'
         }),
     DB_NAME: z.string({
         error: 'El nombre de la base de datos debe de ser un string'
@@ -593,10 +593,10 @@ const env = z.object({
     JWT_KEY: z.string({
         error: 'La key debe ser un string'
     })
+        .trim()
         .min(32, {
             error: 'La key debe tener como minimo 32 caracteres'
         })
-        .trim()
 })
 
 // funciones de validación
