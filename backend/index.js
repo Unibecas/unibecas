@@ -18,9 +18,9 @@ import { validacionesErr } from './middlewares/validacionesErr.js'
 import { postgresqlErr } from './middlewares/postgresqlErr.js'
 import { expressErr } from './middlewares/expressErr.js'
 import { jwtErr } from './middlewares/jwtErr.js'
+import { horaActual } from './utils/funciones/funciones.js'
 
 const app = express()
-const puerto = PORT ?? 3001
 app.disable('x-powered-by')
 app.use(corsMiddleware())
 
@@ -52,6 +52,6 @@ app.use(originErr)
 app.use(expressErr)
 app.use(errGlobal)
 
-app.listen(puerto, () => {
-    console.log(`[Server] Running port: http://localhost:${PORT}`)
+app.listen(PORT, () => {
+    console.log(`[Server - ${horaActual()}] Corriendo en el puerto: http://localhost:${PORT}`)
 })
