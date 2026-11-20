@@ -1,6 +1,19 @@
 // @ts-nocheck
 import { JWT_KEY } from '../../utils/errores/env.js'
 import jwt from 'jsonwebtoken'
+import { horaActual } from '../../utils/funciones/funciones.js'
+
+export function infoPublicaCheck(token) {
+    try {
+        jwt.verify(token, JWT_KEY, {
+            algorithms: ['HS256']
+        })
+        return true
+    } catch (error) {
+        console.log(`[Public - ${horaActual()}] Información publica servida parcialmente - ${error.message}`)
+        return false
+    }
+}
 
 export class autenticacion {
   static async verificarJWT (req, res, next) {
@@ -12,7 +25,9 @@ export class autenticacion {
       })
     }
 
-    const payload = await jwt.verify(t, JWT_KEY)
+    const payload = jwt.verify(t, JWT_KEY, {
+      algorithms: ['HS256']
+    })
     req.user = payload
     next()
   }
