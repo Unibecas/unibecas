@@ -517,6 +517,88 @@ const userId = z.object({
     })
 })
 
+// ENV Vars
+
+const env = z.object({
+    PORT: z.coerce
+        .number({
+            error: 'El puerto debe de ser un numero'
+        })
+        .int({
+            error: 'El numero para el puerto debe de ser un entero'
+        })
+        .positive({
+            error: 'El puerto debe de ser positivo'
+        })
+        .max(65535, {
+            error: 'El limite maximo es de 65535'
+        })
+        .default(3000)
+        .transform((val) => String(val)),
+    DB_PORT: z.coerce
+        .number({
+            error: 'El puerto de la base de datos debe de ser un numero'
+        })
+        .int({
+            error: 'El numero para el puerto de la base de datos debe de ser un entero'
+        })
+        .positive({
+            error: 'El puerto debe de ser positivo'
+        })
+        .max(65535, {
+            error: 'El limite maximo es de 65535'
+        })
+        .default(5432)
+        .transform((val) => String(val)),
+    DB_USER: z.string({
+        error: 'El usuario de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El nombre de usuario de la base de datos no puede estar vacío'
+        })
+        .max(50, {
+            error: 'El nombre de usuario supera el limite de caracteres: 50'
+        }),
+    DB_PASSWORD: z.string({
+        error: 'La contraseña debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'la contraseña de la base de datos no puede estar vacía'
+        })
+        .max(250, {
+            error: 'La contraseña supera el limite de caracteres: 250'
+        }),
+    DB_HOST: z.string({
+        error: 'El el host de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El host de la base de datos no puede estar vacío'
+        })
+        .max(25, {
+            error: 'El host supera el limite de caracteres: 25'
+        }),
+    DB_NAME: z.string({
+        error: 'El nombre de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El nombre de la base de datos no puede estar vacío'
+        })
+        .max(50, {
+            error: 'El nombre de la base de datos supera el limite de caracteres: 50'
+        }),
+    JWT_KEY: z.string({
+        error: 'La key debe ser un string'
+    })
+        .min(32, {
+            error: 'La key debe tener como minimo 32 caracteres'
+        })
+        .trim()
+})
+
 // funciones de validación
 
 export function validarBody(objeto, esquema) {
@@ -588,6 +670,11 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'userId': {
             const r = userId.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'checkEnv': {
+            const r = env.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

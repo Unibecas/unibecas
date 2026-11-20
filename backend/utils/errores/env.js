@@ -1,30 +1,18 @@
 //@ts-nocheck
+import { actualizarBody } from "../../esquemas/esquemas.js"
 import { horaActual } from "../funciones/funciones.js"
-import { esPuertoValido } from "../funciones/funciones.js"
 
-const requiredEnvVars = [
-  'PORT',
-  'DB_PORT',
-  'DB_USER',
-  'DB_PASSWORD',
-  'DB_HOST',
-  'DB_NAME',
-  'JWT_KEY'
-]
-
-const missingVars = requiredEnvVars.filter((key) => !process.env[key]?.trim())
-
-if (missingVars.length > 0) {
-  console.error(`[error - ${horaActual()}] Faltan variables de entorno obligatorias: ${missingVars.join(', ')}`)
-  process.exit(1)
-} else if (process.env.JWT_KEY.length <= 32) {
-  console.error(`[error - ${horaActual()}] .env -> JWT_KEY muy corta! - Minimo 32 caracteres`)
-  process.exit(1)
-} else if (!esPuertoValido(process.env.PORT) || !esPuertoValido(process.env.DB_PORT)) {
-  console.error(`[error - ${horaActual()}] .env -> PORT o DB_PORT no están definidos o no son puertos válidos`)
-  process.exit(1)
+async function env() {
+  try {
+    const vars = await actualizarBody({...process.env}, 'checkEnv')
+    return vars.data
+  } catch (err) {  
+      console.log(`[Error - Variables de entorno insatisfechas - ${horaActual()}] Columna: ${err.issues[0].path} - Info: ${err.issues[0].message}`)
+      process.exit(1)
+  }
 }
 
-console.log(`[Arranque - ${horaActual()}] Estado: Exitoso - Info: Variables de entorno satisfechas!`)
+console.log(`Verificando variables de entorno...`)
+export const { JWT_KEY, PORT, DB_PORT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = await env()
 
-export const { PORT, DB_PORT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, JWT_KEY } = process.env
+console.log(`[Arranque - ${horaActual()}] Estado: Exitoso - Info: Variables de entorno satisfechas!\n`)
