@@ -571,7 +571,7 @@ const env = z.object({
             error: 'La contraseña supera el limite de caracteres: 250'
         }),
     DB_HOST: z.string({
-        error: 'El el host de la base de datos debe de ser un string'
+        error: 'El host de la base de datos debe de ser un string'
     })
         .trim()
         .min(1, {

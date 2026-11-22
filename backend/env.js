@@ -2,6 +2,13 @@
 import { validarBody } from "./esquemas/esquemas.js"
 import { horaActual } from "./utils/funciones/funciones.js"
 
+function emptyVar(envvar) {
+  if (!envvar || (typeof envvar === 'string' && envvar.length === 0)) {
+    return true
+  }
+  return false
+}
+
 function env() {
   try {
     const vars = validarBody({...process.env}, 'checkEnv')
@@ -9,7 +16,7 @@ function env() {
   } catch (err) {
       console.log(`[Error - Variables de entorno insatisfechas - ${horaActual()}] Info:\n`)
       for (let i = 0; i < err.issues.length; i++) {
-        console.log(`[Variable: ${err.issues[i].path}] - ${err.issues[i].message}`)
+        console.log(`[Variable: ${err.issues[i].path}] - ${emptyVar(process.env[err.issues[i].path]) ? `Variable de entorno obligatoria` : `Info: ${err.issues[i].message}`}`)
       }
       process.exit(1)
   }
