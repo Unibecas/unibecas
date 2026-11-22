@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { ZodError } from "zod"
 import { validarBody } from "./esquemas/esquemas.js"
 import { horaActual } from "./utils/funciones/funciones.js"
 
@@ -14,9 +15,13 @@ function env() {
     const vars = validarBody({...process.env}, 'checkEnv')
     return vars.data
   } catch (err) {
-      console.log(`[Error - Variables de entorno insatisfechas - ${horaActual()}] Info:\n`)
-      for (let i = 0; i < err.issues.length; i++) {
-        console.log(`[Variable: ${err.issues[i].path}] - ${emptyVar(process.env[err.issues[i].path]) ? `Variable de entorno obligatoria` : `Info: ${err.issues[i].message}`}`)
+      if (err instanceof ZodError) {
+        console.log(`[Error - Variables de entorno insatisfechas - ${horaActual()}] Info:\n`)
+        for (let i = 0; i < err.issues.length; i++) {
+          console.log(`[Variable: ${err.issues[i].path}] - ${emptyVar(process.env[err.issues[i].path]) ? `Variable de entorno obligatoria` : `Info: ${err.issues[i].message}`}`)
+        }
+      } else {
+        console.log(`[Arranque - ${horaActual()}] Info: ${err.message}`)
       }
       process.exit(1)
   }
@@ -28,7 +33,7 @@ if (!process.env.DB_PORT) {
   console.log(`[Arranque - ${horaActual()}] Advertencia: DB_PORT no ha sido declarada como variable de entorno.\nDB_PORT -> (${DB_PORT}) por defecto.`)
 }
 if (!process.env.PORT) {
-  console.log(`[Arranque - ${horaActual()}] Advertencia: PORT no ha sido declarada como variable de entorno.\nPORT -> (${PORT}) por defecto.`)
+  console.log(`[Arranque - ${horaActual()}] Advertencia: PORT no ha sido declarada como variable de entorno.\nPORT -> (${PORT}) por defecto. `)
 }
 
 console.log(`[Arranque - ${horaActual()}] Estado: Exitoso - Info: Variables de entorno satisfechas!\n[Arranque - ${horaActual()}] Iniciando...`)

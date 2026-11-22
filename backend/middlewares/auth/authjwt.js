@@ -3,17 +3,26 @@ import { JWT_KEY } from '../../env.js'
 import jwt from 'jsonwebtoken'
 import { horaActual } from '../../utils/funciones/funciones.js'
 
-export function infoPublicaCheck(token) {
+export function infoPublicaCheck(token, ip) {
     try {
         jwt.verify(token, JWT_KEY, {
             algorithms: ['HS256']
         })
         return true
     } catch (error) {
-        if (error.message === 'invalid signature' || error.message === 'invalid token') {
-          console.log(`[Error JWT - ${horaActual()}] - Token invalido - Información publica servida parcialmente - ${error.message}`)
+      const clgInfo = `[Error JWT - ${horaActual()}] - Información publica servida parcialmente - ${error.message}`
+      if (error instanceof jwt.JsonWebTokenError) {
+        if (error.message === 'jwt malformed') {
+          console.log(clgInfo)
+        } else if (error.message === 'invalid signature') {
+          console.log(clgInfo + ` - IP: ${ip}`)
+        } else {
+          console.log(clgInfo + ` - Info: ${error.message}`)
         }
-        return false
+      } else if (error instanceof jwt.TokenExpiredError) {
+        console.log(clgInfo.replaceAll('- ${error.message}', '') + `- Token expirado`)
+      }
+      return false
     }
 }
 
