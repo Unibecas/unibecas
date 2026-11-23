@@ -285,7 +285,7 @@ const HomeLayout = () => {
         </div>
 
         <div
-          className={`contenedor-becas ${error ? "error-contenedor-becas" : null}`}
+          className={`contenedor-becas`}
           key={contenedorBecas}
           ref={contenedorRef}
         >
@@ -341,10 +341,12 @@ const HomeLayout = () => {
           )}
         </div>
 
-        <div className="contenedor-arrows">
-          <img src={arrowLeft} alt="Arrow left" onClick={moverAIzquierda} />
-          <img src={arrowRight} alt="Arrow right" onClick={moverADerecha} />
-        </div>
+        {!error && (
+          <div className="contenedor-arrows">
+            <img src={arrowLeft} alt="Arrow left" onClick={moverAIzquierda} />
+            <img src={arrowRight} alt="Arrow right" onClick={moverADerecha} />
+          </div>
+        )}
       </section>
 
       <Footer />
