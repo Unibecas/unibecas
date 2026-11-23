@@ -1,0 +1,132 @@
+.programa-layout .contenido {
+  width: 100%;
+  margin: 20px auto 35px auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.programa-layout .ordenar {
+  width: 100%;
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 153px;
+}
+
+.programa-layout .ordenar h1 {
+  text-align: start;
+  font-size: 2rem;
+  color: var(--color-subtitulo);
+  margin: 0;
+}
+
+.programa-layout .filtros {
+  max-width: 500px;
+  width: 100%;
+  padding: 12px;
+  background-color: #d7e0ed;
+  border-radius: 15px;
+  position: absolute;
+  top: 105px;
+  z-index: 10;
+}
+
+html.darkmode .programa-layout .filtros {
+  background-color: #223147;
+}
+
+.programa-layout .filtros .filtro-botones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.programa-layout .filtros .filtro-botones button {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+}
+
+.programa-layout .filtros .filtro-botones button span {
+  color: var(--texto-secundario);
+}
+
+.programa-layout .filtros .filtro-botones button:hover svg path {
+  fill: var(--color-primario);
+}
+
+.programa-layout .filtros .filtro-nombre {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.programa-layout .filtros .filtro-nombre input {
+  padding-right: 16px;
+  padding: 7px;
+  width: 100%;
+  border-radius: 8px;
+  color: var(--color);
+}
+
+html.darkmode .programa-layout .filtros .filtro-nombre input {
+  background-color: #334155;
+  border: 1px solid #535e6f;
+}
+
+.programa-layout .filtros .filtro-nombre button {
+  border-radius: 0 8px 8px 0;
+  outline: 0;
+  border: 0;
+  position: absolute;
+  right: -1px;
+  top: 5px;
+  height: 37px;
+  background-color: var(--color-terciario);
+  cursor: pointer;
+}
+
+.programa-layout .filtros .aviso-busqueda {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+}
+
+.programa-layout .filtros .tipos-de-filtros div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  background-color: var(--color-superficie-blanca);
+  border-radius: 8px;
+  margin-top: 6px;
+  padding: 4px;
+  min-height: 120px;
+}
+
+.programa-layout .filtros .tipos-de-filtros div button {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: block;
+  color: var(--texto-secundario);
+  transition: color 0.3s ease;
+}
+
+.programa-layout .filtros .tipos-de-filtros div button:hover {
+  color: var(--color);
+}
