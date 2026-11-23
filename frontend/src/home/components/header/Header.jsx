@@ -15,6 +15,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import { useContext } from "react";
 import { BecaContext } from "../../../context/BecaContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 import Skeleton from "react-loading-skeleton";
 import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
@@ -57,6 +58,7 @@ const Header = () => {
   const [mostrarBecas, setMostrarBecas] = useState(false);
 
   const { data, fetchData, loading, error } = useContext(BecaContext);
+  const { user, errorLogin, login, register } = useContext(AuthContext);
 
   const becas = data?.datos ?? [];
 
@@ -118,13 +120,23 @@ const Header = () => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!usuarioLogin.trim()) {
       setErrorUsuarioLogin("¡Oops! debes llenar este campo");
     }
     if (!contrasennaLogin.trim()) {
       setErrorContrasennaLogin("¡Oops! debes llenar este campo");
     }
+
+    login({ username: usuarioLogin, password: contrasennaLogin });
+
+    if (user?.message === "Usuario logueado con exito") {
+      toast.success(`Has iniciado sesion como ${user?.info?.user}`);
+      setEstaAbierto(false);
+    }
+
+    setUsuarioLogin("");
+    setContrasennaLogin("");
   };
 
   const handleChangeUsuarioLogin = (e) => {
@@ -360,12 +372,13 @@ const Header = () => {
 
               <div className="contenedor-input-registrarme">
                 <Input
-                  id="usuario"
+                  id="Correo"
+                  type="email"
                   value={usuarioLogin}
-                  textoLabel="Usuario"
+                  textoLabel="Correo"
                   onChange={handleChangeUsuarioLogin}
                   error={errorUsuarioLogin}
-                  placeholder="Nombre"
+                  placeholder="ejemplo@gmail.com"
                 />
               </div>
 
