@@ -5,13 +5,16 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 
 import { BecaProvider } from "./context/BecaContext.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <BecaProvider>
-        <App />
-      </BecaProvider>
+      <AuthProvider>
+        <BecaProvider>
+          <App />
+        </BecaProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 );
