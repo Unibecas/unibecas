@@ -64,8 +64,6 @@ export class UserInfo {
     `
     querystmt += rol ? ` rol = 'Admin'` : `rol = 'Usuario'`
     querystmt += ` WHERE id_usuario = $${params.push(id)}`
-    console.log(id)
-    console.log(querystmt)
     const datos = await pool.query(querystmt, params)
     if (datos.rowCount === 0) return false
     return true

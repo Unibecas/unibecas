@@ -551,8 +551,8 @@ const usuario = z.object({
     descripcion: z.string({
         error: 'La descripcion debe de ser un string'
     })
-    .max(52, {
-        error: 'Limite de caracteres superado: 24'
+    .max(120, {
+        error: 'Limite de caracteres superado: 120'
     })
 })
 
