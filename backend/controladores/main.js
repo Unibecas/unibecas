@@ -13,16 +13,14 @@ export class BecasControl {
             })
         }
         const { schsp, fmod, limit, offset } = validaciones.data
-
-        const data = await BecasInfo.allRecovery({ schsp, fmod, limit, offset })
+        const data = await BecasInfo.allRecovery({ schsp, fmod, limit, offset, token: req.tieneSesion})
 
         return res.status(200).json(data)
     }
 
     static async idRecoveryCont(req, res) {
         const idVal = validacionPaginacion({ id: req.params.id })
-
-        const findData = await BecasInfo.idRecovery({ id: idVal.data.id })
+        const findData = await BecasInfo.idRecovery({ id: idVal.data.id, token: req.tieneSesion })
         if (findData) {
             return res.status(200).json({
                 message: `Beca con la ID: ${req.params.id} encontrado`,
@@ -101,15 +99,14 @@ export class ProgramasControl {
         }
 
         const { nprog, nform, limit, offset } = validaciones.data
-        const data = await ProgramasInfo.allRecovery({ nprog, nform, limit, offset })
+        const data = await ProgramasInfo.allRecovery({ nprog, nform, limit, offset, token: req.tieneSesion })
 
         return res.status(200).json(data)
     }
 
     static async idRecoveryCont(req, res) {
         const idVal = validacionPaginacion({ id: req.params.id })
-
-        const findData = await ProgramasInfo.idRecovery({ id: idVal.data.id })
+        const findData = await ProgramasInfo.idRecovery({ id: idVal.data.id, token: req.tieneSesion })
 
         if (findData) {
             return res.status(200).json({

@@ -386,7 +386,14 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
-
+    bulk: z.enum([
+        'true',
+        'false'
+    ])
+        .transform((val) => {
+            if (val === 'true') return true
+            return false
+        }),
     limit: z.coerce
         .number({
             error: 'El limite debe ser un numero'
@@ -432,6 +439,210 @@ const esquemaPaginacion = z.object({
         }),
 })
 
+// esquema para usuario
+
+const esquemaUsuario = z.object({
+    username: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .trim()
+      .min(1, {
+        error: 'El nombre de usuario no puede estar vacío'
+      })
+      .regex(/^[a-zA-Z0-9._]+$/, {
+        error: 'Solo se permiten letras, numeros, puntos y guiones bajos'
+      })
+      .max(24, {
+        error: 'El nombre de usuario no puede tener más de 24 caracteres'
+      }),
+    email: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .trim()
+      .toLowerCase()
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
+          error: 'Formato de correo inválido o contiene caracteres no permitidos'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    password: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(8, {
+        error: 'La contraseña debe de ser de minimo 8 caracteres'
+      })
+      .regex(/[!@#$%^&*]/, {
+        error: 'Debe de contener un caracter especial: !@#$%^&*'
+      })
+      .regex(/[0-9]/, {
+        error: 'La contraseña debe contener al menos un numero.'    
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      })
+})
+
+const esquemaLogin = z.object({
+    username: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .trim()
+      .toLowerCase()
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
+        error: 'Formato de correo inválido o contiene caracteres no permitidos'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    password: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'La contraseña no puede estar vacía'
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      })
+})
+
+const userId = z.object({
+    id: z.string({
+        error: 'El campo debe de ser un string'
+    })
+    .min(1, {
+        error: 'El ID de usuario no puede estar vacío'
+    })
+    .max(255, {
+        error: 'El ID de usuario no puede tener más de 255 caracteres'
+    })
+})
+
+// Esquema Usuario
+
+const usuario = z.object({
+    email: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .trim()
+      .toLowerCase()
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
+          error: 'Formato de correo inválido o contiene caracteres no permitidos'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    estado: z.enum([
+        'No aplica',
+        'Estudiante',
+        'Aspirante'
+    ], {
+        error: 'El tipo de estado es invalido'
+    }),
+    descripcion: z.string({
+        error: 'La descripcion debe de ser un string'
+    })
+    .max(120, {
+        error: 'Limite de caracteres superado: 120'
+    })
+})
+
+const usuarioPermisos = z.object({
+    rol: z.boolean({
+        error: 'El campo debe de ser un booleano'
+    })
+})
+
+// ENV Vars
+
+const env = z.object({
+    PORT: z.coerce
+        .number({
+            error: 'El puerto debe de ser un numero'
+        })
+        .int({
+            error: 'El numero para el puerto debe de ser un entero'
+        })
+        .positive({
+            error: 'El puerto debe de ser positivo'
+        })
+        .max(65535, {
+            error: 'El limite maximo es de 65535'
+        })
+        .default(3000)
+        .transform((val) => String(val)),
+    DB_PORT: z.coerce
+        .number({
+            error: 'El puerto de la base de datos debe de ser un numero'
+        })
+        .int({
+            error: 'El numero para el puerto de la base de datos debe de ser un entero'
+        })
+        .positive({
+            error: 'El puerto debe de ser positivo'
+        })
+        .max(65535, {
+            error: 'El limite maximo es de 65535'
+        })
+        .default(5432)
+        .transform((val) => String(val)),
+    DB_USER: z.string({
+        error: 'El usuario de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El nombre de usuario de la base de datos no puede estar vacío'
+        })
+        .max(50, {
+            error: 'El nombre de usuario supera el limite de caracteres: 50'
+        }),
+    DB_PASSWORD: z.string({
+        error: 'La contraseña debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'la contraseña de la base de datos no puede estar vacía'
+        })
+        .max(250, {
+            error: 'La contraseña supera el limite de caracteres: 250'
+        }),
+    DB_HOST: z.string({
+        error: 'El host de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El host de la base de datos no puede estar vacío'
+        })
+        .max(125, {
+            error: 'El host supera el limite de caracteres: 125'
+        }),
+    DB_NAME: z.string({
+        error: 'El nombre de la base de datos debe de ser un string'
+    })
+        .trim()
+        .min(1, {
+            error: 'El nombre de la base de datos no puede estar vacío'
+        })
+        .max(50, {
+            error: 'El nombre de la base de datos supera el limite de caracteres: 50'
+        }),
+    JWT_KEY: z.string({
+        error: 'La key debe ser un string'
+    })
+        .trim()
+        .min(32, {
+            error: 'La key debe tener como minimo 32 caracteres'
+        })
+})
 
 // funciones de validación
 
@@ -457,7 +668,36 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
-
+        case 'usuario': {
+            const r = esquemaUsuario.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'login': {
+            const r = esquemaLogin.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userId': {
+            const r = userId.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'checkEnv': {
+            const r = env.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userUpdate': {
+            const r = usuario.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userIsAdmin': {
+            const r = usuarioPermisos.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 
@@ -480,6 +720,31 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'programa': {
             const r = esquemaProgramas.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'usuario': {
+            const r = esquemaUsuario.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userId': {
+            const r = userId.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'checkEnv': {
+            const r = env.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userUpdate': {
+            const r = usuario.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userIsAdmin': {
+            const r = usuarioPermisos.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

@@ -25,11 +25,10 @@ const MAPA_COLUMNAS_PROGRAMAS = {
 }
 
 const columnas = `b.id_beca AS id, b.nombre_beca AS nombre, b.vigencia_programa AS vigencia, b.descripcion_informacion AS descripcion, b.informacion_aplicar AS aplicar, b.modalidad AS modalidad, u.nom_institucion AS universidad, b.cobertura AS cobertura, b.estado as estado, e.nom_ent AS proveedor, b.url_informacion AS url`
-
 const columnasProgramas = `c.id_carrera AS id, c.codigo_snies_programa AS snies, c.nombre_programa AS nombre, c.titulo_otorgado AS titulo, c.nivel_formacion AS nivel, c.numero_semestres AS numero_semestres, c.creditos_totales AS creditos, c.periodicidad_admision AS periodo_admision, u.nom_institucion AS universidad, c.tipo_acreditacion AS acreditacion`
 
 export class BecasInfo {
-    static async allRecovery({ schsp, fmod, limit, offset }) {
+    static async allRecovery({ schsp, fmod, limit, offset, token }) {
 
         const busquedaFormateada = schsp ? `%${schsp}%` : false
         const filtroFormat = fmod ? `%${fmod}%` : false
@@ -37,7 +36,7 @@ export class BecasInfo {
         const params = []
         let querystmt = `
         SELECT 
-        ${columnas} 
+        ${token ? columnas : columnas.replaceAll(" b.informacion_aplicar AS aplicar,", "")} 
         FROM becas AS b 
         LEFT JOIN universidades AS u 
             ON b.id_universidad_acceso = u.id_universidad 
@@ -70,10 +69,10 @@ export class BecasInfo {
         }
     }
 
-    static async idRecovery({ id }) {
+    static async idRecovery({ id, token }) {
         const datos = await pool.query(`
                         SELECT
-                        ${columnas} 
+                        ${token ? columnas : columnas.replaceAll(" b.informacion_aplicar AS aplicar,", "")} 
                         FROM becas AS b 
                         LEFT JOIN universidades AS u
                             ON b.id_universidad_acceso = u.id_universidad
@@ -179,7 +178,7 @@ export class BecasInfo {
 }
 
 export class ProgramasInfo {
-    static async allRecovery({ nprog, nform, limit, offset }) {
+    static async allRecovery({ nprog, nform, limit, offset, token }) {
 
         const busquedaFormateada = nprog ? `%${nprog}%` : false
         const filtroFormat = nform ? `%${nform}%` : false
@@ -187,7 +186,7 @@ export class ProgramasInfo {
         const params = []
         let querystmt = `
         SELECT 
-        ${columnasProgramas} 
+        ${token ? columnasProgramas : columnasProgramas.replaceAll(" c.numero_semestres AS numero_semestres, c.creditos_totales AS creditos, c.periodicidad_admision AS periodo_admision,", "")} 
         FROM carreras AS c 
         LEFT JOIN universidades AS u 
             ON c.id_universidad_fk = u.id_universidad 
@@ -219,10 +218,10 @@ export class ProgramasInfo {
         }
     }
 
-    static async idRecovery({ id }) {
+    static async idRecovery({ id, token }) {
         const datos = await pool.query(`
                         SELECT
-                        ${columnasProgramas} 
+                        ${token ? columnasProgramas: columnasProgramas.replaceAll(" c.numero_semestres AS numero_semestres, c.creditos_totales AS creditos, c.periodicidad_admision AS periodo_admision,", "")}
                         FROM carreras AS c 
                         LEFT JOIN universidades AS u
                             ON c.id_universidad_fk = u.id_universidad

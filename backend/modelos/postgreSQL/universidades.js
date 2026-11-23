@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { pool } from './conexion.js'
-// Aqui van validaciones nuevas de eschemas ZOD
 import { ErrorValidacion } from '../../utils/errores/errorcharcount.js'
 
 const columnas = `id_universidad AS id, nom_institucion AS nombre, siglas AS siglas, codigo_snies AS snies, mod_presencial AS presencial, mod_virtual as virtual, mod_hibrida AS hibrida, mod_adistancia AS distancia, ciudad AS ciudad, departamento AS departamento`
