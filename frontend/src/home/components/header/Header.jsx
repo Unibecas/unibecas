@@ -1,22 +1,26 @@
-import "./header.css";
-import { ArrowDawn } from "../../../components/icons/home/ArrowDown";
-import registrarmeIcon from "../../../assets/icons/home/registrarmeIcon.svg";
-import Input from "../../../components/input/Input";
 import { useState } from "react";
+import registrarmeIcon from "../../../assets/icons/home/registrarmeIcon.svg";
+import { ArrowDawn } from "../../../components/icons/home/ArrowDown";
+import Input from "../../../components/input/Input";
+import "./header.css";
 
-import seePassword from "../../../assets/icons/home/see-password.svg";
 import hidePassword from "../../../assets/icons/home/hide-password.svg";
+import seePassword from "../../../assets/icons/home/see-password.svg";
 
 import logo from "../../../assets/images/home/logo-unibecas.png";
 
 import { Link } from "react-router-dom";
 
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
 
 import { useContext } from "react";
 import { BecaContext } from "../../../context/BecaContext";
+
+import Skeleton from "react-loading-skeleton";
+import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
+import { Retry } from "../../../components/icons/home/Retry";
+
+import { toast } from "sonner";
 
 const Header = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
@@ -52,7 +56,7 @@ const Header = () => {
 
   const [mostrarBecas, setMostrarBecas] = useState(false);
 
-  const { data, loading } = useContext(BecaContext);
+  const { data, fetchData, loading, error } = useContext(BecaContext);
 
   const becas = data?.datos ?? [];
 
@@ -163,6 +167,14 @@ const Header = () => {
     );
   };
 
+  const reintentar = () => {
+    fetchData("https://unibecas.onrender.com/main/becas");
+
+    if (error) {
+      toast.error("error al cargar las becas");
+    }
+  };
+
   return (
     <header>
       <Link to="/" className="link-home">
@@ -221,25 +233,35 @@ const Header = () => {
             <ArrowDawn />
           </li>
           <div className="contenedor-becas">
-            {loading ? (
-              <Skeleton
-                width={93}
-                height={38}
-                borderRadius={4}
-                baseColor="var(--skeleton-background)"
-              />
-            ) : (
-              <>
-                <li
-                  onClick={() =>
-                    setMostrarBecas(mostrarBecas === true ? false : true)
-                  }
-                >
-                  <span>Becas</span>
-                  <ArrowDawn />
-                </li>
-                {mostrarBecas && (
-                  <div className="becas">
+            <li
+              onClick={() =>
+                setMostrarBecas(mostrarBecas === true ? false : true)
+              }
+            >
+              <span>Becas</span>
+              <ArrowDawn />
+            </li>
+            {mostrarBecas && (
+              <div className="becas">
+                {loading ? (
+                  Array.from({ length: 8 }).map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      width={150}
+                      height={35}
+                      borderRadius={4}
+                      baseColor="var(--skeleton-background)"
+                    />
+                  ))
+                ) : error ? (
+                  <div className="error-becas">
+                    <p>Ha ocurrido un error al cargar las becas</p>
+                    <button onClick={reintentar}>
+                      <Retry />
+                    </button>
+                  </div>
+                ) : (
+                  <>
                     {becas.slice(0, 10).map((info) => (
                       <Link
                         key={info.id}
@@ -253,9 +275,9 @@ const Header = () => {
                       <span>Ver todas ({becas.length})</span>
                       <ArrowUpRight />
                     </Link>
-                  </div>
+                  </>
                 )}
-              </>
+              </div>
             )}
           </div>
         </ul>
@@ -266,7 +288,7 @@ const Header = () => {
           onClick={() => setEstaAbierto(!estaAbierto)}
           className="btn-registrarme"
         >
-          <span>Registrarme</span>
+          <span>Iniciar sesion</span>
           <img src={registrarmeIcon} alt="Icono de registrarme" />
         </button>
 

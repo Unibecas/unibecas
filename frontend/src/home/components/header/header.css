@@ -338,6 +338,21 @@ header a {
   color: var(--color-terciario);
 }
 
+header .error-becas {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 4px;
+}
+
+header .error-becas button {
+  transition: transform 0.3s;
+}
+
+header .error-becas button:hover {
+  transform: scale(1.2);
+}
+
 @media (max-width: 768px) {
   header nav {
     display: none;

@@ -1,22 +1,22 @@
-import "./homeLayout.css";
-import Hero from "../components/hero/Hero";
 import infoBecasImg from "../../assets/icons/home/info-becas-icon.svg";
-import Header from "../components/header/Header";
-import Footer from "../components/footer/Footer";
-import PanelAccesible from "../../components/panelAccesible/PanelAccesible";
 import BecaCard from "../../components/becaCard/BecaCard";
+import PanelAccesible from "../../components/panelAccesible/PanelAccesible";
+import Footer from "../components/footer/Footer";
+import Header from "../components/header/Header";
+import Hero from "../components/hero/Hero";
+import "./homeLayout.css";
 
-import { useState, useEffect, useRef } from "react";
-import { becasPopulares, universidades, infoBecas } from "../data";
+import { useEffect, useRef, useState } from "react";
+import { becasPopulares, infoBecas, universidades } from "../data";
 
+import { Link } from "react-router-dom";
 import arrowLeft from "../../assets/icons/home/arrow-left.svg";
 import arrowRight from "../../assets/icons/home/arrow-right.svg";
-import { Link } from "react-router-dom";
 
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
-import Error from "../../components/error/Error";
 
 import { useContext } from "react";
+import { toast } from "sonner";
 import { BecaContext } from "../../context/BecaContext";
 
 import encuentraBeca1 from "../../assets/images/home/encuentra-beca1.webp";
@@ -27,12 +27,12 @@ import encuentraBeca5 from "../../assets/images/home/encuentra-beca5.webp";
 import encuentraBeca6 from "../../assets/images/home/encuentra-beca6.webp";
 import encuentraBeca7 from "../../assets/images/home/encuentra-beca7.webp";
 
-import { Ingenieria } from "../../components/icons/home/Ingenieria.jsx";
-import { Economia } from "../../components/icons/home/Economia.jsx";
-import { Salud } from "../../components/icons/home/Salud.jsx";
 import { Comunicacion } from "../../components/icons/home/Comunicacion.jsx";
-import { Educacion } from "../../components/icons/home/Educacion.jsx";
 import { Derechos } from "../../components/icons/home/Derechos.jsx";
+import { Economia } from "../../components/icons/home/Economia.jsx";
+import { Educacion } from "../../components/icons/home/Educacion.jsx";
+import { Ingenieria } from "../../components/icons/home/Ingenieria.jsx";
+import { Salud } from "../../components/icons/home/Salud.jsx";
 
 const imagenes = [
   encuentraBeca1,
@@ -93,9 +93,11 @@ const HomeLayout = () => {
 
   const reintentar = () => {
     fetchData("https://unibecas.onrender.com/main/becas");
-  };
 
-  if (error) return <Error reintentar={reintentar} />;
+    if (error) {
+      toast.error("Error al cargar las becas");
+    }
+  };
 
   return (
     <div className="home-layout">
@@ -283,51 +285,60 @@ const HomeLayout = () => {
         </div>
 
         <div
-          className="contenedor-becas"
+          className={`contenedor-becas ${error ? "error-contenedor-becas" : null}`}
           key={contenedorBecas}
           ref={contenedorRef}
         >
-          {contenedorBecas === "mas-recientes"
-            ? loading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <BecaCardSkeleton key={index} />
-                ))
-              : data?.datos?.map((info) => (
-                  <Link
-                    to={`/beca/${info.id}`}
-                    className="link-beca-card"
-                    key={info.id}
-                  >
-                    <BecaCard
-                      ref={becaCardRef}
-                      universidad={info.universidad}
-                      nombre={info.nombre}
-                      vigencia={info.vigencia}
-                      descripcion={info.descripcion_informacion}
-                      info_aplicar={info.aplicar}
-                      modalidad={info.modalidad}
-                      estado={info.estado}
-                    />
-                  </Link>
-                ))
-            : becasPopulares.map((info) => (
+          {contenedorBecas === "mas-recientes" ? (
+            error ? (
+              <div className="error-contenedor-becas">
+                <p>Ha ocurrido un error al cargar las becas</p>
+                <button onClick={reintentar}>Reintentar</button>
+              </div>
+            ) : loading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <BecaCardSkeleton key={index} />
+              ))
+            ) : (
+              data?.datos?.map((info) => (
                 <Link
-                  to={`/beca/${info.id_beca}`}
+                  to={`/beca/${info.id}`}
                   className="link-beca-card"
-                  key={info.id_beca}
+                  key={info.id}
                 >
                   <BecaCard
+                    ref={becaCardRef}
                     universidad={info.universidad}
-                    nombre={info.nombre_beca}
-                    vigencia={info.vigencia_programa}
+                    nombre={info.nombre}
+                    vigencia={info.vigencia}
                     descripcion={info.descripcion_informacion}
-                    info_aplicar={info.informacion_aplicar}
+                    info_aplicar={info.aplicar}
                     modalidad={info.modalidad}
                     estado={info.estado}
-                    cobertura={info.cobertura}
                   />
                 </Link>
-              ))}
+              ))
+            )
+          ) : (
+            becasPopulares.map((info) => (
+              <Link
+                to={`/beca/${info.id_beca}`}
+                className="link-beca-card"
+                key={info.id_beca}
+              >
+                <BecaCard
+                  universidad={info.universidad}
+                  nombre={info.nombre_beca}
+                  vigencia={info.vigencia_programa}
+                  descripcion={info.descripcion_informacion}
+                  info_aplicar={info.informacion_aplicar}
+                  modalidad={info.modalidad}
+                  estado={info.estado}
+                  cobertura={info.cobertura}
+                />
+              </Link>
+            ))
+          )}
         </div>
 
         <div className="contenedor-arrows">

@@ -319,6 +319,13 @@ h2 {
   user-select: none;
 }
 
+.contenedor-becas.error-contenedor-becas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+}
+
 .contenedor-arrows {
   display: flex;
   justify-content: center;
@@ -419,6 +426,36 @@ h2 {
   width: 60px;
   height: 54px;
   object-fit: contain;
+}
+
+.home-layout .error-contenedor-becas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-layout .error-contenedor-becas p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.home-layout .error-contenedor-becas button {
+  padding: 10px 18px;
+  color: #fff;
+  background-color: var(--color-superficie-azul);
+  border-radius: 999px;
+  border: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  outline: none;
+  transition: transform 0.3s;
+}
+
+.home-layout .error-contenedor-becas button:hover {
+  transform: scale(1.08);
 }
 
 @media (max-width: 970px) {
