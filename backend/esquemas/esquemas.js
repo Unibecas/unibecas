@@ -386,7 +386,14 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
-
+    bulk: z.enum([
+        'true',
+        'false'
+    ])
+        .transform((val) => {
+            if (val === 'true') return true
+            return false
+        }),
     limit: z.coerce
         .number({
             error: 'El limite debe ser un numero'
@@ -517,6 +524,44 @@ const userId = z.object({
     })
 })
 
+// Esquema Usuario
+
+const usuario = z.object({
+    email: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .trim()
+      .toLowerCase()
+      .min(1, {
+        error: 'El email no puede estar vacío'
+      })
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/, {
+          error: 'Formato de correo inválido o contiene caracteres no permitidos'
+      })
+      .max(56, {
+        error: 'El email no puede tener más de 56 caracteres'
+      }),
+    estado: z.enum([
+        'No aplica',
+        'Estudiante',
+        'Aspirante'
+    ], {
+        error: 'El tipo de estado es invalido'
+    }),
+    descripcion: z.string({
+        error: 'La descripcion debe de ser un string'
+    })
+    .max(52, {
+        error: 'Limite de caracteres superado: 24'
+    })
+})
+
+const usuarioPermisos = z.object({
+    rol: z.boolean({
+        error: 'El campo debe de ser un booleano'
+    })
+})
+
 // ENV Vars
 
 const env = z.object({
@@ -643,6 +688,16 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
+        case 'userUpdate': {
+            const r = usuario.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userIsAdmin': {
+            const r = usuarioPermisos.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 
@@ -680,6 +735,16 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'checkEnv': {
             const r = env.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userUpdate': {
+            const r = usuario.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'userIsAdmin': {
+            const r = usuarioPermisos.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

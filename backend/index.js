@@ -1,14 +1,22 @@
 //@ts-nocheck
 // ------------------ Config ------------------
 import { PORT } from './env.js'
+
 // ------------------ Setup ------------------
 import express from 'express'
 // !! Evaluar helmet como middleware de seguridad ??
+
+// npm packs
 import cookieParser from 'cookie-parser'
+
+// routers
 import { mainRouter } from './rutas/main.js'
 import { entidadesRouter } from './rutas/entidades.js'
 import { universidadesRouter } from './rutas/universidades.js'
 import { authRouter } from './rutas/auth.js'
+import { userRouter } from './rutas/user.js'
+
+// middlewares
 import { corsMiddleware } from './middlewares/cors.js'
 import { cabecerasJSON, bodyJSON } from './middlewares/cabeceras.js'
 import { expressJsonify } from './middlewares/expressJsonify.js'
@@ -18,6 +26,8 @@ import { validacionesErr } from './middlewares/validacionesErr.js'
 import { postgresqlErr } from './middlewares/postgresqlErr.js'
 import { expressErr } from './middlewares/expressErr.js'
 import { jwtErr } from './middlewares/jwtErr.js'
+
+// utils js
 import { horaActual } from './utils/funciones/funciones.js'
 
 const app = express()
@@ -36,6 +46,7 @@ app.get('/', (req, res) => {
 
 // Recursos
 app.use('/auth', authRouter)
+app.use('/user', userRouter)
 app.use('/main', mainRouter)
 app.use('/entidades', entidadesRouter)
 app.use('/universidades', universidadesRouter)
