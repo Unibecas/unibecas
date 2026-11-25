@@ -1,0 +1,146 @@
+.programaCard {
+  width: 300px;
+  height: 354px;
+  min-width: 0;
+  background: var(--beca-card-background);
+  color: var(--color);
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.25s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.programaCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.programaCard-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 14px 14px 7px 14px;
+}
+
+.programaCard-header h2 {
+  font-size: 1.18rem;
+  margin: 0 0 8px;
+  text-align: start;
+  background-color: #8472f147;
+  display: inline;
+  font-weight: 400;
+}
+
+.programaCard-contenido {
+  padding: 0 14px;
+}
+
+.programaCard-contenido h3,
+.programaCard-universidad {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.programaCard-titulo {
+  font-size: 0.81rem;
+  line-height: 1.5;
+  color: #686b75;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.programaCard-snies {
+  padding: 12px;
+  border-radius: 9px;
+}
+
+.programaCard-snies p {
+  font-size: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.programaCard-footer {
+  border-top: 1px solid #eee;
+  margin: 8px 0 4px 0;
+  padding: 14px;
+  margin-top: auto;
+}
+
+.programaCard-footer .bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contenedor-programaCard-acreditacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 20px;
+  padding: 4px 10px;
+  margin-top: 8px;
+}
+
+.contenedor-programaCard-acreditacion.alta-calidad {
+  background-color: rgb(22 228 22 / 43%);
+}
+
+.contenedor-programaCard-acreditacion.registro {
+  background-color: rgba(59, 130, 246, 0.35);
+}
+
+.contenedor-programaCard-acreditacion.sin-definir {
+  background-color: rgba(120, 120, 120, 0.3);
+}
+
+.programaCard-acreditacion {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.punto-programa {
+  display: block;
+  flex-shrink: 0;
+  height: 8px;
+  width: 8px;
+  border-radius: 100%;
+}
+
+.punto-programa.alta-calidad {
+  background-color: rgb(33, 224, 33);
+}
+
+.punto-programa.registro {
+  background-color: rgb(59, 130, 246);
+}
+
+.punto-programa.sin-definir {
+  background-color: rgb(120, 120, 120);
+}
+
+@media (max-width: 970px) {
+  .programaCard {
+    width: 260px;
+  }
+}
+
+@media (max-width: 560px) {
+  .programaCard {
+    width: 350px;
+  }
+}
