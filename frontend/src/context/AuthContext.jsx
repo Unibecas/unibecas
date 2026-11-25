@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingLogin, setLoading] = useState(false);
   const [errorLogin, setError] = useState(null);
   const [estaAutenticado, setEstaAutenticado] = useState(false);
 
@@ -20,21 +20,49 @@ export const AuthProvider = ({ children }) => {
           Origin: "http://localhost:5173",
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
+
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(`Error al iniciar sesion: ${response.status}`);
       }
 
-      const data = await response.json();
       setEstaAutenticado(true);
-
       setUser(data);
+
+      return { success: true, data };
     } catch (error) {
       setError(error);
+      console.error("Error al iniciar sesion:", error);
+      return { success: false, error };
     } finally {
       setLoading(false);
+    }
+  };
+
+  const interpretarErrores = (error) => {
+    if (
+      error.includes(
+        "Info: Formato de correo inválido o contiene caracteres no permitidos",
+      )
+    ) {
+      return "El formato del correo es inválido o contiene caracteres no permitidos";
+    } else if (
+      error.includes("Info: La contraseña debe de ser de minimo 8 caracteres")
+    ) {
+      return "La contraseña debe de ser de minimo 8 caracteres";
+    } else if (
+      error.includes("Info: Debe de contener un caracter especial: !@#$%^&*")
+    ) {
+      return "Debe de contener un caracter especial (!@#$%^&*)";
+    }
+    if (error.includes("Ya existe un registro con los mismos datos únicos")) {
+      return "Este usuario y correo ya está registrado";
+    } else {
+      return "Ha ocurrido un error al registrarse";
     }
   };
 
@@ -56,15 +84,59 @@ export const AuthProvider = ({ children }) => {
         },
       );
 
-      if (!response.ok) {
-        throw new Error(`Error al iniciar sesion: ${response.status}`);
-      }
-
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(
+          data.error || `Error al registrar codigo: ${response.status}`,
+        );
+      }
+
       setUser(data);
+
+      return { success: true, data };
+    } catch (error) {
+      const mensajePersonalizado = interpretarErrores(error.message);
+      setError(mensajePersonalizado);
+
+      console.error("Error al registrar:", error.message);
+      return { success: false, error: mensajePersonalizado };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      const response = await fetch(
+        "https://unibecas.onrender.com/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            Origin: "http://localhost:5173",
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error al cerrar sesion: ${response.status}`);
+      }
+
+      setEstaAutenticado(false);
+      setUser(null);
+
+      setEstaAutenticado(false);
+
+      return { success: true };
     } catch (error) {
       setError(error);
+      console.error("Error al cerrar sesion:", error);
+      return { success: false, error };
     } finally {
       setLoading(false);
     }
@@ -72,7 +144,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, errorLogin, estaAutenticado, login, register }}
+      value={{
+        user,
+        loadingLogin,
+        errorLogin,
+        estaAutenticado,
+        login,
+        register,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
