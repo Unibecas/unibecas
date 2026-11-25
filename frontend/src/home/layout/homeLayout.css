@@ -312,6 +312,7 @@ h2 {
   max-width: 952px;
   width: 100%;
   display: flex;
+  flex-flow: row nowrap;
   gap: 20px;
   overflow: hidden;
   padding: 10px 5px 15px;
@@ -319,11 +320,9 @@ h2 {
   user-select: none;
 }
 
-.contenedor-becas.error-contenedor-becas {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 0;
+.seccion-becas .contenedor-becas > .error-contenedor-becas {
+  flex: 1 0 100%;
+  box-sizing: border-box;
 }
 
 .contenedor-arrows {
@@ -434,6 +433,7 @@ h2 {
   align-items: center;
   flex-direction: column;
   gap: 12px;
+  margin: 65px 0;
 }
 
 .home-layout .error-contenedor-becas p {
