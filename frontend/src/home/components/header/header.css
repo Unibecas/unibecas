@@ -353,6 +353,49 @@ header .error-becas button:hover {
   transform: scale(1.2);
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.overlay .modal-cerrar-sesion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-superficie-blanca);
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+.overlay .modal-cerrar-sesion h3 {
+  margin: 0;
+}
+
+.overlay .modal-cerrar-sesion div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.overlay .modal-cerrar-sesion div button:nth-child(2) {
+  background-color: var(--error);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 134px;
+}
+
 @media (max-width: 768px) {
   header nav {
     display: none;
