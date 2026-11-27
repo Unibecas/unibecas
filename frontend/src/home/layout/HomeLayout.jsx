@@ -218,50 +218,6 @@ const HomeLayout = () => {
         </div>
       </section>
 
-      <div className="contenedor-universidades">
-        <h2>Universidades afiliadas</h2>
-
-        <section className="carrusel-universidades">
-          <div className="carrusel-track">
-            <div className="grupo-universidades">
-              {universidades.map((universidad, index) => (
-                <a
-                  key={`primera-${index}`}
-                  href={universidad.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visitar ${universidad.alt}`}
-                >
-                  <img
-                    src={universidad.logo}
-                    className={universidad.className}
-                    alt={universidad.alt}
-                  />
-                </a>
-              ))}
-            </div>
-
-            <div className="grupo-universidades" aria-hidden="true">
-              {universidades.map((universidad, index) => (
-                <a
-                  key={`segunda-${index}`}
-                  href={universidad.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visitar ${universidad.alt}`}
-                >
-                  <img
-                    src={universidad.logo}
-                    className={universidad.className}
-                    alt={universidad.alt}
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-      </div>
-
       <section className="seccion-becas" id="becas">
         <h2>Becas destacadas</h2>
 
@@ -313,6 +269,7 @@ const HomeLayout = () => {
                     vigencia={info.vigencia}
                     descripcion={info.descripcion_informacion}
                     info_aplicar={info.aplicar}
+                    cobertura={info.cobertura}
                     modalidad={info.modalidad}
                     estado={info.estado}
                   />
@@ -348,6 +305,50 @@ const HomeLayout = () => {
           </div>
         )}
       </section>
+
+      <div className="contenedor-universidades">
+        <h2>Universidades afiliadas</h2>
+
+        <section className="carrusel-universidades">
+          <div className="carrusel-track">
+            <div className="grupo-universidades">
+              {universidades.map((universidad, index) => (
+                <a
+                  key={`primera-${index}`}
+                  href={universidad.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visitar ${universidad.alt}`}
+                >
+                  <img
+                    src={universidad.logo}
+                    className={universidad.className}
+                    alt={universidad.alt}
+                  />
+                </a>
+              ))}
+            </div>
+
+            <div className="grupo-universidades" aria-hidden="true">
+              {universidades.map((universidad, index) => (
+                <a
+                  key={`segunda-${index}`}
+                  href={universidad.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visitar ${universidad.alt}`}
+                >
+                  <img
+                    src={universidad.logo}
+                    className={universidad.className}
+                    alt={universidad.alt}
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       <Footer />
 

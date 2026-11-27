@@ -56,7 +56,12 @@ h2 {
 
 .contenedor-universidades {
   background-color: var(--color-superficie-blanca);
-  padding: 10px 0;
+  padding: 15px 0;
+  margin: 90px 0;
+}
+
+.contenedor-universidades h2 {
+  margin: 0;
 }
 
 .contenedor-universidades section {
@@ -85,13 +90,11 @@ h2 {
 .carrusel-track img {
   height: 80px;
   flex-shrink: 0;
-  transition: scale 0.9s;
+  transition: transform 0.3s !important;
 }
 
 .carrusel-track img:hover {
-  scale: 1.1;
-  transition-property: scale;
-  transition-duration: 0.7s;
+  transform: scale(1.1);
 }
 
 @keyframes carrusel {
@@ -283,7 +286,7 @@ h2 {
   justify-content: center;
   align-items: center;
   gap: 14px;
-  border-bottom: 1px solid #531f3f;
+  border-bottom: 1px solid #5d6071;
 }
 
 .contenedor-botones button {
