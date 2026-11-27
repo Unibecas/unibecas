@@ -27,17 +27,19 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(`Error al iniciar sesion: ${response.status}`);
+        throw new Error(
+          data.error || `Error al iniciar sesion: ${response.status}`,
+        );
       }
 
-      setEstaAutenticado(true);
       setUser(data);
+      setEstaAutenticado(true);
 
       return { success: true, data };
     } catch (error) {
       setError(error);
       console.error("Error al iniciar sesion:", error);
-      return { success: false, error };
+      return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
@@ -127,9 +129,7 @@ export const AuthProvider = ({ children }) => {
         throw new Error(`Error al cerrar sesion: ${response.status}`);
       }
 
-      setEstaAutenticado(false);
       setUser(null);
-
       setEstaAutenticado(false);
 
       return { success: true };
