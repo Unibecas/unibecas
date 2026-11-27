@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict o2RapaXpB1GekQHSdkpfbwVyyQT6fJOhfXXrDcCSv21lFcpjIuxWI8UIYnc8rqU
+\restrict 4USbW2rtILdJ77at6eJoYzjKsyJc4cuNC90QViP6hnxU03XQacNBhMmp5G5YTEn
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
 
--- Started on 2026-11-14 20:01:27
+-- Started on 2026-11-27 15:31:58
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -30,7 +30,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
--- TOC entry 4984 (class 0 OID 0)
+-- TOC entry 4985 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
@@ -90,7 +90,7 @@ CREATE SEQUENCE public.becas_id_beca_seq
 
 
 --
--- TOC entry 4985 (class 0 OID 0)
+-- TOC entry 4986 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: becas_id_beca_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -137,7 +137,7 @@ CREATE SEQUENCE public.carreras_id_carrera_seq
 
 
 --
--- TOC entry 4986 (class 0 OID 0)
+-- TOC entry 4987 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: carreras_id_carrera_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -174,7 +174,7 @@ CREATE SEQUENCE public.entidades_id_entidad_seq
 
 
 --
--- TOC entry 4987 (class 0 OID 0)
+-- TOC entry 4988 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: entidades_id_entidad_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -216,7 +216,7 @@ CREATE SEQUENCE public.universidades_id_universidad_seq
 
 
 --
--- TOC entry 4988 (class 0 OID 0)
+-- TOC entry 4989 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: universidades_id_universidad_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -237,6 +237,7 @@ CREATE TABLE public.usuarios (
     estado_est character varying(30) DEFAULT 'No aplica'::character varying NOT NULL,
     descripcion character varying(120),
     rol character varying(80) DEFAULT 'Usuario'::character varying NOT NULL,
+    token_version integer DEFAULT 0 NOT NULL,
     CONSTRAINT usuarios_estado_est_check CHECK (((estado_est)::text = ANY ((ARRAY['Aspirante'::character varying, 'Estudiante'::character varying, 'No aplica'::character varying])::text[]))),
     CONSTRAINT usuarios_rol_check CHECK (((rol)::text = ANY ((ARRAY['Admin'::character varying, 'Usuario'::character varying])::text[])))
 );
@@ -275,7 +276,7 @@ ALTER TABLE ONLY public.universidades ALTER COLUMN id_universidad SET DEFAULT ne
 
 
 --
--- TOC entry 4811 (class 2606 OID 24769)
+-- TOC entry 4812 (class 2606 OID 24769)
 -- Name: becas becas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -284,7 +285,7 @@ ALTER TABLE ONLY public.becas
 
 
 --
--- TOC entry 4814 (class 2606 OID 24771)
+-- TOC entry 4815 (class 2606 OID 24771)
 -- Name: carreras carreras_codigo_snies_programa_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -293,7 +294,7 @@ ALTER TABLE ONLY public.carreras
 
 
 --
--- TOC entry 4816 (class 2606 OID 24773)
+-- TOC entry 4817 (class 2606 OID 24773)
 -- Name: carreras carreras_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -302,7 +303,7 @@ ALTER TABLE ONLY public.carreras
 
 
 --
--- TOC entry 4818 (class 2606 OID 24775)
+-- TOC entry 4819 (class 2606 OID 24775)
 -- Name: entidades entidades_nit_ent_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -311,7 +312,7 @@ ALTER TABLE ONLY public.entidades
 
 
 --
--- TOC entry 4820 (class 2606 OID 24777)
+-- TOC entry 4821 (class 2606 OID 24777)
 -- Name: entidades entidades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -320,7 +321,7 @@ ALTER TABLE ONLY public.entidades
 
 
 --
--- TOC entry 4822 (class 2606 OID 24779)
+-- TOC entry 4823 (class 2606 OID 24779)
 -- Name: universidades universidades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -329,7 +330,7 @@ ALTER TABLE ONLY public.universidades
 
 
 --
--- TOC entry 4824 (class 2606 OID 41118)
+-- TOC entry 4825 (class 2606 OID 41118)
 -- Name: usuarios usuarios_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -338,7 +339,7 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
--- TOC entry 4826 (class 2606 OID 41114)
+-- TOC entry 4827 (class 2606 OID 41114)
 -- Name: usuarios usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -347,7 +348,7 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
--- TOC entry 4828 (class 2606 OID 41116)
+-- TOC entry 4829 (class 2606 OID 41116)
 -- Name: usuarios usuarios_username_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -356,7 +357,7 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
--- TOC entry 4812 (class 1259 OID 41077)
+-- TOC entry 4813 (class 1259 OID 41077)
 -- Name: idx_becas_nombre_unaccent; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -364,7 +365,7 @@ CREATE INDEX idx_becas_nombre_unaccent ON public.becas USING btree (public.f_una
 
 
 --
--- TOC entry 4829 (class 2606 OID 24784)
+-- TOC entry 4830 (class 2606 OID 24784)
 -- Name: becas becas_id_universidad_acceso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -373,7 +374,7 @@ ALTER TABLE ONLY public.becas
 
 
 --
--- TOC entry 4831 (class 2606 OID 24789)
+-- TOC entry 4832 (class 2606 OID 24789)
 -- Name: carreras carreras_id_universidad_fk_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -382,7 +383,7 @@ ALTER TABLE ONLY public.carreras
 
 
 --
--- TOC entry 4830 (class 2606 OID 24794)
+-- TOC entry 4831 (class 2606 OID 24794)
 -- Name: becas proveedor_beca_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -390,11 +391,11 @@ ALTER TABLE ONLY public.becas
     ADD CONSTRAINT proveedor_beca_fk FOREIGN KEY (proveedor_beca) REFERENCES public.entidades(id_entidad);
 
 
--- Completed on 2026-11-14 20:01:27
+-- Completed on 2026-11-27 15:32:00
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict o2RapaXpB1GekQHSdkpfbwVyyQT6fJOhfXXrDcCSv21lFcpjIuxWI8UIYnc8rqU
+\unrestrict 4USbW2rtILdJ77at6eJoYzjKsyJc4cuNC90QViP6hnxU03XQacNBhMmp5G5YTEn
 
