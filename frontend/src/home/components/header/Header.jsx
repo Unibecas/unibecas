@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import registrarmeIcon from "../../../assets/icons/home/registrarmeIcon.svg";
 import { ArrowDawn } from "../../../components/icons/home/ArrowDown";
 import Input from "../../../components/input/Input";
@@ -15,12 +15,15 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import { useContext } from "react";
 import { BecaContext } from "../../../context/BecaContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 import Skeleton from "react-loading-skeleton";
 import { ArrowUpRight } from "../../../components/icons/home/ArrowUpRight";
+import { LogOut } from "../../../components/icons/home/LogOut";
 import { Retry } from "../../../components/icons/home/Retry";
 
 import { toast } from "sonner";
+import Spinner from "../../../components/spinner/Spinner";
 
 const Header = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
@@ -36,7 +39,7 @@ const Header = () => {
   const [contrasenna, setContrasenna] = useState("");
   const [errorContrasenna, setErrorContrasenna] = useState(null);
 
-  const [mostrarModal, setMostrarModal] = useState("registrarme");
+  const [mostrarModal, setMostrarModal] = useState("login");
 
   // estados de los inputs del modal de login
   const [usuarioLogin, setUsuarioLogin] = useState("");
@@ -55,16 +58,22 @@ const Header = () => {
     useState(seePassword);
 
   const [mostrarBecas, setMostrarBecas] = useState(false);
+  const [cerrarSesion, setCerrarSesion] = useState(false);
 
   const { data, fetchData, loading, error } = useContext(BecaContext);
+  const { loadingLogin, estaAutenticado, login, register, logout } =
+    useContext(AuthContext);
 
   const becas = data?.datos ?? [];
+
+  const inputLoginRef = useRef(null);
+  const inputRegistrarmeRef = useRef(null);
 
   const cerrarModal = () => {
     setEstaAbierto(false);
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     setErrorUsuario(null);
     setErrorEmail(null);
     setErrorContrasenna(null);
@@ -79,6 +88,36 @@ const Header = () => {
 
     if (!contrasenna.trim()) {
       setErrorContrasenna("¡Oops! debes llenar este campo");
+    }
+
+    if (!usuario.trim() || !email.trim() || !contrasenna.trim()) {
+      return;
+    }
+
+    const result = await register({
+      username: usuario,
+      email,
+      password: contrasenna,
+    });
+
+    if (result.success) {
+      toast.success("Registro exitoso");
+
+      // hacer login automatico despues del registro
+      const loginResult = await login({
+        username: email,
+        password: contrasenna,
+      });
+      if (loginResult.success) {
+        setEstaAbierto(false);
+        setUsuario("");
+        setEmail("");
+        setContrasenna("");
+      } else {
+        toast.error("Error al registrar usuario");
+      }
+    } else {
+      toast.error("Error al registrar usuario");
     }
   };
 
@@ -118,12 +157,32 @@ const Header = () => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!usuarioLogin.trim()) {
       setErrorUsuarioLogin("¡Oops! debes llenar este campo");
     }
     if (!contrasennaLogin.trim()) {
       setErrorContrasennaLogin("¡Oops! debes llenar este campo");
+    }
+
+    if (!usuarioLogin.trim() || !contrasennaLogin.trim()) {
+      return;
+    }
+
+    const result = await login({
+      username: usuarioLogin,
+      password: contrasennaLogin,
+    });
+
+    if (result.success) {
+      toast.success(`Has iniciado sesion como ${result?.data?.info?.user}`);
+
+      setEstaAbierto(false);
+      setUsuarioLogin("");
+      setContrasennaLogin("");
+      return;
+    } else {
+      toast.error("Credenciales incorrectas");
     }
   };
 
@@ -174,6 +233,29 @@ const Header = () => {
       toast.error("error al cargar las becas");
     }
   };
+
+  const handleCerrarSesion = async (e) => {
+    e.stopPropagation();
+    const result = await logout();
+
+    setCerrarSesion(false);
+
+    if (result.success) {
+      toast.success("Has cerrado sesión");
+    } else {
+      toast.error("Error al cerrar sesión");
+    }
+  };
+
+  useEffect(() => {
+    if (mostrarModal && estaAbierto && mostrarModal === "login") {
+      inputLoginRef.current?.focus();
+    }
+
+    if (mostrarModal && estaAbierto && mostrarModal === "registrarme") {
+      inputRegistrarmeRef.current?.focus();
+    }
+  }, [mostrarModal, estaAbierto]);
 
   return (
     <header>
@@ -284,13 +366,23 @@ const Header = () => {
       </nav>
 
       <div className="contenedor-registrarme">
-        <button
-          onClick={() => setEstaAbierto(!estaAbierto)}
-          className="btn-registrarme"
-        >
-          <span>Iniciar sesion</span>
-          <img src={registrarmeIcon} alt="Icono de registrarme" />
-        </button>
+        {!estaAutenticado ? (
+          <button
+            onClick={() => setEstaAbierto(!estaAbierto)}
+            className="btn-registrarme"
+          >
+            <span>Iniciar sesion</span>
+            <img src={registrarmeIcon} alt="Icono de registrarme" />
+          </button>
+        ) : (
+          <button
+            className="btn-registrarme"
+            onClick={() => setCerrarSesion(true)}
+          >
+            <span>Cerrar sesion</span>
+            <LogOut />
+          </button>
+        )}
 
         <div className={`modal ${estaAbierto ? "abrir-modal" : ""}`}>
           {mostrarModal === "registrarme" ? (
@@ -309,6 +401,8 @@ const Header = () => {
                   error={errorUsuario}
                   className={errorUsuario ? "input-error" : null}
                   placeholder="Nombre"
+                  value={usuario}
+                  ref={inputRegistrarmeRef}
                 />
               </div>
               <div className="contenedor-input-registrarme">
@@ -320,6 +414,7 @@ const Header = () => {
                   error={errorEmail}
                   className={errorEmail ? "input-error" : null}
                   placeholder="ejemplo@gmail.com"
+                  value={email}
                 />
               </div>
               <div className="contenedor-input-registrarme input-password">
@@ -331,6 +426,12 @@ const Header = () => {
                   error={errorContrasenna}
                   className={errorContrasenna ? "input-error" : null}
                   placeholder="*******"
+                  value={contrasenna}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleRegister();
+                    }
+                  }}
                 />
                 <img
                   style={errorContrasenna ? { top: 47 } : { top: 46 }}
@@ -340,7 +441,7 @@ const Header = () => {
                 />
               </div>
               <button className="btn-registrarme" onClick={handleRegister}>
-                Registrarme
+                {loadingLogin ? <Spinner /> : "Registrarme"}
               </button>
               <p className="tiene-cuenta">
                 <span>¿Ya tienes cuenta? </span>
@@ -360,12 +461,14 @@ const Header = () => {
 
               <div className="contenedor-input-registrarme">
                 <Input
-                  id="usuario"
+                  id="Correo"
+                  type="email"
                   value={usuarioLogin}
-                  textoLabel="Usuario"
+                  textoLabel="Correo"
                   onChange={handleChangeUsuarioLogin}
                   error={errorUsuarioLogin}
-                  placeholder="Nombre"
+                  placeholder="ejemplo@gmail.com"
+                  ref={inputLoginRef}
                 />
               </div>
 
@@ -378,6 +481,11 @@ const Header = () => {
                   onChange={handleChangeContrasennaLogin}
                   error={errorContrasennaLogin}
                   placeholder="*******"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleLogin();
+                    }
+                  }}
                 />
                 <img
                   style={errorContrasennaLogin ? { top: 47 } : { top: 46 }}
@@ -387,8 +495,12 @@ const Header = () => {
                 />
               </div>
 
-              <button className="btn-registrarme" onClick={handleLogin}>
-                Iniciar sesion
+              <button
+                className="btn-registrarme"
+                disabled={loadingLogin ? true : false}
+                onClick={handleLogin}
+              >
+                {loadingLogin ? <Spinner /> : "Iniciar sesion"}
               </button>
 
               <p className="tiene-cuenta">
@@ -404,6 +516,20 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      {cerrarSesion && (
+        <div className="overlay" onClick={() => setCerrarSesion(false)}>
+          <div className="modal-cerrar-sesion">
+            <h3>¿Estás seguro de que deseas cerrar sesión?</h3>
+            <div>
+              <button onClick={() => setCerrarSesion(false)}>Cancelar</button>
+              <button onClick={handleCerrarSesion}>
+                {loadingLogin ? <Spinner /> : "Cerrar sesión"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

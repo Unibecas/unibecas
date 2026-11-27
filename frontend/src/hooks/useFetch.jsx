@@ -17,7 +17,6 @@ function useFetch() {
       const data = await response.json();
 
       setData(data);
-      console.log(data);
     } catch (error) {
       setError(error);
       console.error("Error fetching data:", error);

@@ -10,9 +10,9 @@ export function Economia(props) {
       <g
         fill="none"
         stroke="var(--color-primario)"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
       >
         <path d="M16.23 2.94a10 10 0 1 1 -8.46 0" />
         <path d="M8 15h8" />
