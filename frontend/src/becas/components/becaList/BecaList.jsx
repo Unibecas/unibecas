@@ -16,6 +16,7 @@ const BecaList = ({ becas }) => {
             info_aplicar={info.aplicar}
             modalidad={info.modalidad}
             estado={info.estado}
+            cobertura={info.cobertura}
           />
         </Link>
       ))}
