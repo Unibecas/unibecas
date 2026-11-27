@@ -386,7 +386,7 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
-    bulk: z.enum([
+    respsswd: z.enum([
         'true',
         'false'
     ])
@@ -562,6 +562,30 @@ const usuarioPermisos = z.object({
     })
 })
 
+const cambiarPsswd = z.object({
+    actual: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'La contraseña no puede estar vacía'
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      }),
+    nueva: z.string({
+        error: 'El campo debe de ser un string'
+    })
+      .min(1, {
+        error: 'La contraseña no puede estar vacía'
+      })
+      .refine((texto) => new TextEncoder().encode(texto).length <= 72, {
+        message: "La contraseña es demasiado larga (máximo 72 bytes)",
+      }),
+      cerrarSesiones: z.boolean({
+        error: 'El campo es obligatorio y debe ser un booleano'
+    })
+})
+
 // ENV Vars
 
 const env = z.object({
@@ -698,6 +722,11 @@ export function validarBody(objeto, esquema) {
             if (!r.success) throw r.error
             return r
         }
+        case 'cambiarPsswd': {
+            const r = cambiarPsswd.safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
     }
 }
 
@@ -725,6 +754,11 @@ export function actualizarBody(objeto, esquema) {
         }
         case 'usuario': {
             const r = esquemaUsuario.partial().safeParse(objeto)
+            if (!r.success) throw r.error
+            return r
+        }
+        case 'login': {
+            const r = esquemaLogin.partial().safeParse(objeto)
             if (!r.success) throw r.error
             return r
         }

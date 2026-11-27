@@ -1,12 +1,20 @@
 // @ts-nocheck
 import { Router } from 'express'
 import { autenticacion } from '../middlewares/auth/authjwt.js'
-import { UserCont } from '../controladores/user.js'
+import { UserAdminCont, UserCont } from '../controladores/user.js'
 
 export const userRouter = Router()
-
+// User
 userRouter.use(autenticacion.verificarJWT)
-userRouter.get('/', UserCont.user)
-userRouter.post('/', UserCont.userUpdate)
-userRouter.post('/toggleAdmin', autenticacion.soloAdmin, UserCont.userSuper)
-userRouter.delete('/:id', autenticacion.soloAdmin, UserCont.userDelete)
+userRouter.get('/me', UserCont.user)
+userRouter.patch('/me', UserCont.userUpdate)
+//-// Metodos para reset contraseña
+userRouter.post('/me', UserCont.userChangePsswd)
+   
+// Admin
+userRouter.use(autenticacion.soloAdmin)
+userRouter.get('/', UserAdminCont.user)
+userRouter.get('/:id', UserAdminCont.user)
+userRouter.post('/', UserAdminCont.userSuper)
+userRouter.patch('/:id', UserCont.userUpdate)
+userRouter.delete('/:id', UserAdminCont.userDelete)

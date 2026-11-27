@@ -4,6 +4,17 @@ import { validarBody } from '../esquemas/esquemas.js'
 import { JWT_KEY } from '../env.js'
 import jwt from 'jsonwebtoken'
 
+export const GenToken = ({ id, v }) => {
+  return jwt.sign({
+      id: id,
+      v: v
+    }, 
+    JWT_KEY, 
+    {
+      expiresIn: '1h'
+    })
+}
+
 export class AuthControl {
   static async userRegisterCont(req, res) {
     const validaciones = validarBody(req.body, 'usuario')
@@ -34,14 +45,9 @@ export class AuthControl {
       })
     }
 
-    const token = jwt.sign({
+    const token = GenToken({
       id: user.id,
-      user: user.username,
-      admin: user.rol === 'Admin' ? true : false
-    }, 
-    JWT_KEY, 
-    {
-      expiresIn: '1h'
+      v: user.v
     })
 
     return res.status(200)
@@ -50,7 +56,7 @@ export class AuthControl {
       // para no hacer que sea accesible la cookie en js con document.cookie desde el cliente
       // secure: true hacer que funcione solo en https
       // sameSite: lax o strict para hacer que funcione en un solo dominio
-      // maxAge: expiracion de la cookie pero con la del kwt esta mas q bien
+      // maxAge: expiracion de la cookie pero con la del jwt esta mas q bien
     })
     .json({
       message: 'Usuario logueado con exito',

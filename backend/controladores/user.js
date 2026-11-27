@@ -1,26 +1,22 @@
 //@ts-nocheck
-import { actualizarBody, validacionPaginacion, validarBody } from "../esquemas/esquemas.js"
+import { actualizarBody, validarBody, validacionPaginacion } from "../esquemas/esquemas.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { UserInfo } from "../modelos/postgreSQL/user.js"
+import { GenToken } from "./auth.js"
+
+// USUARIO
 
 export class UserCont {
-
-  // query: ?bulk=true // false -> 'true'/'false' 
-  // para tener todos los usuarios o no (si es indiferente) si eres admin y envías el query
   static async user(req, res) {
-    const validaciones = validarBody({id: req.user.id}, 'userId')
-    const queryVal = validacionPaginacion(req.query)
-    const isAdmin = req.user.admin
-
+    const validaciones = validarBody({id: req.info.id}, 'userId')
     const { id } = validaciones.data
-    const { limit, offset, bulk } = queryVal.data
-    const usuario = await UserInfo.user({ id: id, admin: isAdmin, bulk: bulk, limit: limit, offset: offset })
+    const usuario = await UserInfo.user({ id: id, limit: null, offset: null, admin: false })
     return res.status(200).json(usuario)
   }
 
   static async userUpdate(req, res) {
     const validaciones = actualizarBody(req.body, 'userUpdate')
-    const id = validarBody({ id: req.user.id }, 'userId')
+    const id = validarBody({ id: req.info.id }, 'userId')
 
     const { email, estado, descripcion } = validaciones.data
     const flag = await UserInfo.userUpdate({ email, estado, descripcion, id: id.data.id })
@@ -32,11 +28,64 @@ export class UserCont {
     }
 
     return res.status(200).json({
-      message: `Usuario ID: ${req.user.id} actualizado con éxito (refresh)`
+      message: `Usuario ID: ${req.info.id} actualizado con éxito (refresh)`
     })
   }
 
+  static async userChangePsswd(req, res) {
+    const validaciones = validarBody(req.body, 'cambiarPsswd')
+    const { actual, nueva, cerrarSesiones } = validaciones.data
+
+    const info = await UserInfo.resetPsswd({ id: req.info.id, actual: actual, nueva: nueva, cerrarSesiones: cerrarSesiones })
+    if (!info) {
+      return res.status(400).json({
+        error: 'La contraseña actual no es correcta'
+      })
+    }
+
+    const newToken = cerrarSesiones ? GenToken({ id: req.info.id, v: info }) : undefined
+
+    return cerrarSesiones === true ? 
+    res.status(200)
+    .cookie('access_token', newToken, {
+      httpOnly: true
+    })
+    .json({
+      message: 'La contraseña ha sido actualizada con éxito - Las sesiones han sido cerradas en todos los dispositivos'
+    }) 
+    : 
+    res.status(200)
+    .json({
+      message: 'La contraseña ha sido actualizada con éxito'
+    })
+
+  }
+
+  // Hacer reset password para gente con alzheimer
+  // static async userResetPassword(req, res) {
+
+  // }
+}
+
+// ADMIN
+
+export class UserAdminCont {
+  static async user(req, res) {
+    const validaciones = actualizarBody({id: req.params.id}, 'userId')
+    const { id } = validaciones.data
+    const paginacion = validacionPaginacion(req.query)
+    const { limit, offset } = paginacion.data
+    const usuario = await UserInfo.user({ id: id ?? false, limit: limit, offset: offset, admin: true })
+    return res.status(200).json(usuario)
+  }
+
   static async userSuper(req, res) {
+    if (req.body.id === req.info.id) {
+      return res.status(400).json({
+        error: 'No puedes editar tu propio rol'
+      })
+    }
+
     const { id, rol } = req.body
     const idVal = validarBody({ id: id }, 'userId')
     const rolVal = validarBody({ rol: rol }, 'userIsAdmin')
@@ -48,13 +97,19 @@ export class UserCont {
         error: `Usuario con la ID: ${req.body.id} no pudo ser actualizado`
       })
     }
+    await UserInfo.newVersionToken({ id: req.info.id })
 
     return res.status(200).json({
-      message: `Usuario ID: ${req.body.id} ha sido promovido a ${rol ? `Administrador` : `Usuario`}`
+      message: `Usuario ID: ${req.body.id} ${rol ? `ha sido promovido a Administrador` : `ha sido degradado a Usuario`}`
     })
   }
 
   static async userDelete(req, res) {
+    if (req.params.id === req.info.id) {
+      return res.status(400).json({
+        error: 'No puedes eliminar tu propio usuario'
+      })
+    }
     const idVal = validarBody({ id: req.params.id }, 'userId')
 
     const data = await UserInfo.userDelete({ id: idVal.data.id })
@@ -71,17 +126,4 @@ export class UserCont {
       message: `Usuario ID ${req.params.id} eliminado con éxito`
     })
   }
-
-  // static async userResetPsswd(req, res) {
-  //   const idVal = actualizarBody({ id: req.user.id }, 'userId')
-  //   const psswd = actualizarBody({ id: req.body.psswd }, '')
-
-  //   const data = await UserInfo.userResetPsswd({ id: idVal.data.id })
-
-  //   if (!data) {
-  //     return res.status(400).json({
-  //       error: 'No se pudo '
-  //     })
-  //   }
-  // }
 }
