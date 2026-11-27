@@ -138,8 +138,8 @@
 .hero-buscador .filtro-nombre input {
   max-width: 440px;
   padding-right: 16px;
-  padding: 12px;
-}
+  padding: 12px 16px;
+} 
 
 .hero-buscador .filtro-nombre button {
   border-radius: 0 5px 5px 0;
@@ -151,7 +151,7 @@
   height: 46px;
   background-color: #ad2022;
   cursor: pointer;
-}
+}  
 
 .hero-buscador select {
   padding: 10px 12px;
