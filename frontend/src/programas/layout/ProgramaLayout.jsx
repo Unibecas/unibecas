@@ -1,10 +1,10 @@
 import "./programaLayout.css";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Header from "../../home/components/header/Header";
 import PanelAccesible from "../../components/panelAccesible/PanelAccesible";
-import ProgramaList from "../components/programaList/programaList";
+import ProgramaList from "../components/programaList/ProgramaList";
 
 import { Search } from "../../components/icons/home/Search";
 import { Medalla } from "../../components/icons/home/Medalla";
@@ -12,34 +12,29 @@ import { Medalla } from "../../components/icons/home/Medalla";
 import Input from "../../components/input/Input";
 import BecaCardSkeleton from "../../skeletons/BecaCardSkeleton";
 
-import useFetch from "../../hooks/useFetch";
+import { ProgramaContext } from "../../context/ProgramaContext";
+import { NIVELES } from "../niveles";
 
-// Debe ser la base hasta /main, por ejemplo https://unibecas.onrender.com/main
-const API_URL = "https://unibecas.onrender.com/main/programas";
+import { useSearchParams } from "react-router-dom";
 
 const LIMITE = 10;
 // El backend exige mínimo 4 caracteres en los filtros de texto (nprog, etc.)
 const MIN_BUSQUEDA = 4;
 
-// Valores exactos que acepta el backend en "nivel"
-const NIVELES = [
-  "Técnico Profesional",
-  "Tecnólogo",
-  "Pregrado Universitario",
-  "Especialización",
-  "Maestría",
-  "Doctorado",
-];
-
 const ProgramaLayout = () => {
-  const { data, loading, error, fetchData } = useFetch();
+  const { data, loading, error, buscarProgramas } =
+    useContext(ProgramaContext);
 
   const programas = data?.datos ?? [];
 
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [busqueda, setBusqueda] = useState("");
-  const [nivel, setNivel] = useState("");
   const [pagina, setPagina] = useState(1);
+
+  // El nivel vive en la URL (?nform=Maestría) para poder enlazarlo desde el menú
+  const [searchParams, setSearchParams] = useSearchParams();
+  const nivelURL = searchParams.get("nform") ?? "";
+  const nivel = NIVELES.includes(nivelURL) ? nivelURL : "";
   const [mostrarFiltroNivel, setMostrarFiltroNivel] = useState(false);
 
   const busquedaMuyCorta =
@@ -48,15 +43,7 @@ const ProgramaLayout = () => {
 
   // Pide los programas al backend cada vez que cambia un filtro o la página
   useEffect(() => {
-    const params = new URLSearchParams({
-      limit: LIMITE,
-      offset: (pagina - 1) * LIMITE,
-    });
-
-    if (busqueda) params.set("nprog", busqueda);
-    if (nivel) params.set("nform", nivel); // confirmar el nombre del query en el backend
-
-    fetchData(`${API_URL}?${params}`);
+    buscarProgramas({ busqueda, nivel, pagina, limite: LIMITE });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [busqueda, nivel, pagina]);
 
@@ -67,10 +54,14 @@ const ProgramaLayout = () => {
   };
 
   const seleccionarNivel = (nuevoNivel) => {
-    setNivel(nuevoNivel);
-    setPagina(1);
+    setSearchParams(nuevoNivel ? { nform: nuevoNivel } : {});
     setMostrarFiltroNivel(false);
   };
+
+  // Al cambiar de nivel (desde el filtro o desde el menú) se vuelve a la página 1
+  useEffect(() => {
+    setPagina(1);
+  }, [nivel]);
 
   const cambiarPagina = (nuevaPagina) => {
     setPagina(nuevaPagina);

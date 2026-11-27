@@ -22,6 +22,8 @@ import { Retry } from "../../../components/icons/home/Retry";
 
 import { toast } from "sonner";
 
+import { NIVELES } from "../../../programas/niveles";
+
 const Header = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -55,6 +57,13 @@ const Header = () => {
     useState(seePassword);
 
   const [mostrarBecas, setMostrarBecas] = useState(false);
+
+  const [mostrarProgramas, setMostrarProgramas] = useState(false);
+
+  const toggleProgramas = () => {
+    setMostrarBecas(false);
+    setMostrarProgramas(!mostrarProgramas);
+  };
 
   const { data, fetchData, loading, error } = useContext(BecaContext);
 
@@ -216,7 +225,7 @@ const Header = () => {
 
             <ul>
               <li onClick={() => setMenuAbierto(false)}>
-                <Link>Programas</Link>
+                <Link to="/programas">Programas</Link>
               </li>
               <li onClick={() => setMenuAbierto(false)}>
                 <Link to="/becas">Becas</Link>
@@ -228,15 +237,41 @@ const Header = () => {
 
       <nav>
         <ul>
-          <li>
-            <span>Programas</span>
-            <ArrowDawn />
-          </li>
+          <div className="contenedor-becas">
+            <li onClick={toggleProgramas}>
+              <span>Programas</span>
+              <ArrowDawn />
+            </li>
+            {mostrarProgramas && (
+              <div className="becas">
+                {NIVELES.map((nivel) => (
+                  <Link
+                    key={nivel}
+                    to={`/programas?nform=${encodeURIComponent(nivel)}`}
+                    className="beca"
+                    onClick={() => setMostrarProgramas(false)}
+                  >
+                    {nivel}
+                  </Link>
+                ))}
+                <Link
+                  to="/programas"
+                  className="ver-becas"
+                  onClick={() => setMostrarProgramas(false)}
+                >
+                  <span>Ver todos</span>
+                  <ArrowUpRight />
+                </Link>
+              </div>
+            )}
+          </div>
+
           <div className="contenedor-becas">
             <li
-              onClick={() =>
-                setMostrarBecas(mostrarBecas === true ? false : true)
-              }
+              onClick={() => {
+                setMostrarProgramas(false);
+                setMostrarBecas(!mostrarBecas);
+              }}
             >
               <span>Becas</span>
               <ArrowDawn />

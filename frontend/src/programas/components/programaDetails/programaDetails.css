@@ -1,0 +1,152 @@
+.programa-details {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.programa-details-contenido {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 14px;
+}
+
+.programa-details-contenido .contenedor-navegacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 34px;
+  border-bottom: 1px solid #cdcdcd;
+  padding-bottom: 20px;
+}
+
+.programa-details-contenido .contenedor-navegacion h2 {
+  margin: 0;
+}
+
+.programa-details-contenido .volver {
+  padding: 10px 12px;
+  font-size: 1.1rem;
+  border: 1px solid var(--color-terciario);
+  background-color: transparent;
+  border-radius: 100px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.4s;
+}
+
+.programa-details-contenido .volver:hover {
+  background-color: var(--color-terciario);
+  color: #fff;
+}
+
+.programa-details-contenido section {
+  margin-top: 36px;
+}
+
+.programa-details-contenido section .universidad {
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: start;
+  background-color: #8472f147;
+  display: inline-block;
+  margin: 0 0 28px 0;
+}
+
+.programa-details-contenido section h1,
+.programa-details-contenido section p {
+  margin: 0;
+}
+
+.programa-details-contenido section p {
+  font-size: 1.06rem;
+}
+
+.programa-details-contenido section .nivel {
+  color: #6c757d;
+}
+
+.programa-details-contenido section .contenedor-nombre-programa {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.programa-details-contenido section .titulo-programa {
+  margin-bottom: 32px;
+}
+
+.programa-details-contenido section .datos-programa {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.programa-details-contenido section .dato {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.programa-details-contenido section .dato span {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.programa-details-contenido section .dato strong {
+  font-size: 1.1rem;
+}
+
+.contenedor-acreditacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+.contenedor-acreditacion.alta-calidad {
+  background-color: rgb(22 228 22 / 43%);
+}
+
+.contenedor-acreditacion.registro {
+  background-color: rgba(59, 130, 246, 0.35);
+}
+
+.contenedor-acreditacion.sin-definir {
+  background-color: rgba(120, 120, 120, 0.3);
+}
+
+.punto-acreditacion {
+  display: block;
+  flex-shrink: 0;
+  height: 8px;
+  width: 8px;
+  border-radius: 100%;
+}
+
+.punto-acreditacion.alta-calidad {
+  background-color: rgb(33, 224, 33);
+}
+
+.punto-acreditacion.registro {
+  background-color: rgb(59, 130, 246);
+}
+
+.punto-acreditacion.sin-definir {
+  background-color: rgb(120, 120, 120);
+}
+
+@media (max-width: 550px) {
+  .programa-details-contenido .volver {
+    padding: 7px 10px;
+  }
+}

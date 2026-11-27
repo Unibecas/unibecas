@@ -1,6 +1,6 @@
 import "./programaList.css";
 
-import ProgramaCard from "../pogramaCard/ProgramaCard"
+import ProgramaCard from "../programaCard/ProgramaCard";
 import { Link } from "react-router-dom";
 
 const ProgramaList = ({ programas, pagina, hayMas, onCambiarPagina }) => {

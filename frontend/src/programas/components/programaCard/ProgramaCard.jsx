@@ -35,7 +35,9 @@ const ProgramaCard = ({
       <div className="programaCard-contenido">
         <h3 title={formatearTexto(nombre)}>{formatearTexto(nombre)}</h3>
 
-        <p className="programaCard-titulo">Título: {formatearTexto(titulo)}</p>
+        <p className="programaCard-titulo">
+          Título: {formatearTexto(titulo)}
+        </p>
 
         <div className="programaCard-snies">
           <h3>Código SNIES</h3>
