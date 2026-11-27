@@ -102,12 +102,22 @@ const Header = () => {
 
     if (result.success) {
       toast.success("Registro exitoso");
-      setEstaAbierto(false);
-      setUsuario("");
-      setEmail("");
-      setContrasenna("");
+
+      // hacer login automatico despues del registro
+      const loginResult = await login({
+        username: email,
+        password: contrasenna,
+      });
+      if (loginResult.success) {
+        setEstaAbierto(false);
+        setUsuario("");
+        setEmail("");
+        setContrasenna("");
+      } else {
+        toast.error("Error al registrar usuario");
+      }
     } else {
-      toast.error(result.error);
+      toast.error("Error al registrar usuario");
     }
   };
 
@@ -163,8 +173,6 @@ const Header = () => {
       username: usuarioLogin,
       password: contrasennaLogin,
     });
-
-    console.log("Result login: ", result);
 
     if (result.success) {
       toast.success(`Has iniciado sesion como ${result?.data?.info?.user}`);
@@ -419,6 +427,11 @@ const Header = () => {
                   className={errorContrasenna ? "input-error" : null}
                   placeholder="*******"
                   value={contrasenna}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleRegister();
+                    }
+                  }}
                 />
                 <img
                   style={errorContrasenna ? { top: 47 } : { top: 46 }}
@@ -468,6 +481,11 @@ const Header = () => {
                   onChange={handleChangeContrasennaLogin}
                   error={errorContrasennaLogin}
                   placeholder="*******"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleLogin();
+                    }
+                  }}
                 />
                 <img
                   style={errorContrasennaLogin ? { top: 47 } : { top: 46 }}
