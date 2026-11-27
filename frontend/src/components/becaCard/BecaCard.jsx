@@ -5,8 +5,7 @@ const BecaCard = ({
   universidad,
   nombre,
   vigencia,
-  descripcion,
-  info_aplicar,
+  cobertura,
   modalidad,
   estado,
   ref,
@@ -18,22 +17,14 @@ const BecaCard = ({
       <header className="becaCard-header">
         <span className="becaCard-modalidad">{modalidad}</span>
         <h2 className="becaCard-universidad">{universidad}</h2>
-        {/* <span
-          className="becaCard-cobertura"
-          title={`Covertura del ${cobertura}%`}
-        >
-          {cobertura}
-        </span> */}
       </header>
 
       <div className="becaCard-contenido">
         <h3>{nombre}</h3>
 
-        <p className="becaCard-descripcion">{descripcion}</p>
-
         <div className="becaCard-requisitos">
-          <h3>¿Cómo aplicar?</h3>
-          <p>{info_aplicar}</p>
+          <h3>Cobertura:</h3>
+          <span>{cobertura}</span>
         </div>
       </div>
 
