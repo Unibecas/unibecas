@@ -2,6 +2,7 @@
 import { JWT_KEY } from '../../env.js'
 import jwt from 'jsonwebtoken'
 import { horaActual } from '../../utils/funciones/funciones.js'
+import { userVersion } from '../../modelos/postgreSQL/utils/token_version.js'
 
 export function infoPublicaCheck(token, ip) {
     try {
@@ -10,17 +11,17 @@ export function infoPublicaCheck(token, ip) {
         })
         return true
     } catch (error) {
-      const clgInfo = `[Error JWT - ${horaActual()}] - Información publica servida parcialmente - ${error.message}`
+      const clgInfo = `[Error JWT - ${horaActual()}] - Información publica servida parcialmente`
       if (error instanceof jwt.JsonWebTokenError) {
         if (error.message === 'jwt malformed') {
-          console.log(clgInfo)
-        } else if (error.message === 'invalid signature') {
-          console.log(clgInfo + ` - IP: ${ip}`)
-        } else {
           console.log(clgInfo + ` - Info: ${error.message}`)
+        } else if (error.message === 'invalid signature') {
+          console.log(clgInfo + ` - Info: ${error.message}` + ` - IP: ${ip}`)
+        } else {
+          console.log(clgInfo + ` - NO OBSERVADO - Info: ${error.message}`)
         }
       } else if (error instanceof jwt.TokenExpiredError) {
-        console.log(clgInfo.replaceAll('- ${error.message}', '') + `- Token expirado`)
+        console.log(clgInfo + `- Token expirado`)
       }
       return false
     }
@@ -36,19 +37,64 @@ export class autenticacion {
       })
     }
 
-    const payload = jwt.verify(t, JWT_KEY, {
+    const payload = await jwt.verify(t, JWT_KEY, {
       algorithms: ['HS256']
     })
+
+    if (!payload.id) {
+      return res.status(401).json({
+        error: 'Sesion invalida - 001'
+      })
+    } else if ((!Number.isInteger(payload.v) || Number.isNaN(payload.v))) {
+      return res.status(401).json({
+        error: 'Sesion invalida - 011'
+      })
+    } else if (payload.v === null || payload.v === undefined) {
+      return res.status(401).json({
+        error: 'Sesion invalida - 021'
+      })
+    }
+
+    // req.user contiene:
+    // ID -> String: Id de usuario del payload (No usar para validar)
+    // V -> Int: Version del token (No usar fuera de el auth)
+    
     req.user = payload
+    const data = await userVersion.tokenVersion(req.user.id)
+    
+    if (!data) {
+      return res.status(401).json({
+        error: 'Sesion invalida - 002'
+      })
+    }
+
+    if (data.v !== req.user.v) {
+      return res.status(401).json({
+        error: 'Sesion invalida - 003 - Vuelva a iniciar sesión'
+       })
+    }
+
+    // req.user contiene:
+    // ID -> String: Id de usuario 
+    // USERNAME -> String: Nombre de usuario
+    // ROL -> String: 'Admin' - 'Usuario'
+
+    req.info = {
+      id: data.id,
+      username: data.username,
+      rol: data.rol
+    }
+
     next()
   }
 
   static soloAdmin (req, res, next) {
-    if (!req.user.admin) {
+    if (req.info.rol !== 'Admin') {
       return res.status(403).json({
         error: 'No tienes permisos'
       })
     }
+
     next()
   }
 }
