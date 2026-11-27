@@ -10,9 +10,9 @@ export function Search(props) {
       <g
         fill="none"
         stroke="#fff"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       >
         <path d="m21 21l-4.34-4.34" />
         <circle cx="11" cy="11" r="8" />
