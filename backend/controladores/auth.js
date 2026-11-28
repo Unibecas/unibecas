@@ -1,19 +1,7 @@
 //@ts-nocheck
 import { AuthInfo } from '../modelos/postgreSQL/auth.js'
 import { validarBody } from '../esquemas/esquemas.js'
-import { JWT_KEY } from '../env.js'
-import jwt from 'jsonwebtoken'
-
-export const GenToken = ({ id, v }) => {
-  return jwt.sign({
-      id: id,
-      v: v
-    }, 
-    JWT_KEY, 
-    {
-      expiresIn: '1h'
-    })
-}
+import { GenToken } from '../utils/funciones/genToken.js'
 
 export class AuthControl {
   static async userRegisterCont(req, res) {

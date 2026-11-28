@@ -39,7 +39,7 @@ export class UserInfo {
     `
     querystmt += email ? ` email = $${params.push(email)}` : ''
     querystmt += estado ? `${email ? ',' : ''} estado_est = $${params.push(estado)}` : ''
-    querystmt += descripcion ? `${estado || email ? ',' : ''} descripcion = $${params.push(descripcion)}` : ''
+    querystmt += descripcion || descripcion === null ? `${estado || email ? ',' : ''} descripcion = $${params.push(descripcion)}` : ''
     querystmt += ` WHERE id_usuario = $${params.push(id)}`
     
     const datos = await pool.query(querystmt, params)
@@ -78,7 +78,7 @@ export class UserInfo {
       return true
   }
 
-  static async resetPsswd({ id, actual, nueva, cerrarSesiones}) {
+  static async userChangePsswd({ id, actual, nueva, cerrarSesiones}) {
     const datos = await pool.query(`
       SELECT psswd AS guardada FROM usuarios WHERE id_usuario = $1
       `, [id])

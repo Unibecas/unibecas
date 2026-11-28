@@ -386,14 +386,6 @@ const esquemaPaginacion = z.object({
         .regex(/^[^?&<>]+$/, {
             error: "Caracteres no permitidos"
         }),
-    respsswd: z.enum([
-        'true',
-        'false'
-    ])
-        .transform((val) => {
-            if (val === 'true') return true
-            return false
-        }),
     limit: z.coerce
         .number({
             error: 'El limite debe ser un numero'

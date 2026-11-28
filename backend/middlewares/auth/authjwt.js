@@ -48,7 +48,7 @@ export class autenticacion {
       })
     }
 
-    const payload = await jwt.verify(t, JWT_KEY, {
+    const payload = jwt.verify(t, JWT_KEY, {
       algorithms: ['HS256']
     })
 
@@ -85,7 +85,7 @@ export class autenticacion {
        })
     }
 
-    // req.user contiene:
+    // req.info contiene:
     // ID -> String: Id de usuario 
     // USERNAME -> String: Nombre de usuario
     // ROL -> String: 'Admin' - 'Usuario'

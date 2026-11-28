@@ -2,7 +2,7 @@
 import { actualizarBody, validarBody, validacionPaginacion } from "../esquemas/esquemas.js"
 import { horaActual } from "../utils/funciones/funciones.js"
 import { UserInfo } from "../modelos/postgreSQL/user.js"
-import { GenToken } from "./auth.js"
+import { GenToken } from "../utils/funciones/genToken.js"
 
 // USUARIO
 
@@ -21,10 +21,10 @@ export class UserCont {
         error: 'No puedes actualizar tu usuario ya que hay campos vacíos'
       })
     }
-    const id = validarBody({ id: req.params.id }, 'userId')
+    const id = req.params.id ? validarBody({ id: req.params.id }, 'userId') : req.info.id
 
     const { email, estado, descripcion } = validaciones.data
-    const flag = await UserInfo.userUpdate({ email, estado, descripcion, id: id.data.id })
+    const flag = await UserInfo.userUpdate({ email, estado, descripcion: descripcion === '' ? null : descripcion, id: id.data?.id ?? req.info.id })
 
     if (!flag) {
       return res.status(400).json({
@@ -41,7 +41,13 @@ export class UserCont {
     const validaciones = validarBody(req.body, 'cambiarPsswd')
     const { actual, nueva, cerrarSesiones } = validaciones.data
 
-    const info = await UserInfo.resetPsswd({ id: req.info.id, actual: actual, nueva: nueva, cerrarSesiones: cerrarSesiones })
+    if (actual === nueva) {
+      return res.status(400).json({
+        error: 'Tu nueva contraseña no puede ser igual a la actual'
+      })
+    }
+
+    const info = await UserInfo.userChangePsswd({ id: req.info.id, actual: actual, nueva: nueva, cerrarSesiones: cerrarSesiones })
     if (!info) {
       return res.status(400).json({
         error: 'La contraseña actual no es correcta'
