@@ -16,7 +16,12 @@ export class UserCont {
 
   static async userUpdate(req, res) {
     const validaciones = actualizarBody(req.body, 'userUpdate')
-    const id = validarBody({ id: req.info.id }, 'userId')
+    if (Object.keys(validaciones.data).length === 0) {
+      return res.status(400).json({
+        error: 'No puedes actualizar tu usuario ya que hay campos vacíos'
+      })
+    }
+    const id = validarBody({ id: req.params.id }, 'userId')
 
     const { email, estado, descripcion } = validaciones.data
     const flag = await UserInfo.userUpdate({ email, estado, descripcion, id: id.data.id })
@@ -28,7 +33,7 @@ export class UserCont {
     }
 
     return res.status(200).json({
-      message: `Usuario ID: ${req.info.id} actualizado con éxito (refresh)`
+      message: `Usuario ID: ${req.params.id} actualizado con éxito (refresh)`
     })
   }
 
@@ -97,7 +102,7 @@ export class UserAdminCont {
         error: `Usuario con la ID: ${req.body.id} no pudo ser actualizado`
       })
     }
-    await UserInfo.newVersionToken({ id: req.info.id })
+    await UserInfo.newVersionToken({ id: req.body.id })
 
     return res.status(200).json({
       message: `Usuario ID: ${req.body.id} ${rol ? `ha sido promovido a Administrador` : `ha sido degradado a Usuario`}`

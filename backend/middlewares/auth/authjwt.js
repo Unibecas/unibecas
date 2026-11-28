@@ -4,18 +4,28 @@ import jwt from 'jsonwebtoken'
 import { horaActual } from '../../utils/funciones/funciones.js'
 import { userVersion } from '../../modelos/postgreSQL/utils/token_version.js'
 
-export function infoPublicaCheck(token, ip) {
+export async function infoPublicaCheck(token, ip) {
     try {
-        jwt.verify(token, JWT_KEY, {
+        const t = jwt.verify(token, JWT_KEY, {
             algorithms: ['HS256']
         })
+        const ver = await userVersion.tokenVersion(t.id)
+        if (!ver) {
+          return false
+        }
+        if (ver.v !== t.v) {
+          return false
+        }
         return true
-    } catch (error) {
-      const clgInfo = `[Error JWT - ${horaActual()}] - Información publica servida parcialmente`
-      if (error instanceof jwt.JsonWebTokenError) {
+
+      } catch (error) {
+        const clgInfo = `[Error JWT - ${horaActual()}] - Información publica servida parcialmente`
+        if (error instanceof jwt.JsonWebTokenError) {
         if (error.message === 'jwt malformed') {
           console.log(clgInfo + ` - Info: ${error.message}`)
         } else if (error.message === 'invalid signature') {
+          console.log(clgInfo + ` - Info: ${error.message}` + ` - IP: ${ip}`)
+        } else if (error.message === 'jwt must be provided') {
           console.log(clgInfo + ` - Info: ${error.message}` + ` - IP: ${ip}`)
         } else {
           console.log(clgInfo + ` - NO OBSERVADO - Info: ${error.message}`)
@@ -23,6 +33,7 @@ export function infoPublicaCheck(token, ip) {
       } else if (error instanceof jwt.TokenExpiredError) {
         console.log(clgInfo + `- Token expirado`)
       }
+      console.log(`Se devolvio false de error`)
       return false
     }
 }
